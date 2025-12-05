@@ -23,6 +23,11 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   // Ground platforms for infinite scrolling
   public groundPlatforms!: Phaser.Physics.Arcade.StaticGroup;
   
+  // Tilemap system
+  public map!: Phaser.Tilemaps.Tilemap;
+  public groundLayer!: Phaser.Tilemaps.TilemapLayer;
+  public groundTileset!: Phaser.Tilemaps.Tileset;
+  
   // Background
   public backgrounds!: Phaser.GameObjects.TileSprite[];
   
