@@ -60,8 +60,15 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     });
   }
 
+  init(data: any): void {
+    // Set difficulty from title screen
+    if (data && data.difficulty) {
+      this.difficulty = data.difficulty;
+    }
+  }
+
   create(): void {
-    console.log("Starting Infinite Survival Mode!");
+    console.log(`Starting Infinite Survival Mode! Difficulty: ${this.difficulty}`);
     
     // Initialize game state
     this.gameCompleted = false;
