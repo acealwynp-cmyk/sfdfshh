@@ -161,7 +161,6 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
     );
 
     // Create projectile with range
-    const isRocket = this.currentWeapon === WeaponType.ROCKET_LAUNCHER;
     const projectile = new Projectile(
       this.scene,
       spawnX,
@@ -170,7 +169,7 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
       weaponConfig.damage,
       weaponConfig.projectileSpeed,
       weaponConfig.maxRange,
-      isRocket
+      false // No rocket launcher anymore
     );
 
     // Add to projectiles group for collision handling
