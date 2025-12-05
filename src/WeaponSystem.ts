@@ -30,7 +30,8 @@ export class WeaponManager {
       damage: 25,
       soundKey: "rifle_fire",
       projectileSpeed: 800,
-      animationKey: "brave_commando_rifle_shoot_anim"
+      animationKey: "brave_commando_rifle_shoot_anim",
+      maxRange: 800  // Medium range
     },
     [WeaponType.FLAME_THROWER]: {
       name: "Flame Thrower",
@@ -39,8 +40,9 @@ export class WeaponManager {
       fireRate: 150,
       damage: 35,
       soundKey: "flame_thrower_fire",
-      projectileSpeed: 600,
-      animationKey: "brave_commando_flamethrower_shoot_anim"
+      projectileSpeed: 500,
+      animationKey: "brave_commando_flamethrower_shoot_anim",
+      maxRange: 300  // Short range
     },
     [WeaponType.ROCKET_LAUNCHER]: {
       name: "Rocket Launcher",
@@ -49,8 +51,9 @@ export class WeaponManager {
       fireRate: 800,
       damage: 75,
       soundKey: "rocket_launcher_fire",
-      projectileSpeed: 500,
-      animationKey: "brave_commando_rocket_shoot_anim"
+      projectileSpeed: 600,
+      animationKey: "brave_commando_rocket_shoot_anim",
+      maxRange: 1500  // Long range
     },
     [WeaponType.LASER_BLASTER]: {
       name: "Laser Blaster",
@@ -59,8 +62,9 @@ export class WeaponManager {
       fireRate: 300,
       damage: 50,
       soundKey: "laser_blaster_fire",
-      projectileSpeed: 1000,
-      animationKey: "brave_commando_laser_shoot_anim"
+      projectileSpeed: 1200,
+      animationKey: "brave_commando_laser_shoot_anim",
+      maxRange: 1800  // Very long range
     }
   };
 
