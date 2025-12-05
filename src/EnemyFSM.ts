@@ -77,8 +77,9 @@ export class EnemyFSM extends FSM {
     if (player && !player.isDead) {
       const distance = Phaser.Math.Distance.Between(this.enemy.x, this.enemy.y, player.x, player.y);
       
-      // Attack if close enough and cooldown is ready
-      if (distance < 300 && currentTime - this.enemy.lastAttackTime > this.enemy.attackCooldown) {
+      // Attack if within attack range and cooldown is ready
+      const attackRange = (this.enemy as any).enemyConfig?.attackRange || 600;
+      if (distance < attackRange && currentTime - this.enemy.lastAttackTime > this.enemy.attackCooldown) {
         this.goto("attacking");
       }
     }
