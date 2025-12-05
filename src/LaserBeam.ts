@@ -14,7 +14,7 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     super(scene, 0, 0);
     this.scene = scene;
     this.player = player;
-    this.damage = 25; // Higher damage per tick (0.1 seconds) - kills enemies faster!
+    this.damage = 2; // Low damage - takes ~5 seconds to kill (50 HP enemy / 2 damage per 0.05s = 5 seconds)
     
     // Create graphics for beam
     this.beamGraphics = scene.add.graphics();
