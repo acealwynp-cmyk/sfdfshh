@@ -118,7 +118,7 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
     if (isRocket) {
       this.setScale(0.4, 0.4); // Rockets are bigger
     } else {
-      this.setScale(0.15, 0.15); // Bullets very small (smaller than gun)
+      this.setScale(0.075, 0.075); // Bullets SUPER TINY (75% smaller than before!)
     }
 
     // Remove projectile when it goes off screen
