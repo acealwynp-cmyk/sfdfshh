@@ -163,9 +163,13 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
       return;
     }
     
-    // Remove if off screen (with larger buffer for long range weapons)
-    if (this.x < -500 || this.x > this.scene.scale.gameSize.width + 500 ||
-        this.y < -500 || this.y > this.scene.scale.gameSize.height + 500) {
+    // Don't destroy based on screen position - let camera follow handle visibility
+    // Only destroy if VERY far from camera
+    const cam = this.scene.cameras.main;
+    const camCenterX = cam.scrollX + cam.width / 2;
+    
+    // Keep projectiles within reasonable range of camera
+    if (Math.abs(this.x - camCenterX) > 3000) {
       this.destroy();
     }
   }
