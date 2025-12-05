@@ -151,14 +151,15 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
       player.y - spawnY
     ).normalize();
 
-    // Create projectile
+    // Create projectile with range
     const projectile = new Projectile(
       this.scene,
       spawnX,
       spawnY,
       this.enemyConfig.projectileKey,
       this.enemyConfig.damage,
-      this.enemyConfig.projectileSpeed
+      this.enemyConfig.projectileSpeed,
+      this.enemyConfig.maxRange
     );
 
     // Add to enemy projectiles group
