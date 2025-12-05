@@ -443,6 +443,10 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.groundPlatforms,
       (projectile: any) => {
         if (projectile && projectile.active) {
+          // Trigger explosion for rockets
+          if (projectile.isRocket) {
+            projectile.createExplosion(this, projectile.x, projectile.y, projectile.damage);
+          }
           projectile.hit();
         }
       }
