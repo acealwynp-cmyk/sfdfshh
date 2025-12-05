@@ -12,7 +12,9 @@ export class JungleEnemy extends BaseEnemy {
       damage: 25,
       projectileSpeed: 600,
       soundKey: "rifle_fire",
-      scoreValue: 100
+      scoreValue: 100,
+      maxRange: 800,
+      attackRange: 600
     };
 
     super(scene, x, y, jungleEnemyConfig);
