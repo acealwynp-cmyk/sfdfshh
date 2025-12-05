@@ -13,7 +13,9 @@ export class SpaceEnemy extends BaseEnemy {
       damage: 50, // High tech weapons do more damage
       projectileSpeed: 1000, // Fastest projectiles
       soundKey: "laser_blaster_fire",
-      scoreValue: 200 // Highest score value
+      scoreValue: 200, // Highest score value
+      maxRange: 1500, // Long range laser
+      attackRange: 1200
     };
 
     super(scene, x, y, spaceEnemyConfig);
