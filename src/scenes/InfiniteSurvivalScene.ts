@@ -6,7 +6,8 @@ import { DesertEnemy } from "../DesertEnemy";
 import { UrbanEnemy } from "../UrbanEnemy";
 import { ArcticEnemy } from "../ArcticEnemy";
 import { SpaceEnemy } from "../SpaceEnemy";
-import { BiomeManager, BiomeType, BiomeConfig } from "../BiomeManager";
+import { BiomeManager, BiomeType } from "../BiomeManager";
+import type { BiomeConfig } from "../BiomeManager";
 import { screenSize, enemyConfig, difficultyConfig, gameplayConfig } from "../gameConfig.json";
 
 export class InfiniteSurvivalScene extends Phaser.Scene {
