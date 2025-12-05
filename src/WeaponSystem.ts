@@ -157,12 +157,15 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
   }
 
   hit(): void {
-    // Create hit effect or explosion for rockets
+    // Create explosion for rockets
+    if (this.isRocket) {
+      this.createExplosion(this.scene, this.x, this.y, this.damage);
+    }
     this.destroy();
   }
   
   // Create explosion with area damage
-  explode(scene: Phaser.Scene, x: number, y: number, damage: number): void {
+  createExplosion(scene: Phaser.Scene, x: number, y: number, damage: number): void {
     // Create explosion visual effect
     const explosion = scene.add.sprite(x, y, 'flame_projectile');
     explosion.setScale(3, 3); // Large explosion
