@@ -13,7 +13,9 @@ export class ArcticEnemy extends BaseEnemy {
       damage: 35, // Cold climate troops are tough
       projectileSpeed: 700,
       soundKey: "rifle_fire",
-      scoreValue: 140 // Good score value
+      scoreValue: 140, // Good score value
+      maxRange: 1000,
+      attackRange: 800
     };
 
     super(scene, x, y, arcticEnemyConfig);
