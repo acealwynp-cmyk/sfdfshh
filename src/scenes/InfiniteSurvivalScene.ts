@@ -183,70 +183,22 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   createInfiniteGround(): void {
-    // Create static group for platforms
-    this.groundPlatforms = this.physics.add.staticGroup();
+    // Create tilemap for current biome using actual tile assets
+    this.map = this.make.tilemap({ key: this.currentBiomeConfig.tilemapKey });
+    this.groundTileset = this.map.addTilesetImage(this.currentBiomeConfig.tilesetKey, this.currentBiomeConfig.tilesetKey);
 
-    // Get biome-specific tile image
-    const tileTexture = this.currentBiomeConfig.tilesetKey;
+    // Create ground layer from tilemap
+    this.groundLayer = this.map.createLayer("ground_layer", this.groundTileset, 0, 0)!;
     
-    // Create initial platforms with ground walking sections and air platforms
-    const platformWidth = this.tileWidth * 10;
-    const platformHeight = this.tileHeight;
-    const groundY = 17 * this.tileHeight;
+    // Set collisions - exclude empty tiles (index -1)
+    this.groundLayer.setCollisionByExclusion([-1]);
+
+    // Create static group for additional platforms
+    this.groundPlatforms = this.physics.add.staticGroup();
     
-    let currentX = 0;
-    let sectionType = 'ground'; // Start with ground section
-    let sectionLength = 0;
-    
-    // Create initial 30 platforms
-    for (let i = 0; i < 30; i++) {
-      // Determine section type and transitions
-      if (sectionType === 'ground') {
-        // Ground walking section - continuous platforms
-        const platform = this.add.sprite(currentX + platformWidth/2, groundY, tileTexture);
-        platform.setDisplaySize(platformWidth, platformHeight);
-        platform.setOrigin(0.5, 0.5);
-        this.groundPlatforms.add(platform, true);
-        
-        currentX += platformWidth;
-        sectionLength++;
-        
-        // After 8-12 ground platforms, switch to air platforms
-        if (sectionLength >= Phaser.Math.Between(8, 12)) {
-          sectionType = 'air';
-          sectionLength = 0;
-        }
-      } else {
-        // Air platforming section - varied heights with walls
-        const platformY = Phaser.Math.Between(10, 15) * this.tileHeight;
-        
-        const platform = this.add.sprite(currentX + platformWidth/2, platformY, tileTexture);
-        platform.setDisplaySize(platformWidth, platformHeight);
-        platform.setOrigin(0.5, 0.5);
-        this.groundPlatforms.add(platform, true);
-        
-        // Add wall platforms for vertical climbing
-        if (Math.random() < 0.4) {
-          for (let w = 1; w <= 3; w++) {
-            const wall = this.add.sprite(currentX + platformWidth/2, platformY - (w * this.tileHeight), tileTexture);
-            wall.setDisplaySize(platformWidth * 0.4, platformHeight);
-            wall.setOrigin(0.5, 0.5);
-            this.groundPlatforms.add(wall, true);
-          }
-        }
-        
-        currentX += platformWidth + Phaser.Math.Between(100, 200);
-        sectionLength++;
-        
-        // After 5-8 air platforms, back to ground
-        if (sectionLength >= Phaser.Math.Between(5, 8)) {
-          sectionType = 'ground';
-          sectionLength = 0;
-        }
-      }
-    }
-    
-    this.lastSpawnX = currentX;
+    // Get map width
+    const mapWidth = this.map.widthInPixels;
+    this.lastSpawnX = mapWidth;
   }
 
   playBiomeMusic(): void {
