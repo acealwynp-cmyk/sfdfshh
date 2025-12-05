@@ -130,14 +130,15 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
       0
     );
 
-    // Create projectile
+    // Create projectile with range
     const projectile = new Projectile(
       this.scene,
       spawnX,
       spawnY,
       weaponConfig.projectileKey,
       weaponConfig.damage,
-      weaponConfig.projectileSpeed
+      weaponConfig.projectileSpeed,
+      weaponConfig.maxRange
     );
 
     // Add to projectiles group for collision handling
