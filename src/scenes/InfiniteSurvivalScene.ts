@@ -465,13 +465,13 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.updateInfiniteGround();
     }
 
-    // Update all enemies
-    this.enemies.children.entries.forEach((enemy: any) => {
+    // Update all enemies (even those far away)
+    this.enemies.getChildren().forEach((enemy: any) => {
       if (enemy && enemy.active && enemy.update) {
         enemy.update(time, delta);
         
-        // Clean up enemies far behind player
-        if (enemy.x < this.player.x - screenSize.width.value * 2) {
+        // Clean up enemies very far behind player
+        if (enemy.x < this.player.x - screenSize.width.value * 3) {
           enemy.destroy();
         }
       }
