@@ -460,34 +460,23 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
   updateInfiniteGround(): void {
     const playerX = this.player.x;
-    const platformWidth = this.tileWidth * 8;
+    const mapWidth = this.map.widthInPixels;
     
-    // Generate new platforms ahead of player
-    while (this.lastSpawnX < playerX + screenSize.width.value * 2) {
-      const groundY = 17 * this.tileHeight;
-      const platform = this.add.rectangle(this.lastSpawnX, groundY, platformWidth, this.tileHeight, 0x44aa44);
-      this.groundPlatforms.add(platform);
-      
-      // Add some elevated platforms randomly
-      if (Math.random() < 0.3) {
-        const elevatedY = groundY - (this.tileHeight * (2 + Math.floor(Math.random() * 4)));
-        const elevatedPlatform = this.add.rectangle(
-          this.lastSpawnX + platformWidth / 2,
-          elevatedY,
-          platformWidth / 2,
-          this.tileHeight,
-          0x66cc66
-        );
-        this.groundPlatforms.add(elevatedPlatform);
+    // Duplicate the tilemap if player is approaching the end
+    while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
+      // Create a copy of the ground layer at the new position
+      const newLayer = this.map.createLayer("ground_layer", this.groundTileset, this.lastSpawnX, 0);
+      if (newLayer) {
+        newLayer.setCollisionByExclusion([-1]);
+        this.groundPlatforms.add(newLayer);
       }
-      
-      this.lastSpawnX += platformWidth;
+      this.lastSpawnX += mapWidth;
     }
     
-    // Clean up platforms far behind player
-    this.groundPlatforms.children.entries.forEach((platform: any) => {
-      if (platform && platform.x < playerX - screenSize.width.value * 2) {
-        this.groundPlatforms.remove(platform, true, true);
+    // Clean up old tilemap layers far behind player
+    this.groundPlatforms.children.entries.forEach((layer: any) => {
+      if (layer && layer.x < playerX - screenSize.width.value * 3) {
+        this.groundPlatforms.remove(layer, true, true);
       }
     });
   }
