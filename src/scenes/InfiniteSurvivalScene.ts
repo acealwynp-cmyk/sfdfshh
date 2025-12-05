@@ -384,6 +384,28 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     utils.addCollider(
       this,
       this.playerProjectiles,
+      this.groundLayer,
+      (projectile: any) => {
+        if (projectile && projectile.active) {
+          projectile.hit();
+        }
+      }
+    );
+
+    utils.addCollider(
+      this,
+      this.enemyProjectiles,
+      this.groundLayer,
+      (projectile: any) => {
+        if (projectile && projectile.active) {
+          projectile.hit();
+        }
+      }
+    );
+    
+    utils.addCollider(
+      this,
+      this.playerProjectiles,
       this.groundPlatforms,
       (projectile: any) => {
         if (projectile && projectile.active) {
