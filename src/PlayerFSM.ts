@@ -195,12 +195,13 @@ export class PlayerFSM extends FSM {
     if (this.checkDeath()) return;
 
     const cursors = this.player.cursors;
+    const mobile = (this.scene as any).mobileControls;
 
     // Allow movement while shooting (already reduced in enter_shooting)
-    if (cursors.left.isDown) {
+    if (cursors.left.isDown || (mobile && mobile.leftPressed)) {
       this.player.setVelocityX(-this.player.walkSpeed * 0.6);
       this.player.facingDirection = "left";
-    } else if (cursors.right.isDown) {
+    } else if (cursors.right.isDown || (mobile && mobile.rightPressed)) {
       this.player.setVelocityX(this.player.walkSpeed * 0.6);
       this.player.facingDirection = "right";
     } else if (this.player.body.onFloor()) {
