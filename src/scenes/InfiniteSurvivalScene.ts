@@ -402,11 +402,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   setupCollisions(): void {
-    // Ground collisions - with main ground layer
-    utils.addCollider(this, this.player, this.groundLayer);
-    utils.addCollider(this, this.enemies, this.groundLayer);
-    
-    // Also collide with additional platform layers
+    // Ground collisions with platforms
     utils.addCollider(this, this.player, this.groundPlatforms);
     utils.addCollider(this, this.enemies, this.groundPlatforms);
 
