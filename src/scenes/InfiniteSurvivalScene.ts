@@ -8,6 +8,7 @@ import { ArcticEnemy } from "../ArcticEnemy";
 import { SpaceEnemy } from "../SpaceEnemy";
 import { BiomeManager, BiomeType, type BiomeConfig } from "../BiomeManager";
 import { screenSize, enemyConfig, difficultyConfig, gameplayConfig } from "../gameConfig.json";
+import { MobileControls } from "../MobileControls";
 
 export class InfiniteSurvivalScene extends Phaser.Scene {
   // Scene properties
