@@ -75,39 +75,34 @@ export class LaserBeam extends Phaser.GameObjects.Container {
 
     this.setPosition(startX, startY);
 
-    // Calculate beam end point
+    // Calculate beam end point based on player direction
     const direction = this.player.facingDirection === "right" ? 1 : -1;
     const endX = direction * this.maxLength;
 
-    // Draw the laser beam
+    // Draw the laser beam - THIN SINGLE LINE
     this.beamGraphics.clear();
     
-    // Main bright blue beam
-    this.beamGraphics.lineStyle(8, 0x00BBFF, 1.0);
+    // Single thin bright cyan/blue laser beam
+    this.beamGraphics.lineStyle(3, 0x00FFFF, 1.0); // Thin cyan beam
     this.beamGraphics.beginPath();
     this.beamGraphics.moveTo(0, 0);
     this.beamGraphics.lineTo(endX, 0);
     this.beamGraphics.strokePath();
     
-    // Inner white hot core
-    this.beamGraphics.lineStyle(4, 0xFFFFFF, 0.8);
-    this.beamGraphics.beginPath();
-    this.beamGraphics.moveTo(0, 0);
-    this.beamGraphics.lineTo(endX, 0);
-    this.beamGraphics.strokePath();
-    
-    // Outer glow
-    this.beamGraphics.lineStyle(12, 0x0088FF, 0.3);
+    // Very subtle glow
+    this.beamGraphics.lineStyle(5, 0x00CCFF, 0.4);
     this.beamGraphics.beginPath();
     this.beamGraphics.moveTo(0, 0);
     this.beamGraphics.lineTo(endX, 0);
     this.beamGraphics.strokePath();
 
-    // Update beam sprite if available
+    // Update beam sprite if available - use laser projectile asset
     if (this.beamSprite) {
       this.beamSprite.setVisible(true);
-      this.beamSprite.setScale(Math.abs(endX) / 32, 1);
+      const scaleX = Math.abs(endX) / 32;
+      this.beamSprite.setScale(scaleX * direction, 0.8); // Scale based on direction
       this.beamSprite.setFlipX(direction < 0);
+      this.beamSprite.setAlpha(0.9);
     }
   }
 
