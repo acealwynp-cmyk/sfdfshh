@@ -78,9 +78,13 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
     this.currentWeapon = WeaponType.COMBAT_RIFLE;
     this.lastFireTime = 0;
     this.lastWeaponSwitchTime = 0;
+    this.isHoldingFire = false;
 
     // Create projectiles group
     this.projectiles = this.scene.add.group();
+    
+    // Create laser beam
+    this.laserBeam = new LaserBeam(scene, this);
 
     // Set physics properties
     this.body.setGravityY(playerConfig.gravityY.value);
