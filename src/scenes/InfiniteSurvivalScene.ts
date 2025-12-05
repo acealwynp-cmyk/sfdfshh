@@ -331,6 +331,23 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       bg.setTexture(this.currentBiomeConfig.backgroundKey);
     });
 
+    // Destroy old tilemap
+    if (this.groundLayer) {
+      this.groundLayer.destroy();
+    }
+    if (this.map) {
+      this.map.destroy();
+    }
+    
+    // Clear old platform layers
+    this.groundPlatforms.clear(true, true);
+    
+    // Create new tilemap for new biome
+    this.createInfiniteGround();
+    
+    // Re-setup collisions
+    this.setupCollisions();
+
     // Play new biome music
     this.playBiomeMusic();
 
