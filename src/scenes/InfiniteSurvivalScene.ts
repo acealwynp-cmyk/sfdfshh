@@ -306,21 +306,17 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.biomeTransitionInProgress = true;
     console.log("Triggering biome transition...");
     
-    // Show transition effect
-    this.cameras.main.flash(2000, 255, 255, 255);
+    // Change biome immediately
+    this.biomeManager.forceNextBiome();
+    this.currentBiomeConfig = this.biomeManager.getCurrentBiome();
     
-    // Change biome
-    const biomeCycled = this.biomeManager.cycleToNextBiome();
-    if (biomeCycled) {
-      this.currentBiomeConfig = this.biomeManager.getCurrentBiome();
-      
-      // Transition to new biome after flash effect
-      this.time.delayedCall(1000, () => {
-        this.transitionToNewBiome();
-      });
-    } else {
-      this.biomeTransitionInProgress = false;
-    }
+    // Show transition effect
+    this.cameras.main.flash(1500, 255, 255, 255);
+    
+    // Transition to new biome after flash effect
+    this.time.delayedCall(800, () => {
+      this.transitionToNewBiome();
+    });
   }
 
   transitionToNewBiome(): void {
