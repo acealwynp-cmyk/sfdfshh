@@ -426,6 +426,10 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.enemySpawner.destroy();
     }
     this.startEnemySpawning();
+    
+    // 8. GENERATE NEW PLATFORMS IMMEDIATELY
+    console.log("Generating new platforms with correct biome tiles...");
+    this.updateInfiniteGround();
 
     this.biomeTransitionInProgress = false;
     
