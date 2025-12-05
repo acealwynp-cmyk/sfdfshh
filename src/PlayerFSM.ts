@@ -117,12 +117,13 @@ export class PlayerFSM extends FSM {
     if (this.checkDeath()) return;
 
     const cursors = this.player.cursors;
+    const mobile = (this.scene as any).mobileControls;
 
     // Air movement control
-    if (cursors.left.isDown) {
+    if (cursors.left.isDown || (mobile && mobile.leftPressed)) {
       this.player.setVelocityX(-this.player.walkSpeed * 0.8); // Reduced air control
       this.player.facingDirection = "left";
-    } else if (cursors.right.isDown) {
+    } else if (cursors.right.isDown || (mobile && mobile.rightPressed)) {
       this.player.setVelocityX(this.player.walkSpeed * 0.8);
       this.player.facingDirection = "right";
     }
@@ -136,7 +137,7 @@ export class PlayerFSM extends FSM {
 
     // Landing detection
     if (this.player.body.onFloor()) {
-      if (cursors.left.isDown || cursors.right.isDown) {
+      if (cursors.left.isDown || cursors.right.isDown || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
         this.goto("moving");
       } else {
         this.goto("idle");
@@ -144,7 +145,7 @@ export class PlayerFSM extends FSM {
     }
 
     // Air shooting
-    if (this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) {
+    if ((this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) || (mobile && mobile.shootPressed)) {
       this.goto("shooting");
     }
 
