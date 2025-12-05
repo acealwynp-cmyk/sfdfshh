@@ -112,8 +112,8 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.startX = x;
     this.startY = y;
 
-    // Use initScale for proper scaling
-    utils.initScale(this, { x: 0.5, y: 0.5 }, undefined, 32, 0.8, 0.8);
+    // Scale bullets properly - smaller for realism
+    this.setScale(0.3, 0.3); // Much smaller bullet size
 
     // Remove projectile when it goes off screen
     this.body.setCollideWorldBounds(false);
