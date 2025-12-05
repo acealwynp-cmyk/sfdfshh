@@ -98,7 +98,7 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
   public startY: number;
   public isRocket: boolean;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, damage: number, speed: number, maxRange: number = 2000) {
+  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, damage: number, speed: number, maxRange: number = 2000, isRocket: boolean = false) {
     super(scene, x, y, texture);
 
     // Add to scene and physics
@@ -112,9 +112,14 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.direction = new Phaser.Math.Vector2(1, 0); // Default facing right
     this.startX = x;
     this.startY = y;
+    this.isRocket = isRocket;
 
-    // Scale bullets properly - very small for realism
-    this.setScale(0.15, 0.15); // Tiny bullet size (smaller than gun)
+    // Scale projectiles
+    if (isRocket) {
+      this.setScale(0.4, 0.4); // Rockets are bigger
+    } else {
+      this.setScale(0.15, 0.15); // Bullets very small (smaller than gun)
+    }
 
     // Remove projectile when it goes off screen
     this.body.setCollideWorldBounds(false);
