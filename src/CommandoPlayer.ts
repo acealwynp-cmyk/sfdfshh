@@ -117,8 +117,29 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
 
   // Fire current weapon
   fireWeapon(): void {
-    const currentTime = this.scene.time.now;
     const weaponConfig = WeaponManager.WEAPON_CONFIGS[this.currentWeapon];
+
+    // LASER BLASTER: Continuous beam when holding space
+    if (this.currentWeapon === WeaponType.LASER_BLASTER) {
+      if (!this.laserBeam) {
+        this.laserBeam = new LaserBeam(this.scene, this);
+      }
+      
+      if (!this.isHoldingFire) {
+        this.isHoldingFire = true;
+        this.laserBeam.startBeam();
+        
+        // Play laser sound once
+        const weaponSound = this.scene.sound.get(weaponConfig.soundKey);
+        if (weaponSound) {
+          weaponSound.play({ loop: true });
+        }
+      }
+      return;
+    }
+
+    // OTHER WEAPONS: Standard projectile firing
+    const currentTime = this.scene.time.now;
 
     // Check fire rate
     if (currentTime - this.lastFireTime < weaponConfig.fireRate) {
@@ -165,6 +186,21 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
     const weaponSound = this.scene.sound.get(weaponConfig.soundKey);
     if (weaponSound) {
       weaponSound.play();
+    }
+  }
+  
+  // Stop laser beam when releasing fire button
+  stopFiring(): void {
+    if (this.currentWeapon === WeaponType.LASER_BLASTER && this.laserBeam) {
+      this.isHoldingFire = false;
+      this.laserBeam.stopBeam();
+      
+      // Stop laser sound
+      const weaponConfig = WeaponManager.WEAPON_CONFIGS[this.currentWeapon];
+      const weaponSound = this.scene.sound.get(weaponConfig.soundKey);
+      if (weaponSound && weaponSound.isPlaying) {
+        weaponSound.stop();
+      }
     }
   }
 
