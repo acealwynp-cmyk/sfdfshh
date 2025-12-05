@@ -477,12 +477,16 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       }
     });
 
-    // Collect player projectiles for collision detection
+    // Collect player projectiles for collision detection (all of them, not just nearby)
     this.playerProjectiles.clear(false, false);
     if (this.player.projectiles) {
-      this.player.projectiles.children.entries.forEach((projectile: any) => {
+      this.player.projectiles.getChildren().forEach((projectile: any) => {
         if (projectile && projectile.active) {
           this.playerProjectiles.add(projectile);
+          // Update projectile
+          if (projectile.update) {
+            projectile.update();
+          }
         }
       });
     }
