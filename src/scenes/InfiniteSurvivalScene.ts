@@ -189,38 +189,61 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Get biome-specific tile image
     const tileTexture = this.currentBiomeConfig.tilesetKey;
     
-    // Create initial platforms for smart infinite runner
-    const platformWidth = this.tileWidth * 10; // Wider platforms
+    // Create initial platforms with ground walking sections and air platforms
+    const platformWidth = this.tileWidth * 10;
     const platformHeight = this.tileHeight;
+    const groundY = 17 * this.tileHeight;
     
-    // Start position
     let currentX = 0;
-    let currentY = 17 * this.tileHeight; // Start at ground level
+    let sectionType = 'ground'; // Start with ground section
+    let sectionLength = 0;
     
-    // Create initial 20 platforms with smart layout
-    for (let i = 0; i < 20; i++) {
-      // Create main platform as sprite with physics
-      const platform = this.add.sprite(currentX + platformWidth/2, currentY, tileTexture);
-      platform.setDisplaySize(platformWidth, platformHeight);
-      platform.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(platform, true);
-      
-      // Decide next platform position (always reachable)
-      const heightChange = Phaser.Math.Between(-2, 3); // -2 tiles down to +3 tiles up
-      const maxJumpHeight = 5; // Player can jump ~5 tiles high
-      
-      // Make sure jump is possible
-      if (heightChange > 0 && heightChange <= maxJumpHeight) {
-        currentY -= heightChange * this.tileHeight;
-      } else if (heightChange < 0) {
-        currentY -= heightChange * this.tileHeight; // Going down is always OK
+    // Create initial 30 platforms
+    for (let i = 0; i < 30; i++) {
+      // Determine section type and transitions
+      if (sectionType === 'ground') {
+        // Ground walking section - continuous platforms
+        const platform = this.add.sprite(currentX + platformWidth/2, groundY, tileTexture);
+        platform.setDisplaySize(platformWidth, platformHeight);
+        platform.setOrigin(0.5, 0.5);
+        this.groundPlatforms.add(platform, true);
+        
+        currentX += platformWidth;
+        sectionLength++;
+        
+        // After 8-12 ground platforms, switch to air platforms
+        if (sectionLength >= Phaser.Math.Between(8, 12)) {
+          sectionType = 'air';
+          sectionLength = 0;
+        }
+      } else {
+        // Air platforming section - varied heights with walls
+        const platformY = Phaser.Math.Between(10, 15) * this.tileHeight;
+        
+        const platform = this.add.sprite(currentX + platformWidth/2, platformY, tileTexture);
+        platform.setDisplaySize(platformWidth, platformHeight);
+        platform.setOrigin(0.5, 0.5);
+        this.groundPlatforms.add(platform, true);
+        
+        // Add wall platforms for vertical climbing
+        if (Math.random() < 0.4) {
+          for (let w = 1; w <= 3; w++) {
+            const wall = this.add.sprite(currentX + platformWidth/2, platformY - (w * this.tileHeight), tileTexture);
+            wall.setDisplaySize(platformWidth * 0.4, platformHeight);
+            wall.setOrigin(0.5, 0.5);
+            this.groundPlatforms.add(wall, true);
+          }
+        }
+        
+        currentX += platformWidth + Phaser.Math.Between(100, 200);
+        sectionLength++;
+        
+        // After 5-8 air platforms, back to ground
+        if (sectionLength >= Phaser.Math.Between(5, 8)) {
+          sectionType = 'ground';
+          sectionLength = 0;
+        }
       }
-      
-      // Clamp Y position to reasonable range
-      currentY = Phaser.Math.Clamp(currentY, 8 * this.tileHeight, 18 * this.tileHeight);
-      
-      // Move X forward (with small gap that's always jumpable)
-      currentX += platformWidth + Phaser.Math.Between(50, 150);
     }
     
     this.lastSpawnX = currentX;
