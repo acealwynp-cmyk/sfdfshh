@@ -25,6 +25,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   
   // Background
   public backgrounds!: Phaser.GameObjects.TileSprite[];
+  
+  // Last platform Y position for continuity
+  public lastPlatformY: number = 17 * 64;
 
   // Game state
   public score: number = 0;
