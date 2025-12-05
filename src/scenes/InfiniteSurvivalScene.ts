@@ -262,25 +262,28 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   spawnEnemy(): void {
     // Don't spawn if max enemies reached
     const activeEnemies = this.enemies.children.entries.filter(enemy => enemy.active).length;
-    const maxEnemies = Math.min(20, enemyConfig.maxEnemies.value + Math.floor(this.biomeManager.getDifficultyMultiplier()));
+    const maxEnemies = Math.min(15, enemyConfig.maxEnemies.value + Math.floor(this.biomeManager.getDifficultyMultiplier()));
     
     if (activeEnemies >= maxEnemies) {
       return;
     }
 
-    // Spawn enemy ahead of player
+    // Spawn enemy ahead of player on platforms
     const playerX = this.player.x;
-    const spawnX = playerX + screenSize.width.value + Phaser.Math.Between(100, 400);
     
-    // Random spawn Y positions
-    const spawnYOptions = [
-      15 * this.tileHeight,  // Ground level
-      13 * this.tileHeight,  // Elevated 1
-      11 * this.tileHeight,  // Elevated 2
-      9 * this.tileHeight,   // Elevated 3
-    ];
+    // Get platforms ahead of player
+    const platforms = this.groundPlatforms.getChildren().filter((platform: any) => {
+      return platform.x > playerX + 200 && platform.x < playerX + screenSize.width.value * 1.5;
+    });
     
-    const spawnY = Phaser.Utils.Array.GetRandom(spawnYOptions);
+    if (platforms.length === 0) return;
+    
+    // Choose random platform
+    const platform: any = Phaser.Utils.Array.GetRandom(platforms);
+    
+    // Spawn enemy on platform
+    const spawnX = platform.x + Phaser.Math.Between(-100, 100);
+    const spawnY = platform.y - this.tileHeight * 2; // Above platform
     
     const enemy = this.createEnemyForCurrentBiome(spawnX, spawnY);
     if (enemy) {
