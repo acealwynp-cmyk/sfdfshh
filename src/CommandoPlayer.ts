@@ -238,6 +238,15 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
     // Handle weapon switching
     if (this.qKey && Phaser.Input.Keyboard.JustDown(this.qKey)) {
       this.switchWeapon("next");
+      // Stop laser beam if switching weapons
+      if (this.laserBeam) {
+        this.stopFiring();
+      }
+    }
+
+    // Update laser beam
+    if (this.laserBeam) {
+      this.laserBeam.update();
     }
 
     // Update all projectiles
