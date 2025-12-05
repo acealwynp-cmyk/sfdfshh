@@ -249,8 +249,8 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
       this.laserBeam.update();
     }
 
-    // Update all projectiles
-    this.projectiles.children.entries.forEach((projectile: any) => {
+    // Update all projectiles (including those far from player)
+    this.projectiles.getChildren().forEach((projectile: any) => {
       if (projectile && projectile.active && projectile.update) {
         projectile.update();
       }
