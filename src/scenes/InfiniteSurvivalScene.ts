@@ -368,14 +368,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.map = null as any;
     }
     
-    // 3. UPDATE PLATFORM TEXTURES
-    console.log("Updating platform textures...");
-    const newTileTexture = this.currentBiomeConfig.tilesetKey;
-    this.groundPlatforms.getChildren().forEach((platform: any) => {
-      if (platform && platform.active) {
-        platform.setTexture(newTileTexture);
-      }
-    });
+    // 3. CLEAR AND RECREATE PLATFORMS WITH NEW TEXTURES
+    console.log("Clearing old platforms and recreating with new biome tiles...");
+    this.groundPlatforms.clear(true, true);
     
     // 4. CREATE NEW TILEMAP FOR NEW BIOME
     console.log("Creating new tilemap...");
