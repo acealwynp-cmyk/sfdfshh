@@ -44,17 +44,6 @@ export class WeaponManager {
       animationKey: "brave_commando_flamethrower_shoot_anim",
       maxRange: 300  // Short range
     },
-    [WeaponType.ROCKET_LAUNCHER]: {
-      name: "Rocket Launcher",
-      spriteKey: "rocket_launcher_weapon",
-      projectileKey: "missile_projectile", 
-      fireRate: 800,
-      damage: 75,
-      soundKey: "rocket_launcher_fire",
-      projectileSpeed: 600,
-      animationKey: "brave_commando_rocket_shoot_anim",
-      maxRange: 1500  // Long range
-    },
     [WeaponType.LASER_BLASTER]: {
       name: "Laser Blaster",
       spriteKey: "laser_blaster_weapon",
