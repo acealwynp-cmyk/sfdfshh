@@ -176,19 +176,24 @@ export class PlayerFSM extends FSM {
     // Fire projectile
     this.player.fireWeapon();
 
-    // State transition after shoot animation completes
-    this.player.once(`animationcomplete-${weaponAnimKey}`, () => {
-      this.player.isShooting = false;
-      
-      // Determine next state based on ground/air and input
-      if (!this.player.body.onFloor()) {
-        this.goto("jumping");
-      } else if (cursors.left.isDown || cursors.right.isDown || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
-        this.goto("moving");
-      } else {
-        this.goto("idle");
-      }
-    });
+    // For laser blaster, stay in shooting state while space is held
+    const isLaserBlaster = this.player.currentWeapon === "laser_blaster";
+    
+    if (!isLaserBlaster) {
+      // State transition after shoot animation completes
+      this.player.once(`animationcomplete-${weaponAnimKey}`, () => {
+        this.player.isShooting = false;
+        
+        // Determine next state based on ground/air and input
+        if (!this.player.body.onFloor()) {
+          this.goto("jumping");
+        } else if (cursors.left.isDown || cursors.right.isDown || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
+          this.goto("moving");
+        } else {
+          this.goto("idle");
+        }
+      });
+    }
   }
 
   update_shooting(time: number, delta: number) {
@@ -196,6 +201,27 @@ export class PlayerFSM extends FSM {
 
     const cursors = this.player.cursors;
     const mobile = (this.scene as any).mobileControls;
+
+    // Check if space bar is still held for laser blaster
+    const isLaserBlaster = this.player.currentWeapon === "laser_blaster";
+    if (isLaserBlaster) {
+      const spaceHeld = this.player.spaceKey && this.player.spaceKey.isDown;
+      
+      if (!spaceHeld) {
+        // Space released, stop laser and transition
+        this.player.stopFiring();
+        this.player.isShooting = false;
+        
+        if (!this.player.body.onFloor()) {
+          this.goto("jumping");
+        } else if (cursors.left.isDown || cursors.right.isDown || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
+          this.goto("moving");
+        } else {
+          this.goto("idle");
+        }
+        return;
+      }
+    }
 
     // Allow movement while shooting (already reduced in enter_shooting)
     if (cursors.left.isDown || (mobile && mobile.leftPressed)) {
