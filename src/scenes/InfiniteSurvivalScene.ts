@@ -365,22 +365,14 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.backgrounds.forEach(bg => {
       bg.setTexture(this.currentBiomeConfig.backgroundKey);
     });
-
-    // Destroy old tilemap and recreate with new biome
-    if (this.groundLayer) {
-      this.groundLayer.destroy();
-    }
-    if (this.map) {
-      this.map.destroy();
-    }
     
-    // Clear old platform layers
+    // Clear old platforms
     this.groundPlatforms.clear(true, true);
     
     // Remove all existing colliders
     this.physics.world.colliders.destroy();
     
-    // Create new tilemap for new biome
+    // Create new platforms for new biome
     this.createInfiniteGround();
     
     // Re-setup collisions
