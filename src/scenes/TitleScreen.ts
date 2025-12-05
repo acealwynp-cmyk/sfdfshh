@@ -181,14 +181,10 @@ export class TitleScreen extends Phaser.Scene {
     // Add transition effect
     this.cameras.main.fadeOut(500, 0, 0, 0);
     
-    // Start first level after delay
+    // Start infinite survival mode with selected difficulty
     this.time.delayedCall(500, () => {
-      const firstLevelScene = LevelManager.getFirstLevelScene();
-      if (firstLevelScene) {
-        this.scene.start(firstLevelScene);
-      } else {
-        console.error("No first level scene found in LEVEL_ORDER");
-      }
+      console.log(`Starting game with difficulty: ${this.selectedDifficulty}`);
+      this.scene.start("InfiniteSurvivalScene", { difficulty: this.selectedDifficulty });
     });
   }
 
