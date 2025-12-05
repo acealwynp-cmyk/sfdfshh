@@ -15,6 +15,7 @@ export class TitleScreen extends Phaser.Scene {
   
   // State flags
   isStarting: boolean = false;
+  selectedDifficulty: "easy" | "hard" | "cursed" = "easy";
 
   constructor() {
     super({
