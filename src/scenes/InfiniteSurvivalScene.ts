@@ -180,22 +180,46 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   createInfiniteGround(): void {
-    // Create tilemap for current biome
-    this.map = this.make.tilemap({ key: this.currentBiomeConfig.tilemapKey });
-    this.groundTileset = this.map.addTilesetImage(this.currentBiomeConfig.tilesetKey, this.currentBiomeConfig.tilesetKey);
-
-    // Create ground layer
-    this.groundLayer = this.map.createLayer("ground_layer", this.groundTileset, 0, 0)!;
-    
-    // Set collisions - exclude empty tiles (index -1)
-    this.groundLayer.setCollisionByExclusion([-1]);
-
-    // Create static group for additional platforms
+    // Create static group for platforms
     this.groundPlatforms = this.physics.add.staticGroup();
+
+    // Get biome-specific tile image
+    const tileTexture = this.currentBiomeConfig.tilesetKey;
     
-    // Get map width
-    const mapWidth = this.map.widthInPixels;
-    this.lastSpawnX = mapWidth;
+    // Create initial platforms for smart infinite runner
+    const platformWidth = this.tileWidth * 10; // Wider platforms
+    const platformHeight = this.tileHeight;
+    
+    // Start position
+    let currentX = 0;
+    let currentY = 17 * this.tileHeight; // Start at ground level
+    
+    // Create initial 20 platforms with smart layout
+    for (let i = 0; i < 20; i++) {
+      // Create main platform
+      const platform = this.add.image(currentX + platformWidth/2, currentY, tileTexture);
+      platform.setDisplaySize(platformWidth, platformHeight);
+      this.groundPlatforms.add(platform, true);
+      
+      // Decide next platform position (always reachable)
+      const heightChange = Phaser.Math.Between(-2, 3); // -2 tiles down to +3 tiles up
+      const maxJumpHeight = 5; // Player can jump ~5 tiles high
+      
+      // Make sure jump is possible
+      if (heightChange > 0 && heightChange <= maxJumpHeight) {
+        currentY -= heightChange * this.tileHeight;
+      } else if (heightChange < 0) {
+        currentY -= heightChange * this.tileHeight; // Going down is always OK
+      }
+      
+      // Clamp Y position to reasonable range
+      currentY = Phaser.Math.Clamp(currentY, 8 * this.tileHeight, 18 * this.tileHeight);
+      
+      // Move X forward (with small gap that's always jumpable)
+      currentX += platformWidth + Phaser.Math.Between(50, 150);
+    }
+    
+    this.lastSpawnX = currentX;
   }
 
   playBiomeMusic(): void {
