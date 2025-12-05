@@ -16,6 +16,8 @@ export interface EnemyConfig {
   projectileSpeed: number;
   soundKey: string;
   scoreValue: number;
+  maxRange: number;
+  attackRange: number; // Distance at which enemy starts attacking
 }
 
 // Base Enemy class that all biome enemies inherit from
