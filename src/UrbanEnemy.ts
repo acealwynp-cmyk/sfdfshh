@@ -13,7 +13,9 @@ export class UrbanEnemy extends BaseEnemy {
       damage: 45, // High damage sniper shots
       projectileSpeed: 900, // Fast sniper bullets
       soundKey: "rifle_fire",
-      scoreValue: 150 // Higher score for sniper
+      scoreValue: 150, // Higher score for sniper
+      maxRange: 1200, // Long range sniper
+      attackRange: 1000
     };
 
     super(scene, x, y, urbanEnemyConfig);
