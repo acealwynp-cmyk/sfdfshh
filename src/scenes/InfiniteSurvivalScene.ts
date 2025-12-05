@@ -55,6 +55,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   public tileWidth: number = 64;
   public tileHeight: number = 64;
 
+  // Mobile controls
+  public mobileControls!: MobileControls;
+
   constructor() {
     super({
       key: "InfiniteSurvivalScene",
