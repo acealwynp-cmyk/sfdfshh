@@ -332,10 +332,15 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   transitionToNewBiome(): void {
-    console.log(`Transitioning to: ${this.currentBiomeConfig.displayName}`);
+    console.log(`=== BIOME TRANSITION START ===`);
+    console.log(`New Biome: ${this.currentBiomeConfig.displayName}`);
+    console.log(`Background: ${this.currentBiomeConfig.backgroundKey}`);
+    console.log(`Tilemap: ${this.currentBiomeConfig.tilemapKey}`);
+    console.log(`Tileset: ${this.currentBiomeConfig.tilesetKey}`);
+    console.log(`Enemies: ${this.currentBiomeConfig.enemyTypes}`);
     
     // Clear all existing enemies
-    this.enemies.children.entries.forEach((enemy: any) => {
+    this.enemies.getChildren().forEach((enemy: any) => {
       if (enemy && enemy.active) {
         enemy.destroy();
       }
@@ -346,12 +351,14 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.playerProjectiles.clear(true, true);
     this.enemyProjectiles.clear(true, true);
     
-    // Update background for new biome
+    // 1. UPDATE BACKGROUNDS
+    console.log("Updating backgrounds...");
     this.backgrounds.forEach(bg => {
       bg.setTexture(this.currentBiomeConfig.backgroundKey);
     });
 
-    // Destroy old tilemap layer
+    // 2. DESTROY OLD TILEMAP
+    console.log("Destroying old tilemap...");
     if (this.groundLayer) {
       this.groundLayer.destroy();
       this.groundLayer = null as any;
@@ -361,7 +368,8 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.map = null as any;
     }
     
-    // Keep existing platforms but update their textures to new biome
+    // 3. UPDATE PLATFORM TEXTURES
+    console.log("Updating platform textures...");
     const newTileTexture = this.currentBiomeConfig.tilesetKey;
     this.groundPlatforms.getChildren().forEach((platform: any) => {
       if (platform && platform.active) {
@@ -369,42 +377,56 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       }
     });
     
-    // Create NEW tilemap for the new biome (main ground)
-    this.map = this.make.tilemap({ key: this.currentBiomeConfig.tilemapKey });
-    this.groundTileset = this.map.addTilesetImage(this.currentBiomeConfig.tilesetKey, this.currentBiomeConfig.tilesetKey);
-    this.groundLayer = this.map.createLayer("ground_layer", this.groundTileset, 0, 0)!;
-    this.groundLayer.setCollisionByExclusion([-1]);
+    // 4. CREATE NEW TILEMAP FOR NEW BIOME
+    console.log("Creating new tilemap...");
+    try {
+      this.map = this.make.tilemap({ key: this.currentBiomeConfig.tilemapKey });
+      this.groundTileset = this.map.addTilesetImage(
+        this.currentBiomeConfig.tilesetKey, 
+        this.currentBiomeConfig.tilesetKey
+      );
+      this.groundLayer = this.map.createLayer("ground_layer", this.groundTileset, 0, 0)!;
+      this.groundLayer.setCollisionByExclusion([-1]);
+      console.log("New tilemap created successfully!");
+    } catch (error) {
+      console.error("Error creating tilemap:", error);
+    }
     
-    // Re-setup collisions (don't destroy all, just add new)
-    utils.addCollider(this, this.player, this.groundLayer);
-    utils.addCollider(this, this.enemies, this.groundLayer);
-    
-    utils.addCollider(
-      this,
-      this.playerProjectiles,
-      this.groundLayer,
-      (projectile: any) => {
-        if (projectile && projectile.active) {
-          projectile.hit();
+    // 5. RE-SETUP COLLISIONS
+    console.log("Setting up collisions...");
+    if (this.groundLayer) {
+      utils.addCollider(this, this.player, this.groundLayer);
+      utils.addCollider(this, this.enemies, this.groundLayer);
+      
+      utils.addCollider(
+        this,
+        this.playerProjectiles,
+        this.groundLayer,
+        (projectile: any) => {
+          if (projectile && projectile.active) {
+            projectile.hit();
+          }
         }
-      }
-    );
+      );
 
-    utils.addCollider(
-      this,
-      this.enemyProjectiles,
-      this.groundLayer,
-      (projectile: any) => {
-        if (projectile && projectile.active) {
-          projectile.hit();
+      utils.addCollider(
+        this,
+        this.enemyProjectiles,
+        this.groundLayer,
+        (projectile: any) => {
+          if (projectile && projectile.active) {
+            projectile.hit();
+          }
         }
-      }
-    );
+      );
+    }
 
-    // Play new biome music
+    // 6. PLAY NEW BIOME MUSIC
+    console.log("Playing new music...");
     this.playBiomeMusic();
 
-    // Restart enemy spawning with new difficulty and enemy types
+    // 7. RESTART ENEMY SPAWNING WITH NEW ENEMY TYPES
+    console.log("Restarting enemy spawning...");
     if (this.enemySpawner) {
       this.enemySpawner.destroy();
     }
@@ -412,8 +434,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
     this.biomeTransitionInProgress = false;
     
-    console.log(`Successfully transitioned to: ${this.currentBiomeConfig.displayName}`);
-    console.log(`New tilemap: ${this.currentBiomeConfig.tilemapKey}, tileset: ${this.currentBiomeConfig.tilesetKey}`);
+    console.log(`=== BIOME TRANSITION COMPLETE ===`);
   }
 
   setupCollisions(): void {
