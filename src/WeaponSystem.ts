@@ -18,6 +18,7 @@ export interface WeaponConfig {
   soundKey: string;
   projectileSpeed: number;
   animationKey: string; // Weapon-specific shooting animation
+  maxRange: number; // Maximum range for projectile
 }
 
 export class WeaponManager {
