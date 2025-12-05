@@ -180,35 +180,22 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   createInfiniteGround(): void {
-    // Create static group for ground platforms
-    this.groundPlatforms = this.physics.add.staticGroup();
+    // Create tilemap for current biome
+    this.map = this.make.tilemap({ key: this.currentBiomeConfig.tilemapKey });
+    this.groundTileset = this.map.addTilesetImage(this.currentBiomeConfig.tilesetKey, this.currentBiomeConfig.tilesetKey);
 
-    // Create initial ground platforms
-    const platformWidth = this.tileWidth * 8; // 8 tiles wide platforms
-    const platformHeight = this.tileHeight;
-    const groundY = 17 * this.tileHeight; // Ground level
+    // Create ground layer
+    this.groundLayer = this.map.createLayer("ground_layer", this.groundTileset, 0, 0)!;
     
-    // Create several platforms to start
-    for (let i = 0; i < 30; i++) {
-      const x = i * platformWidth;
-      const platform = this.add.rectangle(x, groundY, platformWidth, platformHeight, 0x44aa44);
-      this.groundPlatforms.add(platform);
-      
-      // Also add some elevated platforms randomly
-      if (Math.random() < 0.3) {
-        const elevatedY = groundY - (this.tileHeight * (2 + Math.floor(Math.random() * 4)));
-        const elevatedPlatform = this.add.rectangle(
-          x + platformWidth / 2,
-          elevatedY,
-          platformWidth / 2,
-          platformHeight,
-          0x66cc66
-        );
-        this.groundPlatforms.add(elevatedPlatform);
-      }
-    }
+    // Set collisions - exclude empty tiles (index -1)
+    this.groundLayer.setCollisionByExclusion([-1]);
 
-    this.lastSpawnX = 30 * platformWidth;
+    // Create static group for additional platforms
+    this.groundPlatforms = this.physics.add.staticGroup();
+    
+    // Get map width
+    const mapWidth = this.map.widthInPixels;
+    this.lastSpawnX = mapWidth;
   }
 
   playBiomeMusic(): void {
