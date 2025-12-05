@@ -151,8 +151,81 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
   }
 
   hit(): void {
-    // Create hit effect or explosion here if needed
+    // Create hit effect or explosion for rockets
     this.destroy();
+  }
+  
+  // Create explosion with area damage
+  explode(scene: Phaser.Scene, x: number, y: number, damage: number): void {
+    // Create explosion visual effect
+    const explosion = scene.add.sprite(x, y, 'flame_projectile');
+    explosion.setScale(3, 3); // Large explosion
+    explosion.setAlpha(0.9);
+    explosion.setTint(0xFF6600); // Orange/red fire tint
+    
+    // Animate explosion
+    scene.tweens.add({
+      targets: explosion,
+      scale: 4.5,
+      alpha: 0,
+      duration: 400,
+      ease: 'Power2',
+      onComplete: () => {
+        explosion.destroy();
+      }
+    });
+    
+    // Add secondary fire effects
+    for (let i = 0; i < 8; i++) {
+      const angle = (i / 8) * Math.PI * 2;
+      const distance = Phaser.Math.Between(40, 80);
+      const fx = x + Math.cos(angle) * distance;
+      const fy = y + Math.sin(angle) * distance;
+      
+      const fire = scene.add.sprite(fx, fy, 'flame_projectile');
+      fire.setScale(1.5, 1.5);
+      fire.setTint(0xFF8800);
+      fire.setAlpha(0.8);
+      
+      scene.tweens.add({
+        targets: fire,
+        scale: 0,
+        alpha: 0,
+        duration: 300,
+        ease: 'Power2',
+        onComplete: () => {
+          fire.destroy();
+        }
+      });
+    }
+    
+    // Deal area damage to enemies
+    const explosionRadius = 150; // Damage radius
+    const gameScene = scene as any;
+    
+    if (gameScene.enemies) {
+      gameScene.enemies.getChildren().forEach((enemy: any) => {
+        if (!enemy || !enemy.active || enemy.isDead) return;
+        
+        const distance = Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y);
+        
+        if (distance < explosionRadius) {
+          // Damage based on distance (closer = more damage)
+          const damageMultiplier = 1 - (distance / explosionRadius);
+          const actualDamage = Math.floor(damage * damageMultiplier);
+          
+          enemy.takeDamage(actualDamage);
+          
+          // Push enemy back from explosion
+          const angle = Phaser.Math.Angle.Between(x, y, enemy.x, enemy.y);
+          const force = 200 * damageMultiplier;
+          enemy.setVelocity(
+            Math.cos(angle) * force,
+            Math.sin(angle) * force - 100
+          );
+        }
+      });
+    }
   }
 
   update(): void {
