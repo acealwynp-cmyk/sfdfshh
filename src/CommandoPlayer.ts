@@ -3,6 +3,7 @@ import * as utils from "./utils";
 import { playerConfig } from "./gameConfig.json";
 import { PlayerFSM } from "./PlayerFSM";
 import { WeaponType, WeaponManager, Projectile } from "./WeaponSystem";
+import { LaserBeam } from "./LaserBeam";
 
 type Direction = "left" | "right";
 
