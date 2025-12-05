@@ -783,9 +783,12 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
   // Force biome change (for testing or manual trigger)
   forceBiomeChange(): void {
+    console.log(`Force biome change called. InProgress: ${this.biomeTransitionInProgress}`);
     if (!this.biomeTransitionInProgress) {
       this.biomeManager.forceNextBiome();
       this.triggerBiomeTransition();
+    } else {
+      console.log("Transition already in progress, skipping...");
     }
   }
 }
