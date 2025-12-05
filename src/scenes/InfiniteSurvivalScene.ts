@@ -538,9 +538,65 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   updateInfiniteGround(): void {
-    // For now, the single tilemap repeats via the camera following the player
-    // The tilemap is large enough for extended gameplay
-    // Future enhancement: dynamically generate more tiles if needed
+    const playerX = this.player.x;
+    const tileTexture = this.currentBiomeConfig.tilesetKey;
+    const platformWidth = this.tileWidth * 10;
+    const platformHeight = this.tileHeight;
+    
+    // Generate new platforms ahead of player
+    while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
+      // Get the last platform Y position for continuity
+      const platforms = this.groundPlatforms.getChildren();
+      let lastY = 17 * this.tileHeight; // Default ground level
+      
+      if (platforms.length > 0) {
+        const lastPlatform: any = platforms[platforms.length - 1];
+        lastY = lastPlatform.y;
+      }
+      
+      // Calculate next platform position (always reachable)
+      let nextY = lastY;
+      const heightVariation = Phaser.Math.Between(-2, 2); // Vary height
+      const maxJumpHeight = 4; // Player can jump up to 4 tiles
+      
+      // Apply height change if it's jumpable
+      if (Math.abs(heightVariation) <= maxJumpHeight) {
+        nextY += heightVariation * this.tileHeight;
+      }
+      
+      // Clamp Y to playable range
+      nextY = Phaser.Math.Clamp(nextY, 8 * this.tileHeight, 18 * this.tileHeight);
+      
+      // Create platform with appropriate gap (always jumpable)
+      const gap = Phaser.Math.Between(100, 250); // Reasonable gaps
+      const nextX = this.lastSpawnX + gap;
+      
+      // Create platform using biome tileset
+      const platform = this.add.image(nextX + platformWidth/2, nextY, tileTexture);
+      platform.setDisplaySize(platformWidth, platformHeight);
+      this.groundPlatforms.add(platform, true);
+      
+      // Sometimes add elevated platforms for variety
+      if (Math.random() < 0.4 && nextY > 12 * this.tileHeight) {
+        const elevatedY = nextY - (this.tileHeight * Phaser.Math.Between(3, 5));
+        const elevatedPlatform = this.add.image(
+          nextX + platformWidth/2 + Phaser.Math.Between(50, 150),
+          elevatedY,
+          tileTexture
+        );
+        elevatedPlatform.setDisplaySize(platformWidth * 0.6, platformHeight);
+        this.groundPlatforms.add(elevatedPlatform, true);
+      }
+      
+      this.lastSpawnX = nextX + platformWidth;
+    }
+    
+    // Clean up platforms far behind player
+    this.groundPlatforms.children.entries.forEach((platform: any) => {
+      if (platform && platform.x < playerX - screenSize.width.value * 2) {
+        this.groundPlatforms.remove(platform, true, true);
+      }
+    });
   }
 
   updateSurvivalTime(): void {
