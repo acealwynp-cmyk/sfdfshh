@@ -349,18 +349,26 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.backgrounds.forEach(bg => {
       bg.setTexture(this.currentBiomeConfig.backgroundKey);
     });
+
+    // Destroy old tilemap and recreate with new biome
+    if (this.groundLayer) {
+      this.groundLayer.destroy();
+    }
+    if (this.map) {
+      this.map.destroy();
+    }
     
-    // KEEP EXISTING PLATFORMS - Just change their textures to new biome
-    const newTileTexture = this.currentBiomeConfig.tilesetKey;
-    this.groundPlatforms.children.entries.forEach((platform: any) => {
-      if (platform && platform.active) {
-        // Update texture to new biome tileset
-        platform.setTexture(newTileTexture);
-      }
-    });
+    // Clear old platforms
+    this.groundPlatforms.clear(true, true);
     
-    // Platform pattern continues seamlessly!
-    // No need to clear or recreate - just keep generating with new texture
+    // Remove all existing colliders
+    this.physics.world.colliders.destroy();
+    
+    // Create new tilemap for new biome
+    this.createInfiniteGround();
+    
+    // Re-setup collisions
+    this.setupCollisions();
 
     // Play new biome music
     this.playBiomeMusic();
