@@ -116,9 +116,33 @@ export class TitleScreen extends Phaser.Scene {
     // Add event listeners
     document.addEventListener('keydown', handleKeyDown);
     
-    // Add click event to the UI container
-    if (this.uiContainer && this.uiContainer.node) {
-      this.uiContainer.node.addEventListener('click', handleStart);
+    // Add difficulty button handlers
+    const easyBtn = document.getElementById('easy-btn');
+    const hardBtn = document.getElementById('hard-btn');
+    const cursedBtn = document.getElementById('cursed-btn');
+    
+    if (easyBtn) {
+      easyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.selectedDifficulty = 'easy';
+        this.startGame();
+      });
+    }
+    
+    if (hardBtn) {
+      hardBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.selectedDifficulty = 'hard';
+        this.startGame();
+      });
+    }
+    
+    if (cursedBtn) {
+      cursedBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.selectedDifficulty = 'cursed';
+        this.startGame();
+      });
     }
 
     // Store event listeners for cleanup
