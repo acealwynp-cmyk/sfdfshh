@@ -88,8 +88,11 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
   public damage: number;
   public speed: number;
   public direction: Phaser.Math.Vector2;
+  public maxRange: number;
+  public startX: number;
+  public startY: number;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, damage: number, speed: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, damage: number, speed: number, maxRange: number = 2000) {
     super(scene, x, y, texture);
 
     // Add to scene and physics
@@ -99,7 +102,10 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
     // Initialize properties
     this.damage = damage;
     this.speed = speed;
+    this.maxRange = maxRange;
     this.direction = new Phaser.Math.Vector2(1, 0); // Default facing right
+    this.startX = x;
+    this.startY = y;
 
     // Use initScale for proper scaling
     utils.initScale(this, { x: 0.5, y: 0.5 }, undefined, 32, 0.8, 0.8);
@@ -113,6 +119,9 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.setPosition(startX, startY);
     this.setActive(true);
     this.setVisible(true);
+    
+    this.startX = startX;
+    this.startY = startY;
 
     // Store direction
     this.direction = direction.clone().normalize();
@@ -127,8 +136,9 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
       this.direction.y * this.speed
     );
 
-    // Auto-destroy after 3 seconds if still active
-    this.scene.time.delayedCall(3000, () => {
+    // Auto-destroy after time based on range and speed
+    const lifetime = (this.maxRange / this.speed) * 1000;
+    this.scene.time.delayedCall(lifetime, () => {
       if (this.active) {
         this.destroy();
       }
@@ -141,9 +151,16 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(): void {
-    // Remove if off screen
-    if (this.x < -100 || this.x > this.scene.scale.gameSize.width + 100 ||
-        this.y < -100 || this.y > this.scene.scale.gameSize.height + 100) {
+    // Check if projectile has traveled beyond max range
+    const distance = Phaser.Math.Distance.Between(this.startX, this.startY, this.x, this.y);
+    if (distance > this.maxRange) {
+      this.destroy();
+      return;
+    }
+    
+    // Remove if off screen (with larger buffer for long range weapons)
+    if (this.x < -500 || this.x > this.scene.scale.gameSize.width + 500 ||
+        this.y < -500 || this.y > this.scene.scale.gameSize.height + 500) {
       this.destroy();
     }
   }
