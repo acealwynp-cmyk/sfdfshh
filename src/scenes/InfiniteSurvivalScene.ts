@@ -322,12 +322,24 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   transitionToNewBiome(): void {
     console.log(`Transitioning to: ${this.currentBiomeConfig.displayName}`);
     
+    // Clear all existing enemies
+    this.enemies.children.entries.forEach((enemy: any) => {
+      if (enemy && enemy.active) {
+        enemy.destroy();
+      }
+    });
+    this.enemies.clear(true, true);
+
+    // Clear all projectiles
+    this.playerProjectiles.clear(true, true);
+    this.enemyProjectiles.clear(true, true);
+    
     // Update background for new biome
     this.backgrounds.forEach(bg => {
       bg.setTexture(this.currentBiomeConfig.backgroundKey);
     });
 
-    // Destroy old tilemap
+    // Destroy old tilemap and recreate with new biome
     if (this.groundLayer) {
       this.groundLayer.destroy();
     }
@@ -338,6 +350,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Clear old platform layers
     this.groundPlatforms.clear(true, true);
     
+    // Remove all existing colliders
+    this.physics.world.colliders.destroy();
+    
     // Create new tilemap for new biome
     this.createInfiniteGround();
     
@@ -347,7 +362,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Play new biome music
     this.playBiomeMusic();
 
-    // Restart enemy spawning with new difficulty
+    // Restart enemy spawning with new difficulty and enemy types
     if (this.enemySpawner) {
       this.enemySpawner.destroy();
     }
@@ -356,6 +371,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.biomeTransitionInProgress = false;
     
     console.log(`Successfully transitioned to: ${this.currentBiomeConfig.displayName}`);
+    console.log(`New enemy types: ${this.currentBiomeConfig.enemyTypes}`);
   }
 
   setupCollisions(): void {
