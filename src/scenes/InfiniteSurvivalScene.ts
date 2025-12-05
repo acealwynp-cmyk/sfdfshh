@@ -410,7 +410,14 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.enemies,
       (projectile: any, enemy: any) => {
         if (projectile && enemy && projectile.active && enemy.active && !enemy.isDead) {
+          // Direct hit damage
           enemy.takeDamage(projectile.damage);
+          
+          // Trigger explosion for rockets
+          if (projectile.isRocket) {
+            projectile.createExplosion(this, projectile.x, projectile.y, projectile.damage);
+          }
+          
           projectile.hit();
         }
       }
