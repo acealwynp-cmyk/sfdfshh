@@ -37,6 +37,10 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
   public lastFireTime: number;
   public lastWeaponSwitchTime: number;
   public projectiles: Phaser.GameObjects.Group;
+  
+  // Laser beam system
+  public laserBeam?: LaserBeam;
+  public isHoldingFire: boolean;
 
   // Sound effects
   public jumpSound?: Phaser.Sound.BaseSound;
