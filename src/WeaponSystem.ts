@@ -96,6 +96,7 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
   public maxRange: number;
   public startX: number;
   public startY: number;
+  public isRocket: boolean;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, damage: number, speed: number, maxRange: number = 2000) {
     super(scene, x, y, texture);
