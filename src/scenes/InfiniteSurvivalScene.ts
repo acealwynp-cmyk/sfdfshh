@@ -12,7 +12,6 @@ import { screenSize, enemyConfig, difficultyConfig, gameplayConfig } from "../ga
 export class InfiniteSurvivalScene extends Phaser.Scene {
   // Scene properties
   public gameCompleted: boolean = false;
-  public mapWidth: number = 0;
   public mapHeight: number = 0;
   
   // Game objects
@@ -21,13 +20,11 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   public playerProjectiles!: Phaser.GameObjects.Group;
   public enemyProjectiles!: Phaser.GameObjects.Group;
   
-  // Map objects
-  public map!: Phaser.Tilemaps.Tilemap;
-  public groundTileset!: Phaser.Tilemaps.Tileset;
-  public groundLayer!: Phaser.Tilemaps.TilemapLayer;
+  // Ground platforms for infinite scrolling
+  public groundPlatforms!: Phaser.Physics.Arcade.StaticGroup;
   
   // Background
-  public backgrounds!: Phaser.GameObjects.Image[];
+  public backgrounds!: Phaser.GameObjects.TileSprite[];
 
   // Game state
   public score: number = 0;
@@ -37,7 +34,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   
   // Enemy spawning
   public enemySpawner?: Phaser.Time.TimerEvent;
-  public spawnPoints: { x: number; y: number }[] = [];
+  public lastSpawnX: number = 0;
 
   // Background music
   public backgroundMusic?: Phaser.Sound.BaseSound;
@@ -52,6 +49,10 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
   // Test key for manual biome cycling
   public bKey?: Phaser.Input.Keyboard.Key;
+
+  // Infinite scrolling tracking
+  public tileWidth: number = 64;
+  public tileHeight: number = 64;
 
   constructor() {
     super({
@@ -73,12 +74,14 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.biomeManager = new BiomeManager(this);
     this.currentBiomeConfig = this.biomeManager.getCurrentBiome();
 
-    // Set map size (50x20 tiles, each tile is 64x64)
-    this.mapWidth = 50 * 64;
-    this.mapHeight = 20 * 64;
+    // Set map height (20 tiles high)
+    this.mapHeight = 20 * this.tileHeight;
 
-    // Create initial biome
-    this.setupCurrentBiome();
+    // Create infinite scrolling background
+    this.createInfiniteBackground();
+
+    // Create infinite ground platforms
+    this.createInfiniteGround();
 
     // Create game object groups
     this.enemies = this.add.group();
@@ -88,16 +91,12 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Create player
     this.createPlayer();
 
-    // Setup spawn points for enemies
-    this.setupSpawnPoints();
+    // Set camera to follow player smoothly
+    this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+    this.cameras.main.setBounds(0, 0, Number.MAX_SAFE_INTEGER, this.mapHeight);
 
-    // Set camera
-    this.cameras.main.setBounds(0, 0, this.mapWidth, this.mapHeight);
-    this.cameras.main.startFollow(this.player);
-    this.cameras.main.setLerp(0.1, 0.1);
-
-    // Set world boundaries (disable bottom boundary for falling death)
-    this.physics.world.setBounds(0, 0, this.mapWidth, this.mapHeight, true, true, true, false);
+    // Set world boundaries (infinite horizontally, limited vertically)
+    this.physics.world.setBounds(0, 0, Number.MAX_SAFE_INTEGER, this.mapHeight, false, false, false, false);
 
     // Setup collisions
     this.setupCollisions();
@@ -114,21 +113,13 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Show UI
     this.scene.launch("UIScene", { gameSceneKey: this.scene.key });
 
+    // Play biome-specific music
+    this.playBiomeMusic();
+
     console.log(`Started in biome: ${this.currentBiomeConfig.displayName}`);
   }
 
-  setupCurrentBiome(): void {
-    // Create background for current biome
-    this.createBackground();
-
-    // Create map for current biome
-    this.createTileMap();
-
-    // Play biome-specific music
-    this.playBiomeMusic();
-  }
-
-  createBackground(): void {
+  createInfiniteBackground(): void {
     // Destroy existing backgrounds
     if (this.backgrounds) {
       this.backgrounds.forEach(bg => bg.destroy());
@@ -136,47 +127,81 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     this.backgrounds = [];
     
-    // Calculate how many background images we need to cover the map width
-    const bgWidth = 1536; // Background image width
-    const bgHeight = 1024; // Background image height
+    // Create multiple layers of parallax scrolling tile sprites
+    const bgWidth = screenSize.width.value * 3; // Wide enough for seamless tiling
     
-    // Calculate scale to match map height
-    const scale = this.mapHeight / bgHeight;
-    const scaledBgWidth = bgWidth * scale;
+    // Layer 1 - Far background (slower parallax)
+    const bg1 = this.add.tileSprite(
+      0,
+      this.mapHeight / 2,
+      bgWidth,
+      this.mapHeight,
+      this.currentBiomeConfig.backgroundKey
+    );
+    bg1.setOrigin(0, 0.5);
+    bg1.setScrollFactor(0.1);
+    bg1.setDepth(-20);
+    this.backgrounds.push(bg1);
     
-    // Calculate number of backgrounds needed
-    const numBackgrounds = Math.ceil(this.mapWidth / scaledBgWidth);
+    // Layer 2 - Mid background
+    const bg2 = this.add.tileSprite(
+      0,
+      this.mapHeight / 2,
+      bgWidth,
+      this.mapHeight,
+      this.currentBiomeConfig.backgroundKey
+    );
+    bg2.setOrigin(0, 0.5);
+    bg2.setScrollFactor(0.3);
+    bg2.setDepth(-15);
+    bg2.setAlpha(0.7);
+    this.backgrounds.push(bg2);
     
-    for (let i = 0; i < numBackgrounds; i++) {
-      const bg = this.add.image(
-        i * scaledBgWidth + (scaledBgWidth / 2),
-        this.mapHeight / 2,
-        this.currentBiomeConfig.backgroundKey
-      );
-      
-      utils.initScale(bg, { x: 0.5, y: 0.5 }, scaledBgWidth, this.mapHeight);
-      bg.setScrollFactor(0.2); // Parallax scrolling
-      bg.setDepth(-10); // Behind everything
-      
-      this.backgrounds.push(bg);
-    }
+    // Layer 3 - Near background
+    const bg3 = this.add.tileSprite(
+      0,
+      this.mapHeight / 2,
+      bgWidth,
+      this.mapHeight,
+      this.currentBiomeConfig.backgroundKey
+    );
+    bg3.setOrigin(0, 0.5);
+    bg3.setScrollFactor(0.5);
+    bg3.setDepth(-10);
+    bg3.setAlpha(0.5);
+    this.backgrounds.push(bg3);
   }
 
-  createTileMap(): void {
-    // Destroy existing map if it exists
-    if (this.map) {
-      this.map.destroy();
+  createInfiniteGround(): void {
+    // Create static group for ground platforms
+    this.groundPlatforms = this.physics.add.staticGroup();
+
+    // Create initial ground platforms
+    const platformWidth = this.tileWidth * 8; // 8 tiles wide platforms
+    const platformHeight = this.tileHeight;
+    const groundY = 17 * this.tileHeight; // Ground level
+    
+    // Create several platforms to start
+    for (let i = 0; i < 30; i++) {
+      const x = i * platformWidth;
+      const platform = this.add.rectangle(x, groundY, platformWidth, platformHeight, 0x44aa44);
+      this.groundPlatforms.add(platform);
+      
+      // Also add some elevated platforms randomly
+      if (Math.random() < 0.3) {
+        const elevatedY = groundY - (this.tileHeight * (2 + Math.floor(Math.random() * 4)));
+        const elevatedPlatform = this.add.rectangle(
+          x + platformWidth / 2,
+          elevatedY,
+          platformWidth / 2,
+          platformHeight,
+          0x66cc66
+        );
+        this.groundPlatforms.add(elevatedPlatform);
+      }
     }
 
-    // Load tilemap for current biome
-    this.map = this.make.tilemap({ key: this.currentBiomeConfig.tilemapKey });
-    this.groundTileset = this.map.addTilesetImage(this.currentBiomeConfig.tilesetKey, this.currentBiomeConfig.tilesetKey);
-
-    // Create ground layer
-    this.groundLayer = this.map.createLayer("ground_layer", this.groundTileset, 0, 0)!;
-    
-    // Set collisions - exclude empty tiles (index -1)
-    this.groundLayer.setCollisionByExclusion([-1]);
+    this.lastSpawnX = 30 * platformWidth;
   }
 
   playBiomeMusic(): void {
@@ -194,25 +219,11 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   createPlayer(): void {
-    // Spawn player at the start of the level
+    // Spawn player at the start
     const spawnX = 200;
-    const spawnY = 15 * 64; // On the main ground platform
+    const spawnY = 15 * this.tileHeight;
     
     this.player = new CommandoPlayer(this, spawnX, spawnY);
-  }
-
-  setupSpawnPoints(): void {
-    // Define enemy spawn points based on map structure
-    // These work for all biome maps since they have similar layouts
-    this.spawnPoints = [
-      { x: 800, y: 12 * 64 }, // Elevated platform 1
-      { x: 1600, y: 10 * 64 }, // Elevated platform 2
-      { x: 2300, y: 13 * 64 }, // Elevated platform 3
-      { x: 2800, y: 17 * 64 }, // Final ground section
-      { x: 1300, y: 8 * 64 }, // Small floating platform 1
-      { x: 1900, y: 7 * 64 }, // Small floating platform 2
-      { x: 2900, y: 10 * 64 }, // High platform
-    ];
   }
 
   startEnemySpawning(): void {
@@ -239,29 +250,23 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       return;
     }
 
-    // Choose random spawn point
-    const spawnPoint = Phaser.Utils.Array.GetRandom(this.spawnPoints);
+    // Spawn enemy ahead of player
+    const playerX = this.player.x;
+    const spawnX = playerX + screenSize.width.value + Phaser.Math.Between(100, 400);
     
-    // Make sure spawn point is off-screen
-    const camera = this.cameras.main;
-    if (spawnPoint.x > camera.scrollX - 100 && spawnPoint.x < camera.scrollX + camera.width + 100) {
-      // Try to spawn further ahead or behind
-      const playerX = this.player.x;
-      const forwardSpawn = this.spawnPoints.find(p => p.x > playerX + camera.width);
-      const backwardSpawn = this.spawnPoints.find(p => p.x < playerX - 200);
-      
-      const chosenSpawn = forwardSpawn || backwardSpawn;
-      if (!chosenSpawn) return;
-      
-      const enemy = this.createEnemyForCurrentBiome(chosenSpawn.x, chosenSpawn.y);
-      if (enemy) {
-        this.enemies.add(enemy);
-      }
-    } else {
-      const enemy = this.createEnemyForCurrentBiome(spawnPoint.x, spawnPoint.y);
-      if (enemy) {
-        this.enemies.add(enemy);
-      }
+    // Random spawn Y positions
+    const spawnYOptions = [
+      15 * this.tileHeight,  // Ground level
+      13 * this.tileHeight,  // Elevated 1
+      11 * this.tileHeight,  // Elevated 2
+      9 * this.tileHeight,   // Elevated 3
+    ];
+    
+    const spawnY = Phaser.Utils.Array.GetRandom(spawnYOptions);
+    
+    const enemy = this.createEnemyForCurrentBiome(spawnX, spawnY);
+    if (enemy) {
+      this.enemies.add(enemy);
     }
   }
 
@@ -327,20 +332,13 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   transitionToNewBiome(): void {
     console.log(`Transitioning to: ${this.currentBiomeConfig.displayName}`);
     
-    // Clear all existing enemies
-    this.enemies.children.entries.forEach((enemy: any) => {
-      if (enemy && enemy.active) {
-        enemy.destroy();
-      }
+    // Update background for new biome
+    this.backgrounds.forEach(bg => {
+      bg.setTexture(this.currentBiomeConfig.backgroundKey);
     });
-    this.enemies.clear(true, true);
 
-    // Clear all projectiles
-    this.playerProjectiles.clear(true, true);
-    this.enemyProjectiles.clear(true, true);
-
-    // Setup new biome
-    this.setupCurrentBiome();
+    // Play new biome music
+    this.playBiomeMusic();
 
     // Restart enemy spawning with new difficulty
     if (this.enemySpawner) {
@@ -348,21 +346,15 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     }
     this.startEnemySpawning();
 
-    // Setup collisions again for new map
-    this.setupCollisions();
-
     this.biomeTransitionInProgress = false;
     
     console.log(`Successfully transitioned to: ${this.currentBiomeConfig.displayName}`);
   }
 
   setupCollisions(): void {
-    // Clear existing colliders first (remove all existing colliders)
-    this.physics.world.colliders.removeAll();
-
     // Ground collisions
-    utils.addCollider(this, this.player, this.groundLayer);
-    utils.addCollider(this, this.enemies, this.groundLayer);
+    utils.addCollider(this, this.player, this.groundPlatforms);
+    utils.addCollider(this, this.enemies, this.groundPlatforms);
 
     // Player projectiles vs enemies
     utils.addOverlap(
@@ -370,11 +362,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.playerProjectiles,
       this.enemies,
       (projectile: any, enemy: any) => {
-        if (projectile && enemy && projectile.active && enemy.active) {
-          // Add score when enemy is hit
-          const scoreGain = Math.floor(projectile.damage * 2);
-          this.addScore(scoreGain);
-          
+        if (projectile && enemy && projectile.active && enemy.active && !enemy.isDead) {
           enemy.takeDamage(projectile.damage);
           projectile.hit();
         }
@@ -398,7 +386,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     utils.addCollider(
       this,
       this.playerProjectiles,
-      this.groundLayer,
+      this.groundPlatforms,
       (projectile: any) => {
         if (projectile && projectile.active) {
           projectile.hit();
@@ -409,7 +397,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     utils.addCollider(
       this,
       this.enemyProjectiles,
-      this.groundLayer,
+      this.groundPlatforms,
       (projectile: any) => {
         if (projectile && projectile.active) {
           projectile.hit();
@@ -422,14 +410,35 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Update player
     if (this.player && this.player.active) {
       this.player.update(time, delta);
+      
+      // Update infinite scrolling background
+      this.updateInfiniteBackground();
+      
+      // Generate more platforms ahead
+      this.updateInfiniteGround();
     }
 
     // Update all enemies
     this.enemies.children.entries.forEach((enemy: any) => {
       if (enemy && enemy.active && enemy.update) {
         enemy.update(time, delta);
+        
+        // Clean up enemies far behind player
+        if (enemy.x < this.player.x - screenSize.width.value * 2) {
+          enemy.destroy();
+        }
       }
     });
+
+    // Collect player projectiles for collision detection
+    this.playerProjectiles.clear(false, false);
+    if (this.player.projectiles) {
+      this.player.projectiles.children.entries.forEach((projectile: any) => {
+        if (projectile && projectile.active) {
+          this.playerProjectiles.add(projectile);
+        }
+      });
+    }
 
     // Handle test controls
     this.handleTestControls();
@@ -447,6 +456,48 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.cleanupDeadEnemies();
   }
 
+  updateInfiniteBackground(): void {
+    // Update tile sprite positions to create seamless scrolling
+    this.backgrounds.forEach((bg, index) => {
+      const scrollFactor = bg.scrollFactorX;
+      bg.tilePositionX = this.cameras.main.scrollX * scrollFactor;
+    });
+  }
+
+  updateInfiniteGround(): void {
+    const playerX = this.player.x;
+    const platformWidth = this.tileWidth * 8;
+    
+    // Generate new platforms ahead of player
+    while (this.lastSpawnX < playerX + screenSize.width.value * 2) {
+      const groundY = 17 * this.tileHeight;
+      const platform = this.add.rectangle(this.lastSpawnX, groundY, platformWidth, this.tileHeight, 0x44aa44);
+      this.groundPlatforms.add(platform);
+      
+      // Add some elevated platforms randomly
+      if (Math.random() < 0.3) {
+        const elevatedY = groundY - (this.tileHeight * (2 + Math.floor(Math.random() * 4)));
+        const elevatedPlatform = this.add.rectangle(
+          this.lastSpawnX + platformWidth / 2,
+          elevatedY,
+          platformWidth / 2,
+          this.tileHeight,
+          0x66cc66
+        );
+        this.groundPlatforms.add(elevatedPlatform);
+      }
+      
+      this.lastSpawnX += platformWidth;
+    }
+    
+    // Clean up platforms far behind player
+    this.groundPlatforms.children.entries.forEach((platform: any) => {
+      if (platform && platform.x < playerX - screenSize.width.value * 2) {
+        this.groundPlatforms.remove(platform, true, true);
+      }
+    });
+  }
+
   updateSurvivalTime(): void {
     if (!this.player.isDead) {
       const currentTime = Date.now();
@@ -455,6 +506,17 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   handlePlayerDeath(): void {
+    // Check if player falls off screen
+    if (this.player.y > this.mapHeight + 100 && !this.player.isDead) {
+      this.player.health = 0;
+      this.player.isDead = true;
+    }
+
+    // Check if player health is 0
+    if (this.player.health <= 0 && !this.player.isDead) {
+      this.player.isDead = true;
+    }
+
     if (this.player.isDead && !this.gameCompleted) {
       this.gameCompleted = true;
       
@@ -465,6 +527,15 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       if (this.survivalTimer) {
         this.survivalTimer.destroy();
       }
+
+      // Show game over screen
+      this.time.delayedCall(1000, () => {
+        this.scene.launch("GameOverUIScene", {
+          score: this.score,
+          survivalTime: this.getFormattedSurvivalTime(),
+          difficulty: this.difficulty
+        });
+      });
 
       console.log(`Game Over! Final Score: ${this.score}, Survival Time: ${this.getFormattedSurvivalTime()}`);
     }
@@ -492,10 +563,16 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
     deadEnemies.forEach((enemy: any) => {
       // Award score for killing enemy
-      this.addScore(enemy.getScoreValue());
+      const scoreValue = enemy.getScoreValue();
+      const multiplier = difficultyConfig[this.difficulty].value;
+      this.addScore(scoreValue * multiplier);
       
       // Remove from scene
-      enemy.destroy();
+      this.time.delayedCall(500, () => {
+        if (enemy && enemy.active) {
+          enemy.destroy();
+        }
+      });
     });
   }
 
@@ -525,6 +602,14 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     return this.biomeManager.getFormattedTimeRemaining();
   }
 
+  getDifficulty(): string {
+    return this.difficulty.toUpperCase();
+  }
+
+  setDifficulty(difficulty: "easy" | "hard" | "cursed"): void {
+    this.difficulty = difficulty;
+  }
+
   setupTestControls(): void {
     // Setup B key for manual biome cycling
     this.bKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
@@ -540,6 +625,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   // Force biome change (for testing or manual trigger)
   forceBiomeChange(): void {
     if (!this.biomeTransitionInProgress) {
+      this.biomeManager.forceNextBiome();
       this.triggerBiomeTransition();
     }
   }
