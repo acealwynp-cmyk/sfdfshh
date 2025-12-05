@@ -79,12 +79,13 @@ export class PlayerFSM extends FSM {
     if (this.checkDeath()) return;
 
     const cursors = this.player.cursors;
+    const mobile = (this.scene as any).mobileControls;
     
     // Handle left/right movement
-    if (cursors.left.isDown) {
+    if (cursors.left.isDown || (mobile && mobile.leftPressed)) {
       this.player.setVelocityX(-this.player.walkSpeed);
       this.player.facingDirection = "left";
-    } else if (cursors.right.isDown) {
+    } else if (cursors.right.isDown || (mobile && mobile.rightPressed)) {
       this.player.setVelocityX(this.player.walkSpeed);
       this.player.facingDirection = "right";
     } else {
@@ -93,9 +94,9 @@ export class PlayerFSM extends FSM {
     }
 
     // Shooting and jump input detection
-    if (this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) {
+    if ((this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) || (mobile && mobile.shootPressed)) {
       this.goto("shooting");
-    } else if (cursors.up.isDown && this.player.body.onFloor()) {
+    } else if ((cursors.up.isDown && this.player.body.onFloor()) || (mobile && mobile.jumpPressed && this.player.body.onFloor())) {
       this.goto("jumping");
     }
 
