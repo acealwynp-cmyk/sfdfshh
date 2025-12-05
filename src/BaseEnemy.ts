@@ -151,7 +151,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
       player.y - spawnY
     ).normalize();
 
-    // Create projectile with range
+    // Create projectile with range (enemies don't use rockets)
     const projectile = new Projectile(
       this.scene,
       spawnX,
@@ -159,7 +159,8 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
       this.enemyConfig.projectileKey,
       this.enemyConfig.damage,
       this.enemyConfig.projectileSpeed,
-      this.enemyConfig.maxRange
+      this.enemyConfig.maxRange,
+      false
     );
 
     // Add to enemy projectiles group
