@@ -545,20 +545,22 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       const gap = Phaser.Math.Between(100, 250); // Reasonable gaps
       const nextX = this.lastSpawnX + gap;
       
-      // Create platform using biome tileset
-      const platform = this.add.image(nextX + platformWidth/2, nextY, tileTexture);
+      // Create platform using biome tileset as sprite
+      const platform = this.add.sprite(nextX + platformWidth/2, nextY, tileTexture);
       platform.setDisplaySize(platformWidth, platformHeight);
+      platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
       
       // Sometimes add elevated platforms for variety
       if (Math.random() < 0.4 && nextY > 12 * this.tileHeight) {
         const elevatedY = nextY - (this.tileHeight * Phaser.Math.Between(3, 5));
-        const elevatedPlatform = this.add.image(
+        const elevatedPlatform = this.add.sprite(
           nextX + platformWidth/2 + Phaser.Math.Between(50, 150),
           elevatedY,
           tileTexture
         );
         elevatedPlatform.setDisplaySize(platformWidth * 0.6, platformHeight);
+        elevatedPlatform.setOrigin(0.5, 0.5);
         this.groundPlatforms.add(elevatedPlatform, true);
       }
       
