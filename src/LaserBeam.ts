@@ -14,7 +14,7 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     super(scene, 0, 0);
     this.scene = scene;
     this.player = player;
-    this.damage = 15; // Damage per tick (0.1 seconds)
+    this.damage = 25; // Higher damage per tick (0.1 seconds) - kills enemies faster!
     
     // Create graphics for beam
     this.beamGraphics = scene.add.graphics();
@@ -24,6 +24,7 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     try {
       this.beamSprite = scene.add.sprite(0, 0, 'laser_projectile');
       this.beamSprite.setOrigin(0, 0.5);
+      this.beamSprite.setTint(0x00FFFF); // Cyan tint
       this.add(this.beamSprite);
     } catch (e) {
       // Sprite not available, use graphics only
