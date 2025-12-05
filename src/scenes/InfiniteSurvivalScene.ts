@@ -199,9 +199,10 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     // Create initial 20 platforms with smart layout
     for (let i = 0; i < 20; i++) {
-      // Create main platform
-      const platform = this.add.image(currentX + platformWidth/2, currentY, tileTexture);
+      // Create main platform as sprite with physics
+      const platform = this.add.sprite(currentX + platformWidth/2, currentY, tileTexture);
       platform.setDisplaySize(platformWidth, platformHeight);
+      platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
       
       // Decide next platform position (always reachable)
