@@ -121,22 +121,34 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     gameScene.enemies.children.entries.forEach((enemy: any) => {
       if (!enemy || !enemy.active || enemy.isDead) return;
 
-      // Check if enemy is in beam path
-      const inBeamX = direction > 0 
-        ? enemy.x > startX && enemy.x < startX + this.maxLength
-        : enemy.x < startX && enemy.x > startX - this.maxLength;
+      // More accurate collision detection - check enemy body
+      const enemyX = enemy.x;
+      const enemyY = enemy.y;
+      const enemyWidth = enemy.body ? enemy.body.width : 64;
+      const enemyHeight = enemy.body ? enemy.body.height : 64;
+
+      // Check if enemy is in beam path with better accuracy
+      let inBeamX = false;
+      if (direction > 0) {
+        // Firing right
+        inBeamX = enemyX > startX && enemyX < startX + this.maxLength;
+      } else {
+        // Firing left
+        inBeamX = enemyX < startX && enemyX > startX - this.maxLength;
+      }
       
-      const inBeamY = Math.abs(enemy.y - startY) < 50; // 50px vertical tolerance
+      // More generous Y tolerance to hit enemies on platforms
+      const inBeamY = Math.abs(enemyY - startY) < 80;
 
       if (inBeamX && inBeamY) {
-        // Enemy is hit by beam!
+        // Enemy is hit by beam! Deal damage
         enemy.takeDamage(this.damage);
         
-        // Visual feedback - flash the enemy
-        if (enemy.clearTint) {
-          enemy.setTint(0x00FFFF); // Cyan tint
-          this.scene.time.delayedCall(50, () => {
-            if (enemy && enemy.active) {
+        // Visual feedback - bright cyan flash
+        if (enemy.setTint && enemy.clearTint) {
+          enemy.setTint(0x00FFFF); // Bright cyan
+          this.scene.time.delayedCall(40, () => {
+            if (enemy && enemy.active && !enemy.isDead) {
               enemy.clearTint();
             }
           });
