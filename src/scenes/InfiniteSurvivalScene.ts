@@ -626,11 +626,15 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Collect all enemy projectiles into the main group for collision detection
     this.enemyProjectiles.clear(false, false);
     
-    this.enemies.children.entries.forEach((enemy: any) => {
+    this.enemies.getChildren().forEach((enemy: any) => {
       if (enemy && enemy.active && enemy.enemyProjectiles) {
-        enemy.enemyProjectiles.children.entries.forEach((projectile: any) => {
+        enemy.enemyProjectiles.getChildren().forEach((projectile: any) => {
           if (projectile && projectile.active) {
             this.enemyProjectiles.add(projectile);
+            // Update enemy projectile
+            if (projectile.update) {
+              projectile.update();
+            }
           }
         });
       }
