@@ -80,30 +80,19 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     const direction = this.player.facingDirection === "right" ? 1 : -1;
     const endX = direction * this.maxLength;
 
-    // Draw the laser beam - THIN SINGLE LINE
+    // Draw the laser beam - SINGLE THIN LINE (2 pixels like image)
     this.beamGraphics.clear();
     
-    // Single thin bright cyan/blue laser beam
-    this.beamGraphics.lineStyle(3, 0x00FFFF, 1.0); // Thin cyan beam
-    this.beamGraphics.beginPath();
-    this.beamGraphics.moveTo(0, 0);
-    this.beamGraphics.lineTo(endX, 0);
-    this.beamGraphics.strokePath();
-    
-    // Very subtle glow
-    this.beamGraphics.lineStyle(5, 0x00CCFF, 0.4);
+    // Single ultra-thin bright blue laser beam (exactly 2 pixels)
+    this.beamGraphics.lineStyle(2, 0x00AAFF, 1.0); // 2px bright blue
     this.beamGraphics.beginPath();
     this.beamGraphics.moveTo(0, 0);
     this.beamGraphics.lineTo(endX, 0);
     this.beamGraphics.strokePath();
 
-    // Update beam sprite if available - use laser projectile asset
+    // Hide sprite - we're using pure line graphics only
     if (this.beamSprite) {
-      this.beamSprite.setVisible(true);
-      const scaleX = Math.abs(endX) / 32;
-      this.beamSprite.setScale(scaleX * direction, 0.8); // Scale based on direction
-      this.beamSprite.setFlipX(direction < 0);
-      this.beamSprite.setAlpha(0.9);
+      this.beamSprite.setVisible(false);
     }
   }
 
