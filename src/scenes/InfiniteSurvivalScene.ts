@@ -117,9 +117,6 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Setup test controls
     this.setupTestControls();
 
-    // Create mobile controls
-    this.mobileControls = new MobileControls(this);
-
     // Show UI
     this.scene.launch("UIScene", { gameSceneKey: this.scene.key });
 
