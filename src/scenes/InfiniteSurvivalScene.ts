@@ -415,6 +415,29 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       }
     );
 
+    // Projectiles vs ground tilemap
+    utils.addCollider(
+      this,
+      this.playerProjectiles,
+      this.groundLayer,
+      (projectile: any) => {
+        if (projectile && projectile.active) {
+          projectile.hit();
+        }
+      }
+    );
+
+    utils.addCollider(
+      this,
+      this.enemyProjectiles,
+      this.groundLayer,
+      (projectile: any) => {
+        if (projectile && projectile.active) {
+          projectile.hit();
+        }
+      }
+    );
+    
     // Projectiles vs ground platforms
     utils.addCollider(
       this,
@@ -422,10 +445,6 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.groundPlatforms,
       (projectile: any) => {
         if (projectile && projectile.active) {
-          // Trigger explosion for rockets
-          if (projectile.isRocket) {
-            projectile.createExplosion(this, projectile.x, projectile.y, projectile.damage);
-          }
           projectile.hit();
         }
       }
