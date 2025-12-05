@@ -197,6 +197,17 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.health -= damage;
     this.isHurting = true;
 
+    console.log(`Enemy took ${damage} damage, health: ${this.health}/${this.maxHealth}`);
+
+    // Check if enemy should die
+    if (this.health <= 0) {
+      console.log("Enemy died!");
+      this.health = 0;
+      this.isDead = true;
+      this.fsm.goto("dying");
+      return;
+    }
+
     // Play hit sound
     const hitSound = this.scene.sound.get("enemy_hit");
     if (hitSound) {
