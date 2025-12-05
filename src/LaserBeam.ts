@@ -39,13 +39,13 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     this.isActive = true;
     this.setVisible(true);
     
-    // Start damage tick
+    // Start damage tick - faster for more effective killing
     if (this.damageTimer) {
       this.damageTimer.destroy();
     }
     
     this.damageTimer = this.scene.time.addEvent({
-      delay: 100, // Damage every 0.1 seconds
+      delay: 50, // Damage every 0.05 seconds (twice as fast!)
       callback: () => {
         this.checkEnemyCollisions();
       },
