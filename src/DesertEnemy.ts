@@ -13,7 +13,9 @@ export class DesertEnemy extends BaseEnemy {
       damage: 30, // Slightly higher damage than jungle enemies
       projectileSpeed: 650,
       soundKey: "rifle_fire",
-      scoreValue: 120 // Higher score value
+      scoreValue: 120, // Higher score value
+      maxRange: 900,
+      attackRange: 700
     };
 
     super(scene, x, y, desertEnemyConfig);
