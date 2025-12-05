@@ -166,49 +166,25 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
   
   // Create explosion with area damage
   createExplosion(scene: Phaser.Scene, x: number, y: number, damage: number): void {
-    // Create explosion visual effect
+    // Small explosion visual effect at impact point
     const explosion = scene.add.sprite(x, y, 'flame_projectile');
-    explosion.setScale(3, 3); // Large explosion
-    explosion.setAlpha(0.9);
-    explosion.setTint(0xFF6600); // Orange/red fire tint
+    explosion.setScale(1.2, 1.2); // Small explosion
+    explosion.setAlpha(0.95);
+    explosion.setTint(0xFF5500); // Orange fire tint
     
-    // Animate explosion
+    // Quick explosion animation
     scene.tweens.add({
       targets: explosion,
-      scale: 4.5,
+      scale: 2,
       alpha: 0,
-      duration: 400,
+      duration: 300,
       ease: 'Power2',
       onComplete: () => {
         explosion.destroy();
       }
     });
     
-    // Add secondary fire effects
-    for (let i = 0; i < 8; i++) {
-      const angle = (i / 8) * Math.PI * 2;
-      const distance = Phaser.Math.Between(40, 80);
-      const fx = x + Math.cos(angle) * distance;
-      const fy = y + Math.sin(angle) * distance;
-      
-      const fire = scene.add.sprite(fx, fy, 'flame_projectile');
-      fire.setScale(1.5, 1.5);
-      fire.setTint(0xFF8800);
-      fire.setAlpha(0.8);
-      
-      scene.tweens.add({
-        targets: fire,
-        scale: 0,
-        alpha: 0,
-        duration: 300,
-        ease: 'Power2',
-        onComplete: () => {
-          fire.destroy();
-        }
-      });
-    }
-    
-    // Deal area damage to enemies
+    // Deal area damage to enemies and apply fire effect
     const explosionRadius = 150; // Damage radius
     const gameScene = scene as any;
     
@@ -225,14 +201,75 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
           
           enemy.takeDamage(actualDamage);
           
+          // Apply fire animation to enemy (flamethrower effect)
+          this.applyFireEffect(scene, enemy);
+          
           // Push enemy back from explosion
           const angle = Phaser.Math.Angle.Between(x, y, enemy.x, enemy.y);
-          const force = 200 * damageMultiplier;
+          const force = 150 * damageMultiplier;
           enemy.setVelocity(
             Math.cos(angle) * force,
-            Math.sin(angle) * force - 100
+            Math.sin(angle) * force - 80
           );
         }
+      });
+    }
+  }
+  
+  // Apply fire animation effect to enemy
+  applyFireEffect(scene: Phaser.Scene, enemy: any): void {
+    if (!enemy || !enemy.active) return;
+    
+    // Create fire sprite on enemy using flamethrower asset
+    const fire = scene.add.sprite(enemy.x, enemy.y, 'flame_projectile');
+    fire.setScale(1.5, 1.5);
+    fire.setTint(0xFF6600); // Orange/red fire
+    fire.setAlpha(0.9);
+    fire.setDepth(enemy.depth + 1);
+    
+    // Animate fire burning on enemy
+    scene.tweens.add({
+      targets: fire,
+      scale: 2.2,
+      alpha: 0,
+      duration: 800,
+      ease: 'Power2',
+      onUpdate: () => {
+        // Fire follows enemy position
+        if (enemy && enemy.active) {
+          fire.setPosition(enemy.x, enemy.y - 20);
+        }
+      },
+      onComplete: () => {
+        fire.destroy();
+      }
+    });
+    
+    // Additional flame particles
+    for (let i = 0; i < 3; i++) {
+      scene.time.delayedCall(i * 150, () => {
+        if (!enemy || !enemy.active) return;
+        
+        const particle = scene.add.sprite(
+          enemy.x + Phaser.Math.Between(-20, 20),
+          enemy.y - Phaser.Math.Between(10, 30),
+          'flame_projectile'
+        );
+        particle.setScale(0.8, 0.8);
+        particle.setTint(0xFF8800);
+        particle.setAlpha(0.8);
+        
+        scene.tweens.add({
+          targets: particle,
+          y: particle.y - 40,
+          scale: 0.3,
+          alpha: 0,
+          duration: 400,
+          ease: 'Power2',
+          onComplete: () => {
+            particle.destroy();
+          }
+        });
       });
     }
   }
