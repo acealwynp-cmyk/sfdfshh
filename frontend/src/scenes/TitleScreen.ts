@@ -264,39 +264,9 @@ export class TitleScreen extends Phaser.Scene {
     if (difficultyMenu) difficultyMenu.classList.add('hidden');
   }
 
-  async handleWalletClick(): Promise<void> {
-    if (isWalletConnected()) {
-      // Disconnect
-      await disconnectWallet();
-      this.walletAddress = null;
-      this.updateWalletDisplay();
-    } else {
-      // Connect
-      const address = await connectWallet();
-      this.walletAddress = address;
-      this.updateWalletDisplay();
-      
-      if (!address) {
-        // Show error message
-        console.error('Failed to connect wallet. Please install Phantom wallet extension.');
-      }
-    }
-  }
-
   updateWalletDisplay(): void {
-    const walletBtn = document.getElementById('wallet-btn');
     const walletStatus = document.getElementById('wallet-status');
     const walletAddressEl = document.getElementById('wallet-address');
-
-    if (walletBtn) {
-      if (isWalletConnected()) {
-        walletBtn.textContent = 'DISCONNECT WALLET';
-        walletBtn.className = 'game-pixel-container-clickable-red-600 px-6 py-3 text-white font-bold text-lg';
-      } else {
-        walletBtn.textContent = 'CONNECT WALLET';
-        walletBtn.className = 'game-pixel-container-clickable-purple-600 px-6 py-3 text-white font-bold text-lg';
-      }
-    }
 
     if (walletStatus && walletAddressEl) {
       const address = getConnectedWallet();
