@@ -55,3 +55,4 @@ game.scene.add("UIScene", UIScene);
 game.scene.add("VictoryUIScene", VictoryUIScene);
 game.scene.add("GameCompleteUIScene", GameCompleteUIScene);
 game.scene.add("GameOverUIScene", GameOverUIScene);
+game.scene.add("LeaderboardScene", LeaderboardScene);
