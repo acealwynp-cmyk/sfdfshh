@@ -83,14 +83,10 @@ export class LeaderboardScene extends Phaser.Scene {
             <div class="game-pixel-container-[#2C3E50] p-6">
               
               <!-- Table Header -->
-              <div class="grid grid-cols-7 gap-4 text-white font-bold text-sm mb-4 pb-2 border-b-2 border-gray-600" style="text-shadow: 1px 1px 0px #000000;">
+              <div class="grid grid-cols-3 gap-8 text-white font-bold text-xl mb-4 pb-2 border-b-2 border-gray-600" style="text-shadow: 1px 1px 0px #000000;">
                 <div class="text-center">RANK</div>
                 <div class="text-center">WALLET</div>
                 <div class="text-center">SCORE</div>
-                <div class="text-center">TIME</div>
-                <div class="text-center">KILLS</div>
-                <div class="text-center">BIOME</div>
-                <div class="text-center">DIFFICULTY</div>
               </div>
 
               <!-- Table Rows -->
