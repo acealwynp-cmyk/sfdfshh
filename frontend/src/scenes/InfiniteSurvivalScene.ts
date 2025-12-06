@@ -81,6 +81,13 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     if (data && data.difficulty) {
       this.difficulty = data.difficulty;
     }
+    // Set play mode and wallet address
+    if (data && data.playMode) {
+      this.playMode = data.playMode;
+    }
+    if (data && data.walletAddress) {
+      this.walletAddress = data.walletAddress;
+    }
   }
 
   create(): void {
