@@ -196,6 +196,15 @@ export class TitleScreen extends Phaser.Scene {
       });
     }
 
+    // Disconnect Wallet button
+    const disconnectWalletBtn = document.getElementById('disconnect-wallet-btn');
+    if (disconnectWalletBtn) {
+      disconnectWalletBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        await this.handleDisconnectWallet();
+      });
+    }
+
     // Leaderboard button
     const leaderboardBtn = document.getElementById('leaderboard-btn');
     if (leaderboardBtn) {
