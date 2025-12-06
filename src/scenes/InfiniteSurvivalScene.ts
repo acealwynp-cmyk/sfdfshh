@@ -654,16 +654,12 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       const gap = Phaser.Math.Between(120, 250);
       const nextX = this.lastSpawnX + gap;
       
-      // Create THICK platform using biome tileset - use image instead of sprite
+      // Create THICK platform using biome tileset
       const platform = this.add.image(nextX + platformWidth/2, nextY, tileTexture);
+      console.log(`[PLATFORM] Creating at ${nextX}, requested texture: "${tileTexture}", actual texture: "${platform.texture.key}"`);
       platform.setDisplaySize(platformWidth, platformHeight);
       platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
-      
-      // Debug: Log what texture is actually being used
-      if (Math.random() < 0.1) { // Log only 10% to avoid spam
-        console.log(`[Platform created] Position: ${nextX}, Texture requested: ${tileTexture}, Texture actual: ${platform.texture.key}`);
-      }
       
       // Sometimes add elevated platforms for variety
       if (Math.random() < 0.3 && nextY > 12 * this.tileHeight) {
