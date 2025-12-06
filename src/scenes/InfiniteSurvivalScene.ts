@@ -622,6 +622,8 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     const platformWidth = this.tileWidth * 12; // THICKER platforms (12 tiles wide)
     const platformHeight = this.tileHeight * 3; // THICKER platforms (3 tiles tall)
     
+    console.log(`[updateInfiniteGround] Creating platforms with tileset: ${tileTexture}`);
+    
     // Generate new platforms ahead of player
     while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
       // Get the last platform Y position for continuity
@@ -650,8 +652,8 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       const gap = Phaser.Math.Between(120, 250);
       const nextX = this.lastSpawnX + gap;
       
-      // Create THICK platform using biome tileset
-      const platform = this.add.sprite(nextX + platformWidth/2, nextY, tileTexture);
+      // Create THICK platform using biome tileset - use image instead of sprite
+      const platform = this.add.image(nextX + platformWidth/2, nextY, tileTexture);
       platform.setDisplaySize(platformWidth, platformHeight);
       platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
@@ -659,7 +661,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       // Sometimes add elevated platforms for variety
       if (Math.random() < 0.3 && nextY > 12 * this.tileHeight) {
         const elevatedY = nextY - (this.tileHeight * Phaser.Math.Between(3, 5));
-        const elevatedPlatform = this.add.sprite(
+        const elevatedPlatform = this.add.image(
           nextX + platformWidth/2 + Phaser.Math.Between(100, 200),
           elevatedY,
           tileTexture
