@@ -368,37 +368,35 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.map = null as any;
     }
     
-    // 3. DESTROY AND RECREATE PLATFORMS WITH NEW TEXTURES
-    console.log("Destroying old platforms and creating new ones with correct biome tiles...");
+    // 3. UPDATE PLATFORM TEXTURES PROPERLY
+    console.log("Updating platform textures to new biome...");
     const newTileTexture = this.currentBiomeConfig.tilesetKey;
-    const platformWidth = this.tileWidth * 12;
-    const platformHeight = this.tileHeight * 3;
     
-    // Store old platform positions before destroying
-    const oldPlatforms: Array<{x: number, y: number, width: number, height: number}> = [];
+    // Update each platform's texture - need to refresh physics body
     this.groundPlatforms.getChildren().forEach((platform: any) => {
       if (platform && platform.active) {
-        oldPlatforms.push({
-          x: platform.x,
-          y: platform.y,
-          width: platform.displayWidth,
-          height: platform.displayHeight
-        });
+        // Store position and size
+        const x = platform.x;
+        const y = platform.y;
+        const width = platform.displayWidth;
+        const height = platform.displayHeight;
+        
+        // Remove from group
+        this.groundPlatforms.remove(platform, false, false);
+        
+        // Change texture
+        platform.setTexture(newTileTexture);
+        platform.setPosition(x, y);
+        platform.setDisplaySize(width, height);
+        platform.setOrigin(0.5, 0.5);
+        
+        // Re-add to physics group
+        this.groundPlatforms.add(platform, true);
+        platform.refreshBody();
       }
     });
     
-    // Clear all old platforms
-    this.groundPlatforms.clear(true, true);
-    
-    // Recreate platforms with new biome texture
-    oldPlatforms.forEach(pos => {
-      const newPlatform = this.add.sprite(pos.x, pos.y, newTileTexture);
-      newPlatform.setDisplaySize(pos.width, pos.height);
-      newPlatform.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(newPlatform, true);
-    });
-    
-    console.log(`Recreated ${oldPlatforms.length} platforms with ${newTileTexture}`);
+    console.log(`Updated platforms to use ${newTileTexture}`);
     
     // 4. CREATE NEW TILEMAP FOR NEW BIOME
     console.log("Creating new tilemap...");
