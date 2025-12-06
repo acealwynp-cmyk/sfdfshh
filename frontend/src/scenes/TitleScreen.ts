@@ -66,6 +66,13 @@ export class TitleScreen extends Phaser.Scene {
     let uiHTML = `
       <div id="title-screen-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-retro flex flex-col justify-center items-center" style="image-rendering: pixelated; background-image: url('${jungleBackgroundURL}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         
+        <!-- Disconnect Wallet Button (Top Right) -->
+        <div id="disconnect-wallet-container" class="fixed top-4 right-4 pointer-events-auto hidden">
+          <button id="disconnect-wallet-btn" class="game-pixel-container-clickable-red-600 px-4 py-2 text-white font-bold text-sm flex items-center gap-2">
+            <span>🔓 DISCONNECT</span>
+          </button>
+        </div>
+
         <!-- Main Menu Container -->
         <div id="main-menu" class="flex flex-col items-center space-y-6 w-full text-center pointer-events-auto">
           
