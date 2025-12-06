@@ -12,6 +12,12 @@ export default defineConfig({
       ".preview.emergentagent.com",
       "localhost"
     ],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+      }
+    }
   },
   plugins: [],
   css: {
