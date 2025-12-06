@@ -122,6 +122,9 @@ export class TitleScreen extends Phaser.Scene {
 
     // Add DOM element to the scene
     this.uiContainer = utils.initUIDom(this, uiHTML);
+    
+    // Update wallet status display
+    this.updateWalletDisplay();
   }
 
   setupInputs(): void {
