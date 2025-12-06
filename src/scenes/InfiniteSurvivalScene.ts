@@ -547,9 +547,14 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     // Generate continuous ground platforms ahead of player
     while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
-      // Create platform at ground level with NO gaps (continuous ground)
-      const platform = this.add.image(this.lastSpawnX + platformWidth/2, groundLevel, tileTexture);
-      platform.setDisplaySize(platformWidth, platformHeight);
+      // Create platform using TileSprite (better texture handling)
+      const platform = this.add.tileSprite(
+        this.lastSpawnX + platformWidth/2, 
+        groundLevel, 
+        platformWidth,
+        platformHeight,
+        tileTexture
+      );
       platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
       
@@ -557,12 +562,13 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       if (Math.random() < 0.2) {
         const elevatedY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 6));
         const elevatedX = this.lastSpawnX + Phaser.Math.Between(platformWidth * 0.3, platformWidth * 0.7);
-        const elevatedPlatform = this.add.image(
+        const elevatedPlatform = this.add.tileSprite(
           elevatedX,
           elevatedY,
+          platformWidth * 0.6,
+          platformHeight,
           tileTexture
         );
-        elevatedPlatform.setDisplaySize(platformWidth * 0.6, platformHeight);
         elevatedPlatform.setOrigin(0.5, 0.5);
         this.groundPlatforms.add(elevatedPlatform, true);
       }
