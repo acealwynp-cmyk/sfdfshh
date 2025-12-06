@@ -222,8 +222,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Create a SOLID starting runway with NO gaps (platforms touching each other)
     let currentX = 0;
     for (let i = 0; i < 20; i++) {
-      const platform = this.add.image(currentX + platformWidth/2, platformY, tileTexture);
-      platform.setDisplaySize(platformWidth, platformHeight);
+      const platform = this.add.tileSprite(currentX + platformWidth/2, platformY, platformWidth, platformHeight, tileTexture);
       platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
       currentX += platformWidth; // No gap - platforms touch
