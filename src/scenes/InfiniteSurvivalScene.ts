@@ -633,11 +633,11 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     const platformHeight = this.tileHeight * 3; // 192 pixels tall
     const groundLevel = 17 * this.tileHeight;
     
-    // Generate platforms ahead - MAJORITY SKY, minimal ground (20% floor, 80% sky)
+    // Generate platforms ahead - MAJORITY SKY with enough ground to stay playable (30% floor, 70% sky)
     while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
       
-      // 20% ground, 80% sky platforms
-      const useGroundPlatform = Math.random() < 0.2;
+      // 30% ground, 70% sky platforms - balance between challenge and playability
+      const useGroundPlatform = Math.random() < 0.3;
       
       if (useGroundPlatform) {
         // GROUND LEVEL PLATFORM - Small and sparse
