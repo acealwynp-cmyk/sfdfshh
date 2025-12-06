@@ -68,8 +68,12 @@ async def api_health():
 
 @app.post("/api/leaderboard/submit")
 async def submit_score(entry: LeaderboardEntry):
-    """Submit a score to the leaderboard"""
+    """Submit a score to the leaderboard - requires wallet address"""
     try:
+        # Validate wallet address is provided
+        if not entry.wallet_address or len(entry.wallet_address) < 10:
+            raise HTTPException(status_code=400, detail="Valid wallet address is required")
+        
         # Add timestamp
         entry_dict = entry.model_dump()
         entry_dict["timestamp"] = datetime.utcnow()
@@ -82,6 +86,8 @@ async def submit_score(entry: LeaderboardEntry):
             "message": "Score submitted successfully",
             "id": str(result.inserted_id)
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to submit score: {str(e)}")
 
