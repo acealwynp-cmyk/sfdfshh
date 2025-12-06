@@ -305,6 +305,20 @@ export class TitleScreen extends Phaser.Scene {
     if (this.clickHandler && this.uiContainer && this.uiContainer.node) {
       this.uiContainer.node.removeEventListener('click', this.clickHandler);
     }
+
+    if (this.walletHandler) {
+      const walletBtn = document.getElementById('wallet-btn');
+      if (walletBtn) {
+        walletBtn.removeEventListener('click', this.walletHandler);
+      }
+    }
+
+    if (this.leaderboardHandler) {
+      const leaderboardBtn = document.getElementById('leaderboard-btn');
+      if (leaderboardBtn) {
+        leaderboardBtn.removeEventListener('click', this.leaderboardHandler);
+      }
+    }
   }
 
   update(): void {
