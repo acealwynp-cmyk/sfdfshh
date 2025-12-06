@@ -211,25 +211,26 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Create static group for platforms
     this.groundPlatforms = this.physics.add.staticGroup();
     
-    // Start generating platforms from the beginning
-    this.lastSpawnX = -screenSize.width.value;
-    
-    // Generate initial set of platforms manually (before player exists)
+    // Generate initial SOLID ground platforms (no gaps)
     const tileTexture = this.currentBiomeConfig.tilesetKey;
-    const platformWidth = this.tileWidth * 12;
-    const platformHeight = this.tileHeight * 3;
-    const platformY = 15 * this.tileHeight;
+    const platformWidth = this.tileWidth * 12; // 768 pixels wide
+    const platformHeight = this.tileHeight * 3; // 192 pixels tall
+    const platformY = 17 * this.tileHeight; // Ground level
     
-    // Create a starting platform runway
-    for (let i = 0; i < 10; i++) {
-      const platformX = i * platformWidth;
-      const platform = this.add.image(platformX + platformWidth/2, platformY, tileTexture);
+    console.log(`[createInfiniteGround] Creating solid ground with tileset: ${tileTexture}`);
+    
+    // Create a SOLID starting runway with NO gaps (platforms touching each other)
+    let currentX = 0;
+    for (let i = 0; i < 20; i++) {
+      const platform = this.add.image(currentX + platformWidth/2, platformY, tileTexture);
       platform.setDisplaySize(platformWidth, platformHeight);
       platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
+      currentX += platformWidth; // No gap - platforms touch
     }
     
-    this.lastSpawnX = 10 * platformWidth;
+    this.lastSpawnX = currentX;
+    console.log(`[createInfiniteGround] Created 20 solid platforms up to X=${this.lastSpawnX}`);
   }
 
   playBiomeMusic(): void {
