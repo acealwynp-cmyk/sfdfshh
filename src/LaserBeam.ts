@@ -48,7 +48,7 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     }
     
     this.damageTimer = this.scene.time.addEvent({
-      delay: 50, // Damage every 0.05 seconds (twice as fast!)
+      delay: 200, // Damage every 0.2 seconds (5 ticks per second)
       callback: () => {
         this.checkEnemyCollisions();
       },
