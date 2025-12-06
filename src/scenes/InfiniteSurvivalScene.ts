@@ -388,11 +388,17 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Recreate backgrounds with new texture
     this.createInfiniteBackground();
 
-    // 2. TRANSITION PLATFORM TILES
-    // Keep existing platforms, new ones generated ahead will use new tileset
-    // Old platforms will naturally scroll off-screen as player moves forward
-    console.log("Platform tiles will transition as player moves forward");
-    console.log(`New platforms ahead will use: ${this.currentBiomeConfig.tilesetKey}`);
+    // 2. CLEAR ALL OLD PLATFORMS AND REGENERATE WITH NEW TILESET
+    console.log("Clearing all old platforms...");
+    this.groundPlatforms.clear(true, true);
+    
+    // Reset spawn position to just behind player
+    const playerX = this.player.x;
+    this.lastSpawnX = playerX - screenSize.width.value;
+    
+    // Immediately generate new platforms with new tileset
+    console.log(`Generating new platforms with tileset: ${this.currentBiomeConfig.tilesetKey}`);
+    this.updateInfiniteGround();
 
     // 6. PLAY NEW BIOME MUSIC
     console.log("Playing new music...");
