@@ -255,34 +255,40 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   startEnemySpawning(): void {
-    // Difficulty-based spawn rates and enemy counts
+    // INSTANT enemy spawning - very aggressive!
     let spawnDelay: number;
     let maxEnemies: number;
     
     switch(this.difficulty) {
       case "easy":
-        spawnDelay = 3500; // Slower spawns
-        maxEnemies = 5; // Fewer enemies
+        spawnDelay = 1500; // Fast spawns
+        maxEnemies = 8; // Good amount
         break;
       case "hard":
-        spawnDelay = 2000; // Faster spawns
-        maxEnemies = 10; // More enemies
+        spawnDelay = 800; // Very fast spawns
+        maxEnemies = 12; // Many enemies
         break;
       case "cursed":
-        spawnDelay = 1200; // Very fast spawns
-        maxEnemies = 15; // Maximum enemies
+        spawnDelay = 500; // INSTANT spawns!
+        maxEnemies = 20; // Maximum enemies
         break;
       default:
-        spawnDelay = 3000;
-        maxEnemies = 8;
+        spawnDelay = 1000;
+        maxEnemies = 10;
     }
     
     // Apply biome difficulty multiplier
     const biomeDifficultyMultiplier = this.biomeManager.getDifficultyMultiplier();
-    const adjustedSpawnDelay = Math.max(800, spawnDelay / biomeDifficultyMultiplier);
+    const adjustedSpawnDelay = Math.max(400, spawnDelay / biomeDifficultyMultiplier);
     
-    console.log(`Enemy spawning: Difficulty=${this.difficulty}, Spawn delay=${adjustedSpawnDelay}ms, Max enemies=${maxEnemies}`);
+    console.log(`INSTANT Enemy spawning: Difficulty=${this.difficulty}, Spawn delay=${adjustedSpawnDelay}ms, Max enemies=${maxEnemies}`);
 
+    // Spawn initial wave IMMEDIATELY
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => this.spawnEnemy(), i * 200);
+    }
+
+    // Then continue spawning with fast rate
     this.enemySpawner = this.time.addEvent({
       delay: adjustedSpawnDelay,
       callback: () => {
