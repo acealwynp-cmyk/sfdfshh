@@ -465,52 +465,42 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Recreate backgrounds with new texture
     this.createInfiniteBackground();
 
-    // 2. SAFE PLATFORM RESET FOR CLEAN TRANSITION
-    console.log("Safe platform reset for biome transition...");
+    // 2. CLEAR AND REGENERATE FLAT THICK PLATFORMS
+    console.log("Clearing old platforms and creating FLAT THICK continuous platform...");
     const playerX = this.player.x;
-    const platformWidth = this.tileWidth * 9;
-    const platformHeight = this.tileHeight * 3;
-    const groundLevel = 17 * this.tileHeight;
+    const platformWidth = this.tileWidth * 15; // SAME as createInfiniteGround
+    const platformHeight = this.tileHeight * 5; // SAME as createInfiniteGround
+    const groundLevel = 18 * this.tileHeight; // SAME as createInfiniteGround
     
     // CLEAR ALL OLD PLATFORMS
     this.groundPlatforms.clear(true, true);
     console.log("All old platforms cleared");
     
-    // CREATE MULTIPLE EMERGENCY PLATFORMS UNDER AND AROUND PLAYER
-    // Platform directly under player
-    for (let i = -2; i <= 3; i++) {
-      const emergencyPlatform = this.add.tileSprite(
-        playerX + (i * platformWidth),
+    // CREATE CONTINUOUS FLAT PLATFORM under and around player - NO SKY PLATFORMS!
+    const startX = playerX - (platformWidth * 3); // 3 platforms behind
+    let currentX = startX;
+    
+    for (let i = 0; i < 10; i++) {
+      const platform = this.add.tileSprite(
+        currentX + platformWidth/2,
         groundLevel,
         platformWidth,
         platformHeight,
         this.currentBiomeConfig.tilesetKey
       );
-      emergencyPlatform.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(emergencyPlatform, true);
+      platform.setOrigin(0.5, 0.5);
+      this.groundPlatforms.add(platform, true);
+      
+      currentX += platformWidth; // NO GAPS
     }
     
-    // Add sky platforms above for adventure
-    for (let i = 0; i < 3; i++) {
-      const skyY = groundLevel - (this.tileHeight * (4 + i * 2));
-      const skyPlatform = this.add.tileSprite(
-        playerX + (i * 300),
-        skyY,
-        platformWidth * 0.7,
-        platformHeight,
-        this.currentBiomeConfig.tilesetKey
-      );
-      skyPlatform.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(skyPlatform, true);
-    }
+    console.log(`Emergency FLAT platforms created with ${this.currentBiomeConfig.tilesetKey}`);
     
-    console.log(`Emergency platforms created with ${this.currentBiomeConfig.tilesetKey}`);
+    // Set spawn point ahead for continuous generation
+    this.lastSpawnX = currentX;
     
-    // Set spawn point ahead for new platform generation
-    this.lastSpawnX = playerX + (platformWidth * 4);
-    
-    // Generate new platforms immediately
-    console.log(`Generating new platforms with tileset: ${this.currentBiomeConfig.tilesetKey}`);
+    // Generate more platforms immediately
+    console.log(`Generating continuous FLAT platforms with tileset: ${this.currentBiomeConfig.tilesetKey}`);
     this.updateInfiniteGround();
 
     // 6. PLAY NEW BIOME MUSIC
