@@ -325,22 +325,31 @@ export class GameOverUIScene extends Phaser.Scene {
 
     try {
       const { getApiUrl } = await import('../config');
-      const response = await fetch(getApiUrl('/api/leaderboard/submit'), {
+      const apiUrl = getApiUrl('/api/leaderboard/submit');
+      
+      const payload = {
+        wallet_address: walletAddress,
+        score: this.score,
+        survival_time_seconds: this.survivalTimeSeconds,
+        enemies_killed: this.enemiesKilled,
+        biome_reached: this.biomeReached,
+        difficulty: this.difficulty,
+      };
+      
+      console.log('[submitScore] API URL:', apiUrl);
+      console.log('[submitScore] Payload:', payload);
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          wallet_address: walletAddress,
-          score: this.score,
-          survival_time_seconds: this.survivalTimeSeconds,
-          enemies_killed: this.enemiesKilled,
-          biome_reached: this.biomeReached,
-          difficulty: this.difficulty,
-        }),
+        body: JSON.stringify(payload),
       });
 
+      console.log('[submitScore] Response status:', response.status);
       const data = await response.json();
+      console.log('[submitScore] Response data:', data);
 
       if (data.status === 'success') {
         this.isSubmitted = true;
@@ -350,18 +359,22 @@ export class GameOverUIScene extends Phaser.Scene {
         const submitBtn = document.getElementById('submit-score-btn');
         if (submitStatus) {
           submitStatus.classList.remove('hidden');
+          console.log('[submitScore] Success message shown');
         }
         if (submitBtn) {
           submitBtn.classList.add('hidden');
         }
 
         // Refresh leaderboard
+        console.log('[submitScore] Refreshing leaderboard...');
         await this.fetchLeaderboard();
         
-        console.log('Score submitted successfully!');
+        console.log('[submitScore] ✓ Score submitted successfully!');
+      } else {
+        console.error('[submitScore] Submission failed:', data);
       }
     } catch (error) {
-      console.error('Failed to submit score:', error);
+      console.error('[submitScore] ERROR submitting score:', error);
     }
   }
 
