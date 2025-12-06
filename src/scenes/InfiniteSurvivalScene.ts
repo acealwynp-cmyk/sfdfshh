@@ -255,10 +255,33 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   startEnemySpawning(): void {
-    // Start enemy spawner with biome-adjusted spawn rate
-    const baseSpawnDelay = enemyConfig.spawnInterval.value;
-    const difficultyMultiplier = this.biomeManager.getDifficultyMultiplier();
-    const adjustedSpawnDelay = Math.max(1000, baseSpawnDelay / difficultyMultiplier);
+    // Difficulty-based spawn rates and enemy counts
+    let spawnDelay: number;
+    let maxEnemies: number;
+    
+    switch(this.difficulty) {
+      case "easy":
+        spawnDelay = 3500; // Slower spawns
+        maxEnemies = 5; // Fewer enemies
+        break;
+      case "hard":
+        spawnDelay = 2000; // Faster spawns
+        maxEnemies = 10; // More enemies
+        break;
+      case "cursed":
+        spawnDelay = 1200; // Very fast spawns
+        maxEnemies = 15; // Maximum enemies
+        break;
+      default:
+        spawnDelay = 3000;
+        maxEnemies = 8;
+    }
+    
+    // Apply biome difficulty multiplier
+    const biomeDifficultyMultiplier = this.biomeManager.getDifficultyMultiplier();
+    const adjustedSpawnDelay = Math.max(800, spawnDelay / biomeDifficultyMultiplier);
+    
+    console.log(`Enemy spawning: Difficulty=${this.difficulty}, Spawn delay=${adjustedSpawnDelay}ms, Max enemies=${maxEnemies}`);
 
     this.enemySpawner = this.time.addEvent({
       delay: adjustedSpawnDelay,
@@ -270,9 +293,19 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   spawnEnemy(): void {
-    // Don't spawn if max enemies reached
+    // Get max enemies based on difficulty
+    let maxEnemies: number;
+    switch(this.difficulty) {
+      case "easy": maxEnemies = 5; break;
+      case "hard": maxEnemies = 10; break;
+      case "cursed": maxEnemies = 15; break;
+      default: maxEnemies = 8;
+    }
+    
+    // Add biome difficulty
+    maxEnemies += Math.floor(this.biomeManager.getDifficultyMultiplier());
+    
     const activeEnemies = this.enemies.children.entries.filter(enemy => enemy.active).length;
-    const maxEnemies = Math.min(15, enemyConfig.maxEnemies.value + Math.floor(this.biomeManager.getDifficultyMultiplier()));
     
     if (activeEnemies >= maxEnemies) {
       return;
