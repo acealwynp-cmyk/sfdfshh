@@ -9,6 +9,7 @@ import { UIScene } from "./scenes/UIScene";
 import { VictoryUIScene } from "./scenes/VictoryUIScene";
 import { GameCompleteUIScene } from "./scenes/GameCompleteUIScene";
 import { GameOverUIScene } from "./scenes/GameOverUIScene";
+import { LeaderboardScene } from "./scenes/LeaderboardScene";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
