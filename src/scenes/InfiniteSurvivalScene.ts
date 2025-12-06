@@ -219,7 +219,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     console.log(`[createInfiniteGround] Creating ground + sky platforms with tileset: ${tileTexture}`);
     
-    // Create initial platforms with mix of ground and sky
+    // Create initial platforms with mix of ground and sky + GAPS
     let currentX = 0;
     for (let i = 0; i < 15; i++) {
       // Ground platform
@@ -227,12 +227,12 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       groundPlatform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(groundPlatform, true);
       
-      // Add sky platforms above ground (50% chance)
-      if (Math.random() < 0.5) {
-        const skyY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 6));
+      // Add LOWER sky platforms above ground (60% chance) - JUMPABLE HEIGHT
+      if (Math.random() < 0.6) {
+        const skyY = groundLevel - (this.tileHeight * Phaser.Math.Between(3, 4)); // LOWER!
         const skyWidth = platformWidth * 0.7;
         const skyPlatform = this.add.tileSprite(
-          currentX + platformWidth/2 + Phaser.Math.Between(-100, 100), 
+          currentX + platformWidth/2 + Phaser.Math.Between(-80, 80), 
           skyY, 
           skyWidth, 
           platformHeight, 
@@ -242,7 +242,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
         this.groundPlatforms.add(skyPlatform, true);
       }
       
-      currentX += platformWidth; // Continuous ground
+      // Add small GAP (80% chance)
+      const gap = Math.random() < 0.8 ? Phaser.Math.Between(100, 150) : 0;
+      currentX += platformWidth + gap;
     }
     
     this.lastSpawnX = currentX;
