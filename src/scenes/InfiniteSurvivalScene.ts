@@ -55,6 +55,10 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
   // Survival timer
   public survivalTimer?: Phaser.Time.TimerEvent;
+  
+  // Auto biome teleport timer (every 3 minutes)
+  public biomeTeleportTimer?: Phaser.Time.TimerEvent;
+  public teleportWarningText?: Phaser.GameObjects.Text;
 
   // Test key for manual biome cycling
   public bKey?: Phaser.Input.Keyboard.Key;
