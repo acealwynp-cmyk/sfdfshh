@@ -125,6 +125,21 @@ def invalidate_leaderboard_cache():
     """Clear all leaderboard caches after new score submission"""
     leaderboard_cache.clear()
 
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database indexes for optimal performance"""
+    try:
+        # Create indexes for fast queries
+        await leaderboard_collection.create_index([("score", -1)])  # Descending score for ranking
+        await leaderboard_collection.create_index([("wallet_address", 1)])  # Fast wallet lookup
+        await leaderboard_collection.create_index([("difficulty", 1)])  # Filter by difficulty
+        await leaderboard_collection.create_index([("timestamp", -1)])  # Recent scores
+        await leaderboard_collection.create_index([("score", -1), ("timestamp", -1)])  # Compound index
+        
+        print("✓ Database indexes created successfully")
+    except Exception as e:
+        print(f"⚠ Warning: Failed to create indexes: {e}")
+
 @app.get("/")
 async def root():
     """Root endpoint"""
