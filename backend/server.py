@@ -160,6 +160,33 @@ async def api_health():
     """API health check endpoint"""
     return {"status": "healthy", "service": "degen-force-api"}
 
+@app.get("/api/stats")
+async def get_stats():
+    """Get system statistics for monitoring"""
+    try:
+        total_scores = await leaderboard_collection.count_documents({})
+        unique_players = len(await leaderboard_collection.distinct("wallet_address"))
+        
+        # Get top score
+        top_score_doc = await leaderboard_collection.find_one(
+            {},
+            {"score": 1, "_id": 0},
+            sort=[("score", -1)]
+        )
+        top_score = top_score_doc["score"] if top_score_doc else 0
+        
+        return {
+            "status": "success",
+            "stats": {
+                "total_scores": total_scores,
+                "unique_players": unique_players,
+                "top_score": top_score,
+                "cache_size": len(leaderboard_cache)
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get stats: {str(e)}")
+
 @app.post("/api/leaderboard/submit")
 async def submit_score(entry: LeaderboardEntry, request: Request):
     """Submit a score to the leaderboard - requires wallet address
