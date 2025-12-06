@@ -791,11 +791,14 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
         this.scene.launch("GameOverUIScene", {
           score: this.score,
           survivalTime: this.getFormattedSurvivalTime(),
+          survivalTimeSeconds: this.survivalTimeSeconds,
+          enemiesKilled: this.enemiesKilled,
+          biomeReached: this.getCurrentBiomeName(),
           difficulty: this.difficulty
         });
       });
 
-      console.log(`Game Over! Final Score: ${this.score}, Survival Time: ${this.getFormattedSurvivalTime()}`);
+      console.log(`Game Over! Final Score: ${this.score}, Survival Time: ${this.getFormattedSurvivalTime()}, Enemies Killed: ${this.enemiesKilled}`);
     }
   }
 
