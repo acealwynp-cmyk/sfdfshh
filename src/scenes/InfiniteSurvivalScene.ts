@@ -307,13 +307,13 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   spawnEnemy(): void {
-    // Get max enemies based on difficulty - MORE enemies!
+    // Get max enemies based on difficulty
     let maxEnemies: number;
     switch(this.difficulty) {
-      case "easy": maxEnemies = 8; break;
+      case "easy": maxEnemies = 6; break;
       case "hard": maxEnemies = 12; break;
-      case "cursed": maxEnemies = 20; break;
-      default: maxEnemies = 10;
+      case "cursed": maxEnemies = 25; break;
+      default: maxEnemies = 8;
     }
     
     // Add biome difficulty
