@@ -20,8 +20,10 @@ const config: Phaser.Types.Core.GameConfig = {
     createContainer: true
   },
   scale: {
-    mode: Phaser.Scale.FIT,
+    mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: '100%',
+    height: '100%',
   },
   physics: {
     default: "arcade",
