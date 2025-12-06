@@ -1,9 +1,13 @@
 """
-Minimal FastAPI backend for Phaser game deployment.
-This is a frontend-only game - backend only provides health checks.
+FastAPI backend for Phaser game with leaderboard support.
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from motor.motor_asyncio import AsyncIOMotorClient
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
+import os
 
 app = FastAPI(title="Infinite Battle Game API")
 
@@ -16,22 +20,108 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# MongoDB connection
+MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017")
+client = AsyncIOMotorClient(MONGO_URL)
+db = client["degen_force"]
+leaderboard_collection = db["leaderboard"]
+
+# Pydantic models
+class LeaderboardEntry(BaseModel):
+    wallet_address: str
+    score: int
+    survival_time_seconds: int
+    enemies_killed: int
+    biome_reached: str
+    difficulty: str
+    timestamp: Optional[datetime] = None
+
+class LeaderboardResponse(BaseModel):
+    wallet_address: str
+    score: int
+    survival_time: str
+    enemies_killed: int
+    biome_reached: str
+    difficulty: str
+    timestamp: str
+    rank: int
+
 @app.get("/")
 async def root():
     """Root endpoint"""
-    return {"status": "ok", "message": "Infinite Battle Game Backend"}
+    return {"status": "ok", "message": "Degen Force Backend"}
 
 @app.get("/health")
 async def health():
     """Health check endpoint"""
-    return {"status": "healthy", "service": "infinite-battle-backend"}
+    return {"status": "healthy", "service": "degen-force-backend"}
 
 @app.get("/api/")
 async def api_root():
     """API root endpoint"""
-    return {"status": "ok", "message": "Infinite Battle Game API", "version": "1.0.0"}
+    return {"status": "ok", "message": "Degen Force API", "version": "1.0.0"}
 
 @app.get("/api/health")
 async def api_health():
     """API health check endpoint"""
-    return {"status": "healthy", "service": "infinite-battle-api"}
+    return {"status": "healthy", "service": "degen-force-api"}
+
+@app.post("/api/leaderboard/submit")
+async def submit_score(entry: LeaderboardEntry):
+    """Submit a score to the leaderboard"""
+    try:
+        # Add timestamp
+        entry_dict = entry.model_dump()
+        entry_dict["timestamp"] = datetime.utcnow()
+        
+        # Insert into database
+        result = await leaderboard_collection.insert_one(entry_dict)
+        
+        return {
+            "status": "success",
+            "message": "Score submitted successfully",
+            "id": str(result.inserted_id)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to submit score: {str(e)}")
+
+@app.get("/api/leaderboard")
+async def get_leaderboard(limit: int = 100, difficulty: Optional[str] = None):
+    """Get top scores from the leaderboard"""
+    try:
+        # Build query
+        query = {}
+        if difficulty:
+            query["difficulty"] = difficulty.lower()
+        
+        # Get top scores sorted by score descending
+        cursor = leaderboard_collection.find(query, {"_id": 0}).sort("score", -1).limit(limit)
+        entries = await cursor.to_list(length=limit)
+        
+        # Format response with ranks
+        leaderboard = []
+        for idx, entry in enumerate(entries):
+            # Format survival time
+            seconds = entry.get("survival_time_seconds", 0)
+            minutes = seconds // 60
+            secs = seconds % 60
+            survival_time = f"{minutes:02d}:{secs:02d}"
+            
+            leaderboard.append({
+                "rank": idx + 1,
+                "wallet_address": entry["wallet_address"],
+                "score": entry["score"],
+                "survival_time": survival_time,
+                "enemies_killed": entry.get("enemies_killed", 0),
+                "biome_reached": entry["biome_reached"],
+                "difficulty": entry["difficulty"],
+                "timestamp": entry["timestamp"].isoformat() if "timestamp" in entry else ""
+            })
+        
+        return {
+            "status": "success",
+            "total": len(leaderboard),
+            "leaderboard": leaderboard
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch leaderboard: {str(e)}")
