@@ -553,42 +553,60 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   updateInfiniteGround(): void {
     const playerX = this.player.x;
     const tileTexture = this.currentBiomeConfig.tilesetKey;
-    const platformWidth = this.tileWidth * 12; // 768 pixels wide
+    const platformWidth = this.tileWidth * 10; // 640 pixels wide
     const platformHeight = this.tileHeight * 3; // 192 pixels tall
     const groundLevel = 17 * this.tileHeight;
     
-    console.log(`[updateInfiniteGround] Creating platforms with tileset: ${tileTexture}`);
-    
-    // Generate continuous ground platforms ahead of player
+    // Generate platforms ahead of player with smart mix of ground and sky platforms
     while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
-      // Create platform using TileSprite (better texture handling)
-      const platform = this.add.tileSprite(
-        this.lastSpawnX + platformWidth/2, 
-        groundLevel, 
-        platformWidth,
-        platformHeight,
-        tileTexture
-      );
-      platform.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(platform, true);
       
-      // Sometimes add elevated platforms for variety
-      if (Math.random() < 0.2) {
-        const elevatedY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 6));
-        const elevatedX = this.lastSpawnX + Phaser.Math.Between(platformWidth * 0.3, platformWidth * 0.7);
-        const elevatedPlatform = this.add.tileSprite(
-          elevatedX,
+      // Decide: ground platform or elevated platform?
+      const useGroundPlatform = Math.random() < 0.7; // 70% ground, 30% elevated
+      
+      if (useGroundPlatform) {
+        // GROUND LEVEL PLATFORM - solid and continuous
+        const platform = this.add.tileSprite(
+          this.lastSpawnX + platformWidth/2, 
+          groundLevel, 
+          platformWidth,
+          platformHeight,
+          tileTexture
+        );
+        platform.setOrigin(0.5, 0.5);
+        this.groundPlatforms.add(platform, true);
+        
+        // Small gap or touching
+        const gap = Math.random() < 0.8 ? 0 : Phaser.Math.Between(80, 150);
+        this.lastSpawnX += platformWidth + gap;
+        
+      } else {
+        // ELEVATED SKY PLATFORM with gap underneath
+        const elevatedY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 7));
+        const skyPlatformWidth = platformWidth * Phaser.Math.FloatBetween(0.5, 0.8);
+        
+        const skyPlatform = this.add.tileSprite(
+          this.lastSpawnX + skyPlatformWidth/2,
           elevatedY,
+          skyPlatformWidth,
+          platformHeight,
+          tileTexture
+        );
+        skyPlatform.setOrigin(0.5, 0.5);
+        this.groundPlatforms.add(skyPlatform, true);
+        
+        // Also add a ground platform nearby so player doesn't fall
+        const groundPlatform = this.add.tileSprite(
+          this.lastSpawnX + platformWidth * 1.3, 
+          groundLevel, 
           platformWidth * 0.6,
           platformHeight,
           tileTexture
         );
-        elevatedPlatform.setOrigin(0.5, 0.5);
-        this.groundPlatforms.add(elevatedPlatform, true);
+        groundPlatform.setOrigin(0.5, 0.5);
+        this.groundPlatforms.add(groundPlatform, true);
+        
+        this.lastSpawnX += platformWidth * 1.5;
       }
-      
-      // Move to next platform position (NO gap - platforms touch)
-      this.lastSpawnX += platformWidth;
     }
     
     // Clean up platforms far behind player
