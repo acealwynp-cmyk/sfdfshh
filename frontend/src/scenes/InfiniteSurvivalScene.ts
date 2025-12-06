@@ -55,6 +55,10 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
   // Survival timer
   public survivalTimer?: Phaser.Time.TimerEvent;
+  
+  // Auto biome teleport timer (every 3 minutes)
+  public biomeTeleportTimer?: Phaser.Time.TimerEvent;
+  public teleportWarningText?: Phaser.GameObjects.Text;
 
   // Test key for manual biome cycling
   public bKey?: Phaser.Input.Keyboard.Key;
@@ -122,6 +126,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
     // Start survival timer
     this.startSurvivalTimer();
+    
+    // Start auto biome teleport timer (every 3 minutes)
+    this.startBiomeTeleportTimer();
 
     // Setup test controls
     this.setupTestControls();
@@ -257,6 +264,60 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     const spawnY = 15 * this.tileHeight;
     
     this.player = new CommandoPlayer(this, spawnX, spawnY);
+  }
+  
+  startBiomeTeleportTimer(): void {
+    // Auto biome change every 3 minutes (180 seconds)
+    this.biomeTeleportTimer = this.time.addEvent({
+      delay: 180000, // 3 minutes
+      callback: () => {
+        this.showTeleportWarning();
+      },
+      loop: true
+    });
+    
+    console.log("Auto biome teleport timer started - triggers every 3 minutes");
+  }
+  
+  showTeleportWarning(): void {
+    // Show "TELEPORT IMMINENT" warning
+    if (this.teleportWarningText) {
+      this.teleportWarningText.destroy();
+    }
+    
+    this.teleportWarningText = this.add.text(
+      this.cameras.main.centerX,
+      this.cameras.main.centerY - 200,
+      'TELEPORT IMMINENT',
+      {
+        fontSize: '64px',
+        color: '#ff0000',
+        fontFamily: 'Arial Black',
+        stroke: '#000000',
+        strokeThickness: 8
+      }
+    );
+    this.teleportWarningText.setOrigin(0.5);
+    this.teleportWarningText.setScrollFactor(0);
+    this.teleportWarningText.setDepth(10000);
+    
+    // Pulsing effect
+    this.tweens.add({
+      targets: this.teleportWarningText,
+      alpha: 0.3,
+      scale: 1.2,
+      duration: 500,
+      yoyo: true,
+      repeat: 5
+    });
+    
+    // Trigger biome change after 3 seconds
+    this.time.delayedCall(3000, () => {
+      if (this.teleportWarningText) {
+        this.teleportWarningText.destroy();
+      }
+      this.forceBiomeChange();
+    });
   }
 
   startEnemySpawning(): void {

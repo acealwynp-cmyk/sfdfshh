@@ -10,11 +10,14 @@ export class LaserBeam extends Phaser.GameObjects.Container {
   private maxLength: number = 1800;
   private damageTimer?: Phaser.Time.TimerEvent;
   
+  // CUMULATIVE DAMAGE TRACKING - damage persists even if laser stops and restarts
+  private enemyLaserDamage: Map<any, number> = new Map();
+  
   constructor(scene: Phaser.Scene, player: any) {
     super(scene, 0, 0);
     this.scene = scene;
     this.player = player;
-    this.damage = 2; // Low damage - takes ~5 seconds to kill (50 HP enemy / 2 damage per 0.05s = 5 seconds)
+    this.damage = 10; // 1/5th of 50 HP per second = 10 damage per second
     
     // Create graphics for beam
     this.beamGraphics = scene.add.graphics();
@@ -45,7 +48,7 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     }
     
     this.damageTimer = this.scene.time.addEvent({
-      delay: 50, // Damage every 0.05 seconds (twice as fast!)
+      delay: 200, // Damage every 0.2 seconds (5 ticks per second)
       callback: () => {
         this.checkEnemyCollisions();
       },
@@ -130,8 +133,16 @@ export class LaserBeam extends Phaser.GameObjects.Container {
       const inBeamY = Math.abs(enemyY - startY) < 80;
 
       if (inBeamX && inBeamY) {
-        // Enemy is hit by beam! Deal damage
-        enemy.takeDamage(this.damage);
+        // CUMULATIVE DAMAGE - track total laser damage dealt to this enemy
+        const currentDamage = this.enemyLaserDamage.get(enemy) || 0;
+        const newDamage = currentDamage + 2; // 2 damage per tick (10 dmg/sec / 5 ticks = 2 per tick)
+        
+        this.enemyLaserDamage.set(enemy, newDamage);
+        
+        // Deal damage to enemy
+        enemy.takeDamage(2);
+        
+        console.log(`Laser damage on enemy: ${newDamage} / 50 (${Math.floor(newDamage/10)} seconds of contact)`);
         
         // Visual feedback - bright cyan flash
         if (enemy.setTint && enemy.clearTint) {
@@ -141,6 +152,11 @@ export class LaserBeam extends Phaser.GameObjects.Container {
               enemy.clearTint();
             }
           });
+        }
+        
+        // Clean up tracking if enemy dies
+        if (enemy.isDead) {
+          this.enemyLaserDamage.delete(enemy);
         }
       }
     });
