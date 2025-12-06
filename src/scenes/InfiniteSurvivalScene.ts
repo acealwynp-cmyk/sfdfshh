@@ -388,33 +388,34 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Recreate backgrounds with new texture
     this.createInfiniteBackground();
 
-    // 2. IMMEDIATE PLATFORM TRANSITION
-    // Clear platforms behind player, keep only directly under and ahead
-    console.log("Immediate platform transition...");
+    // 2. COMPLETE PLATFORM RESET FOR CLEAN TRANSITION
+    console.log("Complete platform reset for biome transition...");
     const playerX = this.player.x;
+    const playerY = this.player.y;
     const platformWidth = this.tileWidth * 10;
+    const platformHeight = this.tileHeight * 3;
+    const groundLevel = 17 * this.tileHeight;
     
-    // Remove ALL platforms except those directly under/near player (within 2 platform widths)
-    const platforms = this.groundPlatforms.getChildren();
-    let platformsKept = 0;
-    platforms.forEach((platform: any) => {
-      if (platform) {
-        const distance = Math.abs(platform.x - playerX);
-        // Keep only platforms within 2 platform widths of player
-        if (distance > platformWidth * 2) {
-          this.groundPlatforms.remove(platform, true, true);
-        } else {
-          platformsKept++;
-        }
-      }
-    });
+    // CLEAR ALL OLD PLATFORMS
+    this.groundPlatforms.clear(true, true);
+    console.log("All old platforms cleared");
     
-    console.log(`Kept ${platformsKept} platforms near player, cleared rest`);
+    // CREATE EMERGENCY PLATFORM DIRECTLY UNDER PLAYER (so they don't fall)
+    const emergencyPlatform = this.add.tileSprite(
+      playerX,
+      groundLevel,
+      platformWidth * 2,
+      platformHeight,
+      this.currentBiomeConfig.tilesetKey
+    );
+    emergencyPlatform.setOrigin(0.5, 0.5);
+    this.groundPlatforms.add(emergencyPlatform, true);
+    console.log(`Emergency platform created under player with ${this.currentBiomeConfig.tilesetKey}`);
     
-    // Set spawn point just ahead of player for immediate new platform generation
-    this.lastSpawnX = playerX + platformWidth * 1.5;
+    // Set spawn point just ahead for new platform generation
+    this.lastSpawnX = playerX + platformWidth;
     
-    // Generate new platforms IMMEDIATELY with new tileset
+    // Generate new platforms immediately
     console.log(`Generating new platforms with tileset: ${this.currentBiomeConfig.tilesetKey}`);
     this.updateInfiniteGround();
 
