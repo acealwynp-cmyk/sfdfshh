@@ -85,12 +85,24 @@ export class GameOverUIScene extends Phaser.Scene {
     // Fetch top leaderboard
     this.fetchLeaderboard();
 
+    // Debug logging for score submission
+    console.log('[GameOver] Play Mode:', this.playMode);
+    console.log('[GameOver] Wallet Address:', this.walletAddress);
+    console.log('[GameOver] Score:', this.score);
+    console.log('[GameOver] Will auto-submit:', this.playMode === 'wallet' && this.walletAddress);
+
     // Auto-submit score if wallet play mode
     if (this.playMode === 'wallet' && this.walletAddress) {
+      console.log('[GameOver] Auto-submitting score in 1 second...');
       // Auto-submit after a short delay
       this.time.delayedCall(1000, () => {
+        console.log('[GameOver] Calling submitScore() now');
         this.submitScore();
       });
+    } else {
+      console.log('[GameOver] NOT auto-submitting because:');
+      console.log('  - Play mode is:', this.playMode);
+      console.log('  - Wallet address is:', this.walletAddress);
     }
 
     // Listen for scene shutdown to cleanup event listeners
