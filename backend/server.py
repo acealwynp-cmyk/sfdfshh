@@ -205,15 +205,43 @@ async def submit_score(entry: LeaderboardEntry, request: Request):
 
 @app.get("/api/leaderboard")
 async def get_leaderboard(limit: int = 100, difficulty: Optional[str] = None):
-    """Get top scores from the leaderboard"""
+    """Get top scores from the leaderboard
+    Cached for 30 seconds to handle high traffic"""
     try:
+        # Validate limit
+        if limit < 1 or limit > 1000:
+            limit = 100
+        
+        # Check cache first
+        cached_data = get_cached_leaderboard(difficulty)
+        if cached_data:
+            # Return cached data (limit applied)
+            return {
+                "status": "success",
+                "total": len(cached_data[:limit]),
+                "leaderboard": cached_data[:limit],
+                "cached": True
+            }
+        
         # Build query
         query = {}
         if difficulty:
             query["difficulty"] = difficulty.lower()
         
         # Get top scores sorted by score descending
-        cursor = leaderboard_collection.find(query, {"_id": 0}).sort("score", -1).limit(limit)
+        # Using projection to reduce data transfer
+        projection = {
+            "_id": 0,
+            "wallet_address": 1,
+            "score": 1,
+            "survival_time_seconds": 1,
+            "enemies_killed": 1,
+            "biome_reached": 1,
+            "difficulty": 1,
+            "timestamp": 1
+        }
+        
+        cursor = leaderboard_collection.find(query, projection).sort("score", -1).limit(limit)
         entries = await cursor.to_list(length=limit)
         
         # Format response with ranks
@@ -236,10 +264,15 @@ async def get_leaderboard(limit: int = 100, difficulty: Optional[str] = None):
                 "timestamp": entry["timestamp"].isoformat() if "timestamp" in entry else ""
             })
         
+        # Cache the result
+        set_cached_leaderboard(leaderboard, difficulty)
+        
         return {
             "status": "success",
             "total": len(leaderboard),
-            "leaderboard": leaderboard
+            "leaderboard": leaderboard,
+            "cached": False
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch leaderboard: {str(e)}")
+        print(f"✗ Error fetching leaderboard: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch leaderboard")
