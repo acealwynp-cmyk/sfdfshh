@@ -388,21 +388,23 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.map = null as any;
     }
     
-    // 3. CLEAR ALL PLATFORMS AND REGENERATE WITH NEW TILESET
-    // Strategy: Clear ALL platforms, then immediately generate new ones ahead of player
-    console.log("Clearing ALL platforms for biome transition...");
+    // 3. PLATFORM TRANSITION STRATEGY
+    // Keep on-screen platforms, clear off-screen ones, new platforms use new tileset
+    console.log("Transitioning platform tiles...");
     const playerX = this.player.x;
+    const platforms = this.groundPlatforms.getChildren();
     
-    // Clear all platforms
-    this.groundPlatforms.clear(true, true);
+    // Remove platforms that are off-screen (behind or far ahead)
+    platforms.forEach((platform: any) => {
+      if (platform && (platform.x < playerX - screenSize.width.value || platform.x > playerX + screenSize.width.value * 2)) {
+        this.groundPlatforms.remove(platform, true, true);
+      }
+    });
     
-    // Reset spawn position to just behind player so new platforms generate immediately ahead
-    this.lastSpawnX = playerX - screenSize.width.value;
-    
-    // Immediately generate platforms ahead with new tileset
+    // Force immediate generation of new platforms ahead with the new tileset
     this.updateInfiniteGround();
     
-    console.log(`All platforms cleared. Regenerating with tileset: ${this.currentBiomeConfig.tilesetKey}`);
+    console.log(`Platform transition complete. New platforms will use: ${this.currentBiomeConfig.tilesetKey}`);
     
     // 4. CREATE NEW TILEMAP FOR NEW BIOME
     console.log("Creating new tilemap...");
