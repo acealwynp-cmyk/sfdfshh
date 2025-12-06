@@ -797,6 +797,13 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
       // Show game over screen
       this.time.delayedCall(1000, () => {
+        console.log(`[Game Over] Passing data to GameOverUIScene:`);
+        console.log(`  - Score: ${this.score}`);
+        console.log(`  - Survival Time: ${this.survivalTimeSeconds}s`);
+        console.log(`  - Enemies Killed: ${this.enemiesKilled}`);
+        console.log(`  - Play Mode: ${this.playMode}`);
+        console.log(`  - Wallet: ${this.walletAddress}`);
+        
         this.scene.launch("GameOverUIScene", {
           score: this.score,
           survivalTime: this.getFormattedSurvivalTime(),
