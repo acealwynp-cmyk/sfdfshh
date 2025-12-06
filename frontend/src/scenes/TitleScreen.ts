@@ -319,10 +319,14 @@ export class TitleScreen extends Phaser.Scene {
     // Add transition effect
     this.cameras.main.fadeOut(500, 0, 0, 0);
     
-    // Start infinite survival mode with selected difficulty
+    // Start infinite survival mode with selected difficulty and play mode
     this.time.delayedCall(500, () => {
-      console.log(`Starting game with difficulty: ${this.selectedDifficulty}`);
-      this.scene.start("InfiniteSurvivalScene", { difficulty: this.selectedDifficulty });
+      console.log(`Starting game with difficulty: ${this.selectedDifficulty}, mode: ${this.playMode}`);
+      this.scene.start("InfiniteSurvivalScene", { 
+        difficulty: this.selectedDifficulty,
+        playMode: this.playMode,
+        walletAddress: this.walletAddress
+      });
     });
   }
 
