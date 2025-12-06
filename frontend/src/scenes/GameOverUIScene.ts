@@ -340,12 +340,10 @@ export class GameOverUIScene extends Phaser.Scene {
                        entry.rank === 3 ? 'text-orange-400' : 'text-white';
 
       html += `
-        <div class="flex justify-between items-center text-white text-sm py-2 px-2 hover:bg-gray-800 rounded" style="text-shadow: 1px 1px 0px #000000;">
-          <div class="${rankColor} font-bold w-12">#${entry.rank}</div>
-          <div class="text-cyan-400 font-mono text-xs w-24">${this.shortenAddress(entry.wallet_address)}</div>
-          <div class="text-yellow-400 font-bold w-24 text-right">${entry.score.toLocaleString()}</div>
-          <div class="text-gray-400 w-16 text-center">${entry.survival_time}</div>
-          <div class="text-red-400 w-12 text-center">${entry.enemies_killed}</div>
+        <div class="grid grid-cols-3 gap-4 items-center text-white text-base py-2 px-2 hover:bg-gray-800 rounded" style="text-shadow: 1px 1px 0px #000000;">
+          <div class="${rankColor} font-bold text-center text-xl">#${entry.rank}</div>
+          <div class="text-cyan-400 font-mono text-sm text-center">${this.shortenAddress(entry.wallet_address)}</div>
+          <div class="text-yellow-400 font-bold text-right text-lg">${entry.score.toLocaleString()}</div>
         </div>
       `;
     });
