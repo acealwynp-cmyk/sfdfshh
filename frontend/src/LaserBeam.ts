@@ -134,19 +134,23 @@ export class LaserBeam extends Phaser.GameObjects.Container {
 
       if (inBeamX && inBeamY) {
         // CUMULATIVE DAMAGE - track total laser damage dealt to this enemy
+        // 50 HP / 3 seconds = 16.67 dmg/sec, 5 ticks/sec = 3.34 per tick
+        const damagePerTick = 3.34;
         const currentDamage = this.enemyLaserDamage.get(enemy) || 0;
-        const newDamage = currentDamage + 2; // 2 damage per tick (10 dmg/sec / 5 ticks = 2 per tick)
+        const newDamage = currentDamage + damagePerTick;
         
         this.enemyLaserDamage.set(enemy, newDamage);
         
         // Deal damage to enemy
-        enemy.takeDamage(2);
+        enemy.takeDamage(damagePerTick);
         
-        console.log(`Laser damage on enemy: ${newDamage} / 50 (${Math.floor(newDamage/10)} seconds of contact)`);
+        // Calculate contact time for logging
+        const contactTimeSeconds = (newDamage / 16.67).toFixed(1);
+        console.log(`Laser hitting enemy: ${newDamage.toFixed(1)} / 50 HP (${contactTimeSeconds}s contact time)`);
         
         // Visual feedback - bright cyan flash
         if (enemy.setTint && enemy.clearTint) {
-          enemy.setTint(0x00FFFF); // Bright cyan
+          enemy.setTint(0x00FFFF); // Bright cyan laser burn
           this.scene.time.delayedCall(40, () => {
             if (enemy && enemy.active && !enemy.isDead) {
               enemy.clearTint();
@@ -157,6 +161,7 @@ export class LaserBeam extends Phaser.GameObjects.Container {
         // Clean up tracking if enemy dies
         if (enemy.isDead) {
           this.enemyLaserDamage.delete(enemy);
+          console.log(`Enemy killed by laser after ${contactTimeSeconds}s of contact!`);
         }
       }
     });
