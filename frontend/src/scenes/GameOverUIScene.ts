@@ -77,6 +77,8 @@ export class GameOverUIScene extends Phaser.Scene {
     this.populateStats();
     // Setup input controls
     this.setupInputs();
+    // Fetch top leaderboard
+    this.fetchLeaderboard();
   }
 
   populateStats(): void {
