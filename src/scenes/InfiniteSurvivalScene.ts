@@ -410,11 +410,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   setupCollisions(): void {
-    // Ground collisions - with main tilemap layer
-    utils.addCollider(this, this.player, this.groundLayer);
-    utils.addCollider(this, this.enemies, this.groundLayer);
-    
-    // Also collide with additional platforms
+    // Ground collisions - with dynamically generated platforms only
     utils.addCollider(this, this.player, this.groundPlatforms);
     utils.addCollider(this, this.enemies, this.groundPlatforms);
 
@@ -446,29 +442,6 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       (projectile: any, player: any) => {
         if (projectile && player && projectile.active && player.active && !player.isInvulnerable) {
           player.takeDamage(projectile.damage);
-          projectile.hit();
-        }
-      }
-    );
-
-    // Projectiles vs ground tilemap
-    utils.addCollider(
-      this,
-      this.playerProjectiles,
-      this.groundLayer,
-      (projectile: any) => {
-        if (projectile && projectile.active) {
-          projectile.hit();
-        }
-      }
-    );
-
-    utils.addCollider(
-      this,
-      this.enemyProjectiles,
-      this.groundLayer,
-      (projectile: any) => {
-        if (projectile && projectile.active) {
           projectile.hit();
         }
       }
