@@ -4,8 +4,7 @@ import { gameplayConfig } from "./gameConfig.json";
 
 export enum WeaponType {
   COMBAT_RIFLE = "combat_rifle",
-  FLAME_THROWER = "flame_thrower",
-  LASER_BLASTER = "laser_blaster"
+  FLAME_THROWER = "flame_thrower"
 }
 
 export interface WeaponConfig {
