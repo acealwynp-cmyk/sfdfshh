@@ -26,6 +26,7 @@ app.add_middleware(
 
 # MongoDB connection with connection pooling
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017")
+DB_NAME = os.environ.get("DB_NAME", "degen_force")
 client = AsyncIOMotorClient(
     MONGO_URL,
     maxPoolSize=50,  # Connection pool for high concurrency
@@ -33,7 +34,7 @@ client = AsyncIOMotorClient(
     maxIdleTimeMS=30000,
     serverSelectionTimeoutMS=5000
 )
-db = client["degen_force"]
+db = client[DB_NAME]
 leaderboard_collection = db["leaderboard"]
 
 # Rate limiting storage (in-memory for simplicity, use Redis in production)
