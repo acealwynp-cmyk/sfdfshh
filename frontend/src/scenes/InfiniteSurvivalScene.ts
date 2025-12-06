@@ -288,17 +288,17 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.teleportWarningText.destroy();
     }
     
-    // Create countdown text
+    // Create countdown text (75% smaller = 25% of original size)
     this.teleportWarningText = this.add.text(
       this.cameras.main.centerX,
       this.cameras.main.centerY - 200,
       `Teleporting in ${countdown}`,
       {
-        fontSize: '72px',
+        fontSize: '18px',
         color: '#ffff00',
         fontFamily: 'Arial Black',
         stroke: '#000000',
-        strokeThickness: 10
+        strokeThickness: 2
       }
     );
     this.teleportWarningText.setOrigin(0.5);
