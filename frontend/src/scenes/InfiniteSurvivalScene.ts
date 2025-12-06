@@ -213,9 +213,6 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     // Generate initial platforms with GROUND + SKY layers
     const tileTexture = this.currentBiomeConfig.tilesetKey;
-    const platformWidth = this.tileWidth * 9; // 576 pixels wide
-    const platformHeight = this.tileHeight * 3; // 192 pixels tall
-    const groundLevel = 17 * this.tileHeight; // Ground level
     
     console.log(`[createInfiniteGround] Creating ground + sky platforms with tileset: ${tileTexture}`);
     
