@@ -353,9 +353,20 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     // 1. UPDATE BACKGROUNDS
     console.log("Updating backgrounds...");
-    this.backgrounds.forEach(bg => {
-      bg.setTexture(this.currentBiomeConfig.backgroundKey);
-    });
+    const newBackgroundKey = this.currentBiomeConfig.backgroundKey;
+    console.log(`  -> Attempting to set background texture to: ${newBackgroundKey}`);
+    
+    // Check if texture exists
+    if (!this.textures.exists(newBackgroundKey)) {
+      console.error(`ERROR: Texture '${newBackgroundKey}' does not exist!`);
+      console.log("Available textures:", this.textures.list);
+    } else {
+      console.log(`  -> Texture '${newBackgroundKey}' exists, applying to ${this.backgrounds.length} backgrounds`);
+      this.backgrounds.forEach((bg, index) => {
+        bg.setTexture(newBackgroundKey);
+        console.log(`  -> Background ${index} updated to ${bg.texture.key}`);
+      });
+    }
 
     // 2. DESTROY OLD TILEMAP
     console.log("Destroying old tilemap...");
