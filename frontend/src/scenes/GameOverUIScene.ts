@@ -284,8 +284,7 @@ export class GameOverUIScene extends Phaser.Scene {
     if (!walletAddress) return;
 
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
-      const response = await fetch(`${backendUrl}/api/leaderboard/submit`, {
+      const response = await fetch(`/api/leaderboard/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
