@@ -174,9 +174,88 @@ export class TitleScreen extends Phaser.Scene {
       });
     }
 
+    // Add wallet button handler
+    const walletBtn = document.getElementById('wallet-btn');
+    if (walletBtn) {
+      const walletHandler = async (e: Event) => {
+        e.stopPropagation();
+        await this.handleWalletClick();
+      };
+      walletBtn.addEventListener('click', walletHandler);
+      this.walletHandler = walletHandler;
+    }
+
+    // Add leaderboard button handler
+    const leaderboardBtn = document.getElementById('leaderboard-btn');
+    if (leaderboardBtn) {
+      const leaderboardHandler = (e: Event) => {
+        e.stopPropagation();
+        this.showLeaderboard();
+      };
+      leaderboardBtn.addEventListener('click', leaderboardHandler);
+      this.leaderboardHandler = leaderboardHandler;
+    }
+
     // Store event listeners for cleanup
     this.keydownHandler = handleKeyDown;
     this.clickHandler = handleStart;
+  }
+
+  async handleWalletClick(): Promise<void> {
+    if (isWalletConnected()) {
+      // Disconnect
+      await disconnectWallet();
+      this.walletAddress = null;
+      this.updateWalletDisplay();
+    } else {
+      // Connect
+      const address = await connectWallet();
+      this.walletAddress = address;
+      this.updateWalletDisplay();
+      
+      if (!address) {
+        // Show error message
+        console.error('Failed to connect wallet. Please install Phantom wallet extension.');
+      }
+    }
+  }
+
+  updateWalletDisplay(): void {
+    const walletBtn = document.getElementById('wallet-btn');
+    const walletStatus = document.getElementById('wallet-status');
+    const walletAddressEl = document.getElementById('wallet-address');
+
+    if (walletBtn) {
+      if (isWalletConnected()) {
+        walletBtn.textContent = 'DISCONNECT WALLET';
+        walletBtn.className = 'game-pixel-container-clickable-red-600 px-6 py-3 text-white font-bold text-lg';
+      } else {
+        walletBtn.textContent = 'CONNECT WALLET';
+        walletBtn.className = 'game-pixel-container-clickable-purple-600 px-6 py-3 text-white font-bold text-lg';
+      }
+    }
+
+    if (walletStatus && walletAddressEl) {
+      const address = getConnectedWallet();
+      if (address) {
+        walletStatus.classList.remove('hidden');
+        walletAddressEl.textContent = shortenAddress(address);
+      } else {
+        walletStatus.classList.add('hidden');
+      }
+    }
+  }
+
+  showLeaderboard(): void {
+    // Clean up and switch to leaderboard scene
+    this.cleanupEventListeners();
+    
+    // Stop background music
+    if (this.backgroundMusic) {
+      this.backgroundMusic.stop();
+    }
+    
+    this.scene.start('LeaderboardScene');
   }
 
   initializeSounds(): void {
