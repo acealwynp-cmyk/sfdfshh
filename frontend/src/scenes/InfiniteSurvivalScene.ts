@@ -203,37 +203,38 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   createInfiniteGround(): void {
-    // For infinite runner, we don't use static tilemaps
-    // Instead, we dynamically generate platforms using the biome's tileset
-    console.log(`[createInfiniteGround] Setting up ground for biome: ${this.currentBiomeConfig.displayName}`);
+    console.log(`[createInfiniteGround] Setting up STRAIGHT FLAT THICK platform for biome: ${this.currentBiomeConfig.displayName}`);
     console.log(`[createInfiniteGround] Using tileset: ${this.currentBiomeConfig.tilesetKey}`);
     
     // Create static group for platforms
     this.groundPlatforms = this.physics.add.staticGroup();
     
-    // Generate initial platforms with GROUND + SKY layers
     const tileTexture = this.currentBiomeConfig.tilesetKey;
+    const platformWidth = this.tileWidth * 15; // 960 pixels - VERY WIDE
+    const platformHeight = this.tileHeight * 5; // 320 pixels - VERY THICK
+    const groundLevel = 18 * this.tileHeight; // Fixed ground level
     
-    console.log(`[createInfiniteGround] Creating ground + sky platforms with tileset: ${tileTexture}`);
+    console.log(`[createInfiniteGround] Creating CONTINUOUS FLAT platform - Width: ${platformWidth}, Height: ${platformHeight}`);
     
-    // Create initial STRAIGHT THICK platforms - continuous ground
-    const platformWidth = this.tileWidth * 12; // 768 pixels wide - THICK
-    const platformHeight = this.tileHeight * 4; // 256 pixels tall - THICK
-    const groundLevel = 18 * this.tileHeight;
-    
-    let currentX = 0;
-    for (let i = 0; i < 20; i++) {
-      // Thick ground platform
-      const groundPlatform = this.add.tileSprite(currentX + platformWidth/2, groundLevel, platformWidth, platformHeight, tileTexture);
-      groundPlatform.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(groundPlatform, true);
+    // Create initial continuous platform - NO GAPS
+    let currentX = -platformWidth; // Start offscreen to the left
+    for (let i = 0; i < 30; i++) {
+      const platform = this.add.tileSprite(
+        currentX + platformWidth/2, 
+        groundLevel, 
+        platformWidth, 
+        platformHeight, 
+        tileTexture
+      );
+      platform.setOrigin(0.5, 0.5);
+      this.groundPlatforms.add(platform, true);
       
-      // No gaps - continuous
+      // EXACTLY touching - no gaps at all
       currentX += platformWidth;
     }
     
     this.lastSpawnX = currentX;
-    console.log(`[createInfiniteGround] Created initial platforms with sky layers up to X=${this.lastSpawnX}`);
+    console.log(`[createInfiniteGround] Created continuous flat platform up to X=${this.lastSpawnX}`);
   }
 
   playBiomeMusic(): void {
@@ -656,25 +657,24 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   updateInfiniteGround(): void {
     const playerX = this.player.x;
     const tileTexture = this.currentBiomeConfig.tilesetKey;
-    const platformWidth = this.tileWidth * 12; // 768 pixels wide - THICK
-    const platformHeight = this.tileHeight * 4; // 256 pixels tall - THICK
-    const groundLevel = 18 * this.tileHeight; // Ground level
+    const platformWidth = this.tileWidth * 15; // 960 pixels - VERY WIDE
+    const platformHeight = this.tileHeight * 5; // 320 pixels - VERY THICK
+    const groundLevel = 18 * this.tileHeight; // Same as createInfiniteGround
     
-    // STRAIGHT THICK PLATFORMS - Simple and solid
+    // Generate CONTINUOUS FLAT platform ahead of player
     while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
       
-      // Create continuous thick ground platform
-      const ground = this.add.tileSprite(
+      const platform = this.add.tileSprite(
         this.lastSpawnX + platformWidth/2,
         groundLevel,
         platformWidth,
         platformHeight,
         tileTexture
       );
-      ground.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(ground, true);
+      platform.setOrigin(0.5, 0.5);
+      this.groundPlatforms.add(platform, true);
       
-      // No gaps - continuous platform
+      // EXACTLY touching - absolutely NO gaps
       this.lastSpawnX += platformWidth;
     }
     
