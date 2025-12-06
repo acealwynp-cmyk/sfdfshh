@@ -48,15 +48,28 @@ leaderboard_cache = {
     "ttl": 30  # Cache for 30 seconds
 }
 
-# Pydantic models
+# Pydantic models with validation
 class LeaderboardEntry(BaseModel):
-    wallet_address: str
-    score: int
-    survival_time_seconds: int
-    enemies_killed: int
-    biome_reached: str
-    difficulty: str
+    wallet_address: str = Field(..., min_length=10, max_length=100)
+    score: int = Field(..., ge=0, le=10000000)  # Max 10M score
+    survival_time_seconds: int = Field(..., ge=0, le=86400)  # Max 24 hours
+    enemies_killed: int = Field(..., ge=0, le=100000)  # Max 100k enemies
+    biome_reached: str = Field(..., max_length=50)
+    difficulty: str = Field(..., pattern="^(easy|hard|cursed)$")
     timestamp: Optional[datetime] = None
+    
+    @validator('wallet_address')
+    def validate_wallet(cls, v):
+        # Basic validation for wallet address
+        if not v or len(v.strip()) < 10:
+            raise ValueError('Invalid wallet address')
+        return v.strip()
+    
+    @validator('score', 'survival_time_seconds', 'enemies_killed')
+    def validate_positive(cls, v):
+        if v < 0:
+            raise ValueError('Value must be non-negative')
+        return v
 
 class LeaderboardResponse(BaseModel):
     wallet_address: str
