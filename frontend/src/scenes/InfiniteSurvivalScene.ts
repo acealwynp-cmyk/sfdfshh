@@ -41,6 +41,8 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   public survivalTimeSeconds: number = 0;
   public gameStartTime: number = 0;
   public enemiesKilled: number = 0;
+  public playMode: "guest" | "wallet" = "guest";
+  public walletAddress: string | null = null;
   
   // Enemy spawning
   public enemySpawner?: Phaser.Time.TimerEvent;
