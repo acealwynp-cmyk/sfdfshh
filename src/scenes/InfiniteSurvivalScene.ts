@@ -660,6 +660,11 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
       
+      // Debug: Log what texture is actually being used
+      if (Math.random() < 0.1) { // Log only 10% to avoid spam
+        console.log(`[Platform created] Position: ${nextX}, Texture requested: ${tileTexture}, Texture actual: ${platform.texture.key}`);
+      }
+      
       // Sometimes add elevated platforms for variety
       if (Math.random() < 0.3 && nextY > 12 * this.tileHeight) {
         const elevatedY = nextY - (this.tileHeight * Phaser.Math.Between(3, 5));
