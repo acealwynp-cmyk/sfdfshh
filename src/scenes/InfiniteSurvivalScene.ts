@@ -368,35 +368,21 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.map = null as any;
     }
     
-    // 3. UPDATE PLATFORM TEXTURES PROPERLY
-    console.log("Updating platform textures to new biome...");
-    const newTileTexture = this.currentBiomeConfig.tilesetKey;
+    // 3. GRADUALLY TRANSITION PLATFORM TILES
+    // Strategy: Clear only off-screen platforms behind player, keep on-screen ones
+    // New platforms ahead will automatically use new tileset from updateInfiniteGround()
+    console.log("Cleaning up off-screen platforms...");
+    const playerX = this.player.x;
+    const platforms = this.groundPlatforms.getChildren();
     
-    // Update each platform's texture - need to refresh physics body
-    this.groundPlatforms.getChildren().forEach((platform: any) => {
-      if (platform && platform.active) {
-        // Store position and size
-        const x = platform.x;
-        const y = platform.y;
-        const width = platform.displayWidth;
-        const height = platform.displayHeight;
-        
-        // Remove from group
-        this.groundPlatforms.remove(platform, false, false);
-        
-        // Change texture
-        platform.setTexture(newTileTexture);
-        platform.setPosition(x, y);
-        platform.setDisplaySize(width, height);
-        platform.setOrigin(0.5, 0.5);
-        
-        // Re-add to physics group
-        this.groundPlatforms.add(platform, true);
-        platform.refreshBody();
+    platforms.forEach((platform: any) => {
+      // Remove platforms that are far behind player (off-screen)
+      if (platform && platform.x < playerX - screenSize.width.value) {
+        this.groundPlatforms.remove(platform, true, true);
       }
     });
     
-    console.log(`Updated platforms to use ${newTileTexture}`);
+    console.log(`Old platforms cleared. New platforms will use: ${this.currentBiomeConfig.tilesetKey}`);
     
     // 4. CREATE NEW TILEMAP FOR NEW BIOME
     console.log("Creating new tilemap...");
@@ -456,7 +442,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.biomeTransitionInProgress = false;
     
     console.log(`=== BIOME TRANSITION COMPLETE ===`);
-    console.log(`Platform textures updated, new enemies spawning for: ${this.currentBiomeConfig.displayName}`);
+    console.log(`New platforms ahead will use ${this.currentBiomeConfig.tilesetKey}, old ones will scroll off-screen naturally`);
   }
 
   setupCollisions(): void {
