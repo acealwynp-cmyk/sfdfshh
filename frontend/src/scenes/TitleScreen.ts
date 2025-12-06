@@ -8,9 +8,6 @@ export class TitleScreen extends Phaser.Scene {
   uiContainer!: Phaser.GameObjects.DOMElement;
   
   // Input controls - HTML event handlers
-  keydownHandler?: (event: KeyboardEvent) => void;
-  clickHandler?: (event: Event) => void;
-  walletHandler?: (event: Event) => void;
   leaderboardHandler?: (event: Event) => void;
   
   // Audio
