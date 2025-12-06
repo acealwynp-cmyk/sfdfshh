@@ -159,24 +159,51 @@ export class TitleScreen extends Phaser.Scene {
   }
 
   setupInputs(): void {
-    // Add HTML event listeners for keyboard and mouse events
-    const handleStart = (event: Event) => {
-      event.preventDefault();
-      this.startGame();
-    };
+    // Guest Play button
+    const guestPlayBtn = document.getElementById('guest-play-btn');
+    if (guestPlayBtn) {
+      guestPlayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.playMode = 'guest';
+        this.showDifficultySelectionScreen();
+      });
+    }
 
-    // Listen for Enter and Space key events on the document
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.code === 'Enter' || event.code === 'Space') {
-        event.preventDefault();
-        this.startGame();
-      }
-    };
+    // Wallet Connect Play button
+    const walletPlayBtn = document.getElementById('wallet-play-btn');
+    if (walletPlayBtn) {
+      walletPlayBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        this.playMode = 'wallet';
+        
+        // Connect wallet first
+        if (!isWalletConnected()) {
+          const address = await connectWallet();
+          if (!address) {
+            alert('Please install Phantom wallet extension to use Wallet Connect Play mode.');
+            return;
+          }
+          this.walletAddress = address;
+          this.updateWalletDisplay();
+        }
+        
+        // Show difficulty selection
+        this.showDifficultySelectionScreen();
+      });
+    }
 
-    // Add event listeners
-    document.addEventListener('keydown', handleKeyDown);
-    
-    // Add difficulty button handlers
+    // Leaderboard button
+    const leaderboardBtn = document.getElementById('leaderboard-btn');
+    if (leaderboardBtn) {
+      const leaderboardHandler = (e: Event) => {
+        e.stopPropagation();
+        this.showLeaderboard();
+      };
+      leaderboardBtn.addEventListener('click', leaderboardHandler);
+      this.leaderboardHandler = leaderboardHandler;
+    }
+
+    // Difficulty button handlers
     const easyBtn = document.getElementById('easy-btn');
     const hardBtn = document.getElementById('hard-btn');
     const cursedBtn = document.getElementById('cursed-btn');
@@ -205,31 +232,36 @@ export class TitleScreen extends Phaser.Scene {
       });
     }
 
-    // Add wallet button handler
-    const walletBtn = document.getElementById('wallet-btn');
-    if (walletBtn) {
-      const walletHandler = async (e: Event) => {
+    // Back button
+    const backBtn = document.getElementById('back-to-menu-btn');
+    if (backBtn) {
+      backBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        await this.handleWalletClick();
-      };
-      walletBtn.addEventListener('click', walletHandler);
-      this.walletHandler = walletHandler;
+        this.showMainMenu();
+      });
     }
+  }
 
-    // Add leaderboard button handler
-    const leaderboardBtn = document.getElementById('leaderboard-btn');
-    if (leaderboardBtn) {
-      const leaderboardHandler = (e: Event) => {
-        e.stopPropagation();
-        this.showLeaderboard();
-      };
-      leaderboardBtn.addEventListener('click', leaderboardHandler);
-      this.leaderboardHandler = leaderboardHandler;
+  showDifficultySelectionScreen(): void {
+    const mainMenu = document.getElementById('main-menu');
+    const difficultyMenu = document.getElementById('difficulty-menu');
+    
+    if (mainMenu) mainMenu.classList.add('hidden');
+    if (difficultyMenu) {
+      difficultyMenu.classList.remove('hidden');
+      difficultyMenu.classList.add('flex');
     }
+  }
 
-    // Store event listeners for cleanup
-    this.keydownHandler = handleKeyDown;
-    this.clickHandler = handleStart;
+  showMainMenu(): void {
+    const mainMenu = document.getElementById('main-menu');
+    const difficultyMenu = document.getElementById('difficulty-menu');
+    
+    if (mainMenu) {
+      mainMenu.classList.remove('hidden');
+      mainMenu.classList.add('flex');
+    }
+    if (difficultyMenu) difficultyMenu.classList.add('hidden');
   }
 
   async handleWalletClick(): Promise<void> {
