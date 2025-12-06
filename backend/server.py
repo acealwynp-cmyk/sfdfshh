@@ -81,6 +81,50 @@ class LeaderboardResponse(BaseModel):
     timestamp: str
     rank: int
 
+# Rate limiting function
+async def check_rate_limit(wallet_address: str) -> bool:
+    """Check if wallet has exceeded rate limit"""
+    now = time.time()
+    # Clean old entries
+    rate_limit_store[wallet_address] = [
+        ts for ts in rate_limit_store[wallet_address] 
+        if now - ts < RATE_LIMIT_WINDOW
+    ]
+    
+    # Check limit
+    if len(rate_limit_store[wallet_address]) >= RATE_LIMIT_MAX_REQUESTS:
+        return False
+    
+    # Add new request
+    rate_limit_store[wallet_address].append(now)
+    return True
+
+# Cache management
+def get_cached_leaderboard(difficulty: Optional[str] = None):
+    """Get leaderboard from cache if valid"""
+    cache_key = f"leaderboard_{difficulty or 'all'}"
+    now = time.time()
+    
+    if cache_key in leaderboard_cache:
+        cache_data = leaderboard_cache[cache_key]
+        if now - cache_data["timestamp"] < cache_data["ttl"]:
+            return cache_data["data"]
+    
+    return None
+
+def set_cached_leaderboard(data, difficulty: Optional[str] = None):
+    """Cache leaderboard data"""
+    cache_key = f"leaderboard_{difficulty or 'all'}"
+    leaderboard_cache[cache_key] = {
+        "data": data,
+        "timestamp": time.time(),
+        "ttl": 30  # 30 seconds cache
+    }
+
+def invalidate_leaderboard_cache():
+    """Clear all leaderboard caches after new score submission"""
+    leaderboard_cache.clear()
+
 @app.get("/")
 async def root():
     """Root endpoint"""
