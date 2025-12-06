@@ -167,19 +167,12 @@ export class LeaderboardScene extends Phaser.Scene {
         const rankColor = entry.rank === 1 ? 'text-yellow-400' : 
                          entry.rank === 2 ? 'text-gray-300' : 
                          entry.rank === 3 ? 'text-orange-400' : 'text-white';
-        
-        const difficultyColor = entry.difficulty === 'cursed' ? 'text-red-500' :
-                               entry.difficulty === 'hard' ? 'text-orange-500' : 'text-green-500';
 
         rowsHTML += `
-          <div class="grid grid-cols-7 gap-4 text-white text-sm py-2 px-2 hover:bg-gray-800 rounded" style="text-shadow: 1px 1px 0px #000000;">
-            <div class="text-center ${rankColor} font-bold">#${entry.rank}</div>
-            <div class="text-center text-cyan-400 font-mono text-xs">${this.shortenAddress(entry.wallet_address)}</div>
-            <div class="text-center font-bold">${entry.score.toLocaleString()}</div>
-            <div class="text-center">${entry.survival_time}</div>
-            <div class="text-center">${entry.enemies_killed}</div>
-            <div class="text-center text-purple-400">${entry.biome_reached}</div>
-            <div class="text-center ${difficultyColor} uppercase font-bold">${entry.difficulty}</div>
+          <div class="grid grid-cols-3 gap-8 text-white text-lg py-3 px-4 hover:bg-gray-800 rounded" style="text-shadow: 1px 1px 0px #000000;">
+            <div class="text-center ${rankColor} font-bold text-2xl">#${entry.rank}</div>
+            <div class="text-center text-cyan-400 font-mono">${this.shortenAddress(entry.wallet_address)}</div>
+            <div class="text-center font-bold text-yellow-400 text-xl">${entry.score.toLocaleString()}</div>
           </div>
         `;
       });
