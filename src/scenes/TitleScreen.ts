@@ -55,7 +55,7 @@ export class TitleScreen extends Phaser.Scene {
     const jungleBackgroundURL = jungleBackground.getSourceImage().src;
     
     // Get title image URL from Phaser texture
-    const titleImage = this.textures.get('game_title');
+    const titleImage = this.textures.get('degen_force_title');
     const titleImageURL = titleImage ? titleImage.getSourceImage().src : '';
     
     // Generate SVG Data URL for clickable container
