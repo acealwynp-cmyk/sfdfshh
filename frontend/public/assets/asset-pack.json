@@ -1,0 +1,507 @@
+{
+  "animation_json": {
+    "files": [
+      {
+        "url": "assets/animations.json",
+        "type": "animation",
+        "key": "animations"
+      }
+    ]
+  },
+  "fonts": {
+    "files": [
+      {
+        "url": "assets/fronts/retro-pixel-arcade.otf.woff2",
+        "type": "font",
+        "key": "RetroPixel",
+        "fontType": "opentype"
+      }
+    ]
+  },
+  "tilemaps": {
+    "files": [
+      {
+        "type": "tilemapTiledJSON",
+        "key": "jungle_level_1",
+        "url": "https://cdn-game-mcp.gambo.ai/360e3652-616a-4bd7-a2e9-afe16edc6089/tile_maps/jungle_level_1.json"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "desert_level_1",
+        "url": "https://cdn-game-mcp.gambo.ai/b43c1b72-3776-4e5f-a1db-23f644bb9160/tile_maps/desert_level_1.json"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "urban_ruins_level_1",
+        "url": "https://cdn-game-mcp.gambo.ai/9ee5a32e-8973-4693-a678-b591b860ccdf/tile_maps/urban_ruins_level_1.json"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "arctic_battlefield_level_1",
+        "url": "https://cdn-game-mcp.gambo.ai/2bf1b213-3047-46e1-a23b-e715b056bfb6/tile_maps/arctic_battlefield_level_1.json"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "space_station_level_1",
+        "url": "https://cdn-game-mcp.gambo.ai/a8dbdbe5-cc10-4ca7-ad0e-51980be5c4ae/tile_maps/space_station_level_1.json"
+      }
+    ]
+  },
+  "tilesets": {
+    "files": [
+      {
+        "type": "image",
+        "key": "jungle_ground_tileset",
+        "url": "https://cdn-game-mcp.gambo.ai/e0e92695-8acc-499f-bb4f-7b19e1d9b5ef/tilesets/jungle_ground_tileset.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_ground_tileset",
+        "url": "https://cdn-game-mcp.gambo.ai/319a7926-fcc4-445b-b73e-a4caee6f1025/tilesets/desert_ground_tileset.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_ruins_tileset",
+        "url": "https://cdn-game-mcp.gambo.ai/c5d5a30c-ab42-40c3-b29c-a14d64e5617e/tilesets/urban_ruins_tileset.png"
+      },
+      {
+        "type": "image",
+        "key": "snow_ground_tileset",
+        "url": "https://cdn-game-mcp.gambo.ai/5cd8cbeb-762a-4a2f-b3cf-c8d93a65ba22/tilesets/snow_ground_tileset.png"
+      },
+      {
+        "type": "image",
+        "key": "space_platform_tileset",
+        "url": "https://cdn-game-mcp.gambo.ai/72abc964-90bd-4f5e-93e3-e91fccd7c037/tilesets/space_platform_tileset.png"
+      }
+    ]
+  },
+  "backgrounds": {
+    "files": [
+      {
+        "type": "image",
+        "key": "jungle_background",
+        "url": "https://cdn-game-mcp.gambo.ai/76bde59c-cefd-4ef9-8298-cb12489071b8/images/jungle_background.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_background",
+        "url": "https://cdn-game-mcp.gambo.ai/70ee1342-48ee-407a-8716-2ec083f56db2/images/desert_background.png"
+      },
+      {
+        "type": "image",
+        "key": "ruined_city_background",
+        "url": "https://cdn-game-mcp.gambo.ai/b504e840-1886-4954-96de-40473626b1c0/images/ruined_city_background.png"
+      },
+      {
+        "type": "image",
+        "key": "snow_battlefield_background",
+        "url": "https://cdn-game-mcp.gambo.ai/c9b47642-1191-4591-801b-aa2016035ca4/images/snow_battlefield_background.png"
+      },
+      {
+        "type": "image",
+        "key": "deep_space_background",
+        "url": "https://cdn-game-mcp.gambo.ai/24ef2b15-761c-47a9-ac15-1860c289c9dc/images/deep_space_background.png"
+      }
+    ]
+  },
+  "ui_images": {
+    "files": [
+      {
+        "type": "image",
+        "key": "degen_force_title",
+        "url": "https://cdn-game-mcp.gambo.ai/fc29437f-f1db-49e4-a301-fd27921b195d/images/degen_force_title.png"
+      }
+    ]
+  },
+  "weapon_images": {
+    "files": [
+      {
+        "type": "image",
+        "key": "flame_thrower_weapon",
+        "url": "https://cdn-game-mcp.gambo.ai/905e58d8-7e71-4feb-82b7-3551b7fc8453/images/flame_thrower_weapon.png"
+      },
+      {
+        "type": "image",
+        "key": "rocket_launcher_weapon",
+        "url": "https://cdn-game-mcp.gambo.ai/a64c13e3-c03a-4720-aa48-760b19d2e8ea/images/rocket_launcher_weapon.png"
+      },
+      {
+        "type": "image",
+        "key": "laser_blaster_weapon",
+        "url": "https://cdn-game-mcp.gambo.ai/e2b53b2c-3a7c-446a-b8b7-ce93400ab080/images/laser_blaster_weapon.png"
+      },
+      {
+        "type": "image",
+        "key": "combat_rifle_weapon",
+        "url": "https://cdn-game-mcp.gambo.ai/a64940da-81c7-4d2e-b61f-e19b6bf5ea28/images/combat_rifle_weapon.png"
+      }
+    ]
+  },
+  "projectile_images": {
+    "files": [
+      {
+        "type": "image",
+        "key": "bullet_projectile",
+        "url": "https://cdn-game-mcp.gambo.ai/9d1ebf4e-e7b4-4834-825d-329ebe7bab06/images/bullet_projectile.png"
+      },
+      {
+        "type": "image",
+        "key": "missile_projectile",
+        "url": "https://cdn-game-mcp.gambo.ai/e6e3862d-1bc8-4a80-b8cb-c1c274cc7d31/images/missile_projectile.png"
+      },
+      {
+        "type": "image",
+        "key": "laser_projectile",
+        "url": "https://cdn-game-mcp.gambo.ai/00252b72-c626-4f0c-b596-c9f724235a99/images/laser_projectile.png"
+      },
+      {
+        "type": "image",
+        "key": "flame_projectile",
+        "url": "https://cdn-game-mcp.gambo.ai/508a2051-f377-4ccf-81e8-b501b5f3e7ff/images/flame_projectile.png"
+      }
+    ]
+  },
+  "character_images": {
+    "files": [
+      {
+        "type": "image",
+        "key": "brave_commando_idle_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/db7d124a-fc17-412c-9ce1-7a17117f6923/animations/brave_commando_idle_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_idle_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/e6eba1ab-0553-4751-b243-6a0d9e5f63ef/animations/brave_commando_idle_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_walk_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/88716f07-2b03-4dbc-a309-50bc38a30f8d/animations/brave_commando_walk_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_walk_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/6bcc7822-29cf-481b-94fb-dcc1a8d393db/animations/brave_commando_walk_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_jump_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/0bbc9abb-be94-48bb-bd94-dd2d3cdd34f1/animations/brave_commando_jump_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_jump_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/20cdd70e-90c4-467d-b8f5-db18b472734c/animations/brave_commando_jump_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/915ec66f-1ea1-44dc-b08d-3d92c299ab88/animations/brave_commando_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/fcce9075-b725-4872-9467-f96fc24e6545/animations/brave_commando_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_die_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/7de9f3fa-b7a8-48f2-9c61-41111a523c15/animations/brave_commando_die_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_die_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/ff763db5-1971-45b0-90f6-0c3c9abbbaa8/animations/brave_commando_die_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_enemy_soldier_idle_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/28e021e3-2cc3-4846-ad22-017eeca2f6f4/animations/jungle_enemy_soldier_idle_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_enemy_soldier_idle_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/8bae8743-1675-4217-b8a0-4f3f389ecccd/animations/jungle_enemy_soldier_idle_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_enemy_soldier_walk_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/43d6241a-61ae-4ecd-8bd9-36324ace1ada/animations/jungle_enemy_soldier_walk_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_enemy_soldier_walk_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/8aa992b8-6b25-48a6-a4d1-b352a478d913/animations/jungle_enemy_soldier_walk_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_enemy_soldier_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/1a16d119-d503-4fe1-90b5-c4c7f5c74e9a/animations/jungle_enemy_soldier_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_enemy_soldier_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/8877f7ba-8b53-4b27-aab8-aded26e881cf/animations/jungle_enemy_soldier_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_enemy_soldier_die_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/4b5d9a79-b788-450c-b027-de93241c826e/animations/jungle_enemy_soldier_die_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_enemy_soldier_die_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/12fe88b3-e49a-484a-b049-c0c31073bf54/animations/jungle_enemy_soldier_die_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_rifle_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/68eaad81-5d4f-45f4-8cd2-c306c10c2009/animations/brave_commando_rifle_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_rifle_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/1da53c34-523d-4e0b-b5a8-60224c2758fa/animations/brave_commando_rifle_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_flamethrower_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/f2bc7379-d703-4d02-ab9b-3bfdf593f5e4/animations/brave_commando_flamethrower_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_flamethrower_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/da825256-e720-406a-a47d-da5748b9c960/animations/brave_commando_flamethrower_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_rocket_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/9174fae0-375f-4f2d-8836-9d51326200be/animations/brave_commando_rocket_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_rocket_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/11f05670-6c9e-47a4-a993-a226839103a9/animations/brave_commando_rocket_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_laser_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/24041d91-a005-4d9b-becb-e0ee1619b780/animations/brave_commando_laser_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "brave_commando_laser_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/20878f1a-838c-42cd-9b94-532554834393/animations/brave_commando_laser_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_enemy_trooper_idle_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/24524958-760e-4e64-a729-901891d0bd52/animations/desert_enemy_trooper_idle_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_enemy_trooper_idle_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/c51833a3-f31d-4402-8283-83d662f2ed3f/animations/desert_enemy_trooper_idle_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_enemy_trooper_walk_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/936f9311-0d59-49b5-8d26-4bf15aac6e33/animations/desert_enemy_trooper_walk_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_enemy_trooper_walk_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/86ae5f3e-1c57-46ca-a916-91114ff0d7f4/animations/desert_enemy_trooper_walk_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_enemy_trooper_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/34edb03f-15d9-4c72-9f3f-7cc7c5cc1e36/animations/desert_enemy_trooper_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_enemy_trooper_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/48d23c2c-3f2b-4336-b86d-5b31e669818e/animations/desert_enemy_trooper_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_enemy_sniper_idle_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/f37e983e-8146-40b0-8d42-fde8590f1436/animations/urban_enemy_sniper_idle_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_enemy_sniper_idle_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/0c8e33d9-e311-4824-b0b9-5092b162e7ba/animations/urban_enemy_sniper_idle_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_enemy_sniper_walk_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/a5234cb9-e9e0-4134-9228-7b94b3d51a3e/animations/urban_enemy_sniper_walk_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_enemy_sniper_walk_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/51cde5a6-dadf-4682-acc0-6a1f0a85a3e5/animations/urban_enemy_sniper_walk_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_enemy_sniper_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/4c8ab3e1-cea2-4781-89c1-5cfae8e261c1/animations/urban_enemy_sniper_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_enemy_sniper_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/f7dacca2-7eca-4cee-b493-eb06e2237d22/animations/urban_enemy_sniper_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "arctic_enemy_soldier_idle_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/1e0f7aa8-9dbb-4a8b-994e-ed4f15323976/animations/arctic_enemy_soldier_idle_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "arctic_enemy_soldier_idle_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/edac2be7-54cf-4151-b56a-8543413dd24b/animations/arctic_enemy_soldier_idle_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "arctic_enemy_soldier_walk_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/61182bde-66a2-4645-8d0a-aa411eb08356/animations/arctic_enemy_soldier_walk_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "arctic_enemy_soldier_walk_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/8ab79a7d-1c97-4727-aff4-fe96da7a3234/animations/arctic_enemy_soldier_walk_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "arctic_enemy_soldier_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/0111c767-cb58-486f-ae58-b7e3b150f5f6/animations/arctic_enemy_soldier_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "arctic_enemy_soldier_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/c77dba2b-a195-4e4c-98f2-6dcf7fdce45b/animations/arctic_enemy_soldier_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "space_enemy_cyborg_idle_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/fe0b1814-9638-4cb8-a62e-b767aa175638/animations/space_enemy_cyborg_idle_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "space_enemy_cyborg_idle_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/48753cd5-80b3-4a0e-a68d-a7138eafa677/animations/space_enemy_cyborg_idle_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "space_enemy_cyborg_walk_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/f4f9debe-7485-4276-b0b7-cf4e852d16fa/animations/space_enemy_cyborg_walk_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "space_enemy_cyborg_walk_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/52533e3c-0eba-449c-aafa-133f7b97ebfa/animations/space_enemy_cyborg_walk_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "space_enemy_cyborg_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/fcdf0d37-5881-49e5-86d0-2b096183aa37/animations/space_enemy_cyborg_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "space_enemy_cyborg_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/8c5c34db-ef30-431d-a25b-6c91195687a3/animations/space_enemy_cyborg_shoot_R/frame_2.png"
+      }
+    ]
+  },
+  "sound_effects": {
+    "files": [
+      {
+        "type": "audio",
+        "key": "game_over_sound",
+        "url": "https://cdn-game-mcp.gambo.ai/640bb559-69ef-4429-8e80-deeadd6cedcc/sound_effects/game_over_sound.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "ui_click_sound",
+        "url": "https://cdn-game-mcp.gambo.ai/3f7f1687-4bbe-407a-916a-a4b5acda904d/sound_effects/ui_click_sound.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "flame_thrower_fire",
+        "url": "https://cdn-game-mcp.gambo.ai/2a1c49b4-21ff-41bd-90fb-51e02589c977/sound_effects/flame_thrower_fire.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "rocket_launcher_fire",
+        "url": "https://cdn-game-mcp.gambo.ai/16ba44d3-83ca-46c7-aad6-b4e3ac2657e0/sound_effects/rocket_launcher_fire.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "laser_blaster_fire",
+        "url": "https://cdn-game-mcp.gambo.ai/9bf33951-c25e-4620-b7e4-c61a3e559e8a/sound_effects/laser_blaster_fire.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "rifle_fire",
+        "url": "https://cdn-game-mcp.gambo.ai/45818dd4-34e3-4583-8329-fb7a268c6e9b/sound_effects/rifle_fire.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "enemy_hit",
+        "url": "https://cdn-game-mcp.gambo.ai/f5a42ee9-ba36-48b3-9cd5-669516770d8c/sound_effects/enemy_hit.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "player_jump",
+        "url": "https://cdn-game-mcp.gambo.ai/d636a293-bdd5-43f2-add5-f45e8f19f98b/sound_effects/player_jump.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "enemy_death",
+        "url": "https://cdn-game-mcp.gambo.ai/3bd340fd-211c-4428-ac20-74aeef0620e5/sound_effects/enemy_death.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "weapon_pickup",
+        "url": "https://cdn-game-mcp.gambo.ai/9ba44da7-251a-4e20-8c34-182d933c8919/sound_effects/weapon_pickup.mp3"
+      }
+    ]
+  },
+  "background_musics": {
+    "files": [
+      {
+        "type": "audio",
+        "key": "jungle_battle_theme",
+        "url": "https://cdn-game-mcp.gambo.ai/7d5fd4eb-0c33-47d0-be0b-4e44ef0bcdc7/music/jungle_battle_theme.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "desert_battle_theme",
+        "url": "https://cdn-game-mcp.gambo.ai/66ed1da9-1d4c-4ae8-9008-48c5a5d89915/music/desert_battle_theme.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "urban_assault_theme",
+        "url": "https://cdn-game-mcp.gambo.ai/7fbef22b-6755-4a5a-8fc2-4bcc324af3da/music/urban_assault_theme.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "arctic_warfare_theme",
+        "url": "https://cdn-game-mcp.gambo.ai/11579e82-0b36-4352-afff-d4a18bbc6a4e/music/arctic_warfare_theme.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "space_battle_theme",
+        "url": "https://cdn-game-mcp.gambo.ai/991ab926-ae49-423a-8a8a-a3d8e0a1302b/music/space_battle_theme.mp3"
+      }
+    ]
+  },
+  "meta": {
+    "app": "Gambo AI",
+    "version": 1,
+    "showAllFilesInBlocks": false
+  }
+}

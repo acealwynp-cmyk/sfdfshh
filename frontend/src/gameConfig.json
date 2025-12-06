@@ -1,0 +1,131 @@
+{
+  "screenSize": {
+    "width": {
+      "value": 1152,
+      "type": "number",
+      "description": "Screen width"
+    },
+    "height": {
+      "value": 768,
+      "type": "number",
+      "description": "Screen height"
+    }
+  },
+  "debugConfig": {
+    "debug": {
+      "value": false,
+      "type": "boolean",
+      "description": "Enable debug mode"
+    }
+  },
+  "renderConfig": {
+    "pixelArt": {
+      "value": true,
+      "type": "boolean",
+      "description": "Whether to enable pixel art rendering"
+    }
+  },
+  "playerConfig": {
+    "walkSpeed": {
+      "value": 260,
+      "type": "number",
+      "description": "Player walking speed"
+    },
+    "jumpPower": {
+      "value": 800,
+      "type": "number",
+      "description": "Player jump power"
+    },
+    "gravityY": {
+      "value": 1200,
+      "type": "number",
+      "description": "Player gravity"
+    },
+    "maxHealth": {
+      "value": 100,
+      "type": "number",
+      "description": "Player maximum health"
+    },
+    "hurtingDuration": {
+      "value": 100,
+      "type": "number",
+      "description": "Player hurt duration in ms"
+    },
+    "invulnerableTime": {
+      "value": 1000,
+      "type": "number",
+      "description": "Player invulnerable time in ms"
+    },
+    "fireRate": {
+      "value": 250,
+      "type": "number",
+      "description": "Player fire rate in ms"
+    }
+  },
+  "enemyConfig": {
+    "maxHealth": {
+      "value": 50,
+      "type": "number",
+      "description": "Enemy maximum health"
+    },
+    "walkSpeed": {
+      "value": 100,
+      "type": "number",
+      "description": "Enemy walking speed"
+    },
+    "gravityY": {
+      "value": 1200,
+      "type": "number",
+      "description": "Enemy gravity"
+    },
+    "attackCooldown": {
+      "value": 4000,
+      "type": "number",
+      "description": "Enemy attack cooldown in ms"
+    },
+    "directionChangeDelay": {
+      "value": 1000,
+      "type": "number",
+      "description": "Enemy direction change delay in ms"
+    },
+    "spawnInterval": {
+      "value": 3000,
+      "type": "number",
+      "description": "Enemy spawn interval in ms"
+    },
+    "maxEnemies": {
+      "value": 8,
+      "type": "number",
+      "description": "Maximum number of enemies on screen"
+    }
+  },
+  "gameplayConfig": {
+    "biomeChangeInterval": {
+      "value": 600000,
+      "type": "number",
+      "description": "Time between biome changes in ms (10 minutes)"
+    },
+    "weaponSwitchCooldown": {
+      "value": 500,
+      "type": "number",
+      "description": "Weapon switch cooldown in ms"
+    }
+  },
+  "difficultyConfig": {
+    "easy": {
+      "value": 1,
+      "type": "number",
+      "description": "Easy mode score multiplier"
+    },
+    "hard": {
+      "value": 2,
+      "type": "number",
+      "description": "Hard mode score multiplier"
+    },
+    "cursed": {
+      "value": 5,
+      "type": "number",
+      "description": "Cursed mode score multiplier"
+    }
+  }
+}

@@ -1,0 +1,438 @@
+{
+  "anims": [
+    {
+      "key": "brave_commando_idle_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_idle_frame1",
+          "duration": 800
+        },
+        {
+          "key": "brave_commando_idle_frame2",
+          "duration": 800
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.5,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_walk_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_walk_frame1",
+          "duration": 300
+        },
+        {
+          "key": "brave_commando_walk_frame2",
+          "duration": 300
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.411,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_jump_up_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_jump_frame1",
+          "duration": 400
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.231,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_jump_down_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_jump_frame2",
+          "duration": 400
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.231,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_shoot_frame1",
+          "duration": 100
+        },
+        {
+          "key": "brave_commando_shoot_frame2",
+          "duration": 200
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.166,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_die_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_die_frame1",
+          "duration": 500
+        },
+        {
+          "key": "brave_commando_die_frame2",
+          "duration": 1000
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.205,
+      "originY": 1.0
+    },
+    {
+      "key": "jungle_enemy_soldier_idle_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "jungle_enemy_soldier_idle_frame1",
+          "duration": 800
+        },
+        {
+          "key": "jungle_enemy_soldier_idle_frame2",
+          "duration": 800
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.5,
+      "originY": 1.0
+    },
+    {
+      "key": "jungle_enemy_soldier_walk_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "jungle_enemy_soldier_walk_frame1",
+          "duration": 300
+        },
+        {
+          "key": "jungle_enemy_soldier_walk_frame2",
+          "duration": 300
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.471,
+      "originY": 1.0
+    },
+    {
+      "key": "jungle_enemy_soldier_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "jungle_enemy_soldier_shoot_frame1",
+          "duration": 150
+        },
+        {
+          "key": "jungle_enemy_soldier_shoot_frame2",
+          "duration": 250
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.223,
+      "originY": 1.0
+    },
+    {
+      "key": "jungle_enemy_soldier_die_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "jungle_enemy_soldier_die_frame1",
+          "duration": 400
+        },
+        {
+          "key": "jungle_enemy_soldier_die_frame2",
+          "duration": 800
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.248,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_rifle_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_rifle_shoot_frame1",
+          "duration": 100
+        },
+        {
+          "key": "brave_commando_rifle_shoot_frame2",
+          "duration": 200
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.18,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_flamethrower_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_flamethrower_shoot_frame1",
+          "duration": 150
+        },
+        {
+          "key": "brave_commando_flamethrower_shoot_frame2",
+          "duration": 300
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.139,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_rocket_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_rocket_shoot_frame1",
+          "duration": 200
+        },
+        {
+          "key": "brave_commando_rocket_shoot_frame2",
+          "duration": 400
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.149,
+      "originY": 1.0
+    },
+    {
+      "key": "brave_commando_laser_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "brave_commando_laser_shoot_frame1",
+          "duration": 120
+        },
+        {
+          "key": "brave_commando_laser_shoot_frame2",
+          "duration": 280
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.159,
+      "originY": 1.0
+    },
+    {
+      "key": "desert_enemy_trooper_idle_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "desert_enemy_trooper_idle_frame1",
+          "duration": 800
+        },
+        {
+          "key": "desert_enemy_trooper_idle_frame2",
+          "duration": 800
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.5,
+      "originY": 1.0
+    },
+    {
+      "key": "desert_enemy_trooper_walk_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "desert_enemy_trooper_walk_frame1",
+          "duration": 300
+        },
+        {
+          "key": "desert_enemy_trooper_walk_frame2",
+          "duration": 300
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.5,
+      "originY": 1.0
+    },
+    {
+      "key": "desert_enemy_trooper_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "desert_enemy_trooper_shoot_frame1",
+          "duration": 150
+        },
+        {
+          "key": "desert_enemy_trooper_shoot_frame2",
+          "duration": 250
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.316,
+      "originY": 1.0
+    },
+    {
+      "key": "urban_enemy_sniper_idle_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "urban_enemy_sniper_idle_frame1",
+          "duration": 800
+        },
+        {
+          "key": "urban_enemy_sniper_idle_frame2",
+          "duration": 800
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.5,
+      "originY": 1.0
+    },
+    {
+      "key": "urban_enemy_sniper_walk_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "urban_enemy_sniper_walk_frame1",
+          "duration": 300
+        },
+        {
+          "key": "urban_enemy_sniper_walk_frame2",
+          "duration": 300
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.5,
+      "originY": 1.0
+    },
+    {
+      "key": "urban_enemy_sniper_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "urban_enemy_sniper_shoot_frame1",
+          "duration": 200
+        },
+        {
+          "key": "urban_enemy_sniper_shoot_frame2",
+          "duration": 400
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.399,
+      "originY": 1.0
+    },
+    {
+      "key": "arctic_enemy_soldier_idle_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "arctic_enemy_soldier_idle_frame1",
+          "duration": 800
+        },
+        {
+          "key": "arctic_enemy_soldier_idle_frame2",
+          "duration": 800
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.5,
+      "originY": 1.0
+    },
+    {
+      "key": "arctic_enemy_soldier_walk_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "arctic_enemy_soldier_walk_frame1",
+          "duration": 300
+        },
+        {
+          "key": "arctic_enemy_soldier_walk_frame2",
+          "duration": 300
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.499,
+      "originY": 1.0
+    },
+    {
+      "key": "arctic_enemy_soldier_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "arctic_enemy_soldier_shoot_frame1",
+          "duration": 150
+        },
+        {
+          "key": "arctic_enemy_soldier_shoot_frame2",
+          "duration": 250
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.243,
+      "originY": 1.0
+    },
+    {
+      "key": "space_enemy_cyborg_idle_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "space_enemy_cyborg_idle_frame1",
+          "duration": 800
+        },
+        {
+          "key": "space_enemy_cyborg_idle_frame2",
+          "duration": 800
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.5,
+      "originY": 1.0
+    },
+    {
+      "key": "space_enemy_cyborg_walk_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "space_enemy_cyborg_walk_frame1",
+          "duration": 300
+        },
+        {
+          "key": "space_enemy_cyborg_walk_frame2",
+          "duration": 300
+        }
+      ],
+      "repeat": -1,
+      "originX": 0.493,
+      "originY": 1.0
+    },
+    {
+      "key": "space_enemy_cyborg_shoot_anim",
+      "type": "frame",
+      "frames": [
+        {
+          "key": "space_enemy_cyborg_shoot_frame1",
+          "duration": 120
+        },
+        {
+          "key": "space_enemy_cyborg_shoot_frame2",
+          "duration": 280
+        }
+      ],
+      "repeat": 0,
+      "originX": 0.245,
+      "originY": 1.0
+    }
+  ]
+}
