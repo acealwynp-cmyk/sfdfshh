@@ -44,8 +44,7 @@ export class LeaderboardScene extends Phaser.Scene {
 
   async fetchLeaderboard(): Promise<void> {
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
-      const response = await fetch(`${backendUrl}/api/leaderboard?limit=100`);
+      const response = await fetch(`/api/leaderboard?limit=100`);
       const data = await response.json();
 
       if (data.status === 'success') {
