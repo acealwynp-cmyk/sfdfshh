@@ -159,14 +159,14 @@ export class GameOverUIScene extends Phaser.Scene {
 
               <!-- Wallet Actions -->
               <div id="wallet-section" class="flex flex-col gap-2">
-                <button id="submit-score-btn" class="game-pixel-container-clickable-green-600 px-6 py-3 text-white font-bold text-lg">
+                <button id="submit-score-btn" class="game-pixel-container-clickable-green-600 px-6 py-3 text-white font-bold text-lg hidden">
                   SUBMIT TO LEADERBOARD
                 </button>
-                <div id="submit-status" class="text-white font-bold text-sm hidden" style="text-shadow: 1px 1px 0px #000000;">
-                  Score submitted!
+                <div id="submit-status" class="text-green-400 font-bold text-lg hidden" style="text-shadow: 2px 2px 0px #000000;">
+                  ✓ Score submitted to leaderboard!
                 </div>
                 <div id="wallet-required" class="text-yellow-400 font-bold text-sm hidden" style="text-shadow: 1px 1px 0px #000000;">
-                  Connect wallet to submit score
+                  ⓘ Play with Wallet Connect to submit scores
                 </div>
               </div>
 
