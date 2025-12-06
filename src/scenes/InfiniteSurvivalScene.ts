@@ -567,55 +567,74 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     const platformHeight = this.tileHeight * 3; // 192 pixels tall
     const groundLevel = 17 * this.tileHeight;
     
-    // Generate platforms ahead of player with smart mix of ground and sky platforms
+    // Generate platforms ahead of player with 50/50 mix of ground and sky platforms
     while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
       
-      // Decide: ground platform or elevated platform?
-      const useGroundPlatform = Math.random() < 0.7; // 70% ground, 30% elevated
+      // 50/50 split: ground platform or elevated platform
+      const useGroundPlatform = Math.random() < 0.5;
       
       if (useGroundPlatform) {
-        // GROUND LEVEL PLATFORM - solid and continuous
+        // GROUND LEVEL PLATFORM
+        const groundWidth = platformWidth * Phaser.Math.FloatBetween(0.8, 1.2);
         const platform = this.add.tileSprite(
-          this.lastSpawnX + platformWidth/2, 
+          this.lastSpawnX + groundWidth/2, 
           groundLevel, 
-          platformWidth,
+          groundWidth,
           platformHeight,
           tileTexture
         );
         platform.setOrigin(0.5, 0.5);
         this.groundPlatforms.add(platform, true);
         
-        // Small gap or touching
-        const gap = Math.random() < 0.8 ? 0 : Phaser.Math.Between(80, 150);
-        this.lastSpawnX += platformWidth + gap;
+        // Small jumpable gap (80%) or continuous (20%)
+        const gap = Math.random() < 0.8 ? Phaser.Math.Between(100, 200) : 0;
+        this.lastSpawnX += groundWidth + gap;
         
       } else {
-        // ELEVATED SKY PLATFORM with gap underneath
-        const elevatedY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 7));
-        const skyPlatformWidth = platformWidth * Phaser.Math.FloatBetween(0.5, 0.8);
+        // ELEVATED SKY PLATFORM
+        const elevatedY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 8));
+        const skyWidth = platformWidth * Phaser.Math.FloatBetween(0.6, 1.0);
         
         const skyPlatform = this.add.tileSprite(
-          this.lastSpawnX + skyPlatformWidth/2,
+          this.lastSpawnX + skyWidth/2,
           elevatedY,
-          skyPlatformWidth,
+          skyWidth,
           platformHeight,
           tileTexture
         );
         skyPlatform.setOrigin(0.5, 0.5);
         this.groundPlatforms.add(skyPlatform, true);
         
-        // Also add a ground platform nearby so player doesn't fall
-        const groundPlatform = this.add.tileSprite(
-          this.lastSpawnX + platformWidth * 1.3, 
-          groundLevel, 
-          platformWidth * 0.6,
-          platformHeight,
-          tileTexture
-        );
-        groundPlatform.setOrigin(0.5, 0.5);
-        this.groundPlatforms.add(groundPlatform, true);
+        // Add another platform ahead (can be ground or sky)
+        const nextIsGround = Math.random() < 0.6; // 60% chance next is ground
+        const gap = Phaser.Math.Between(150, 300);
         
-        this.lastSpawnX += platformWidth * 1.5;
+        if (nextIsGround) {
+          // Ground platform after sky platform
+          const nextPlatform = this.add.tileSprite(
+            this.lastSpawnX + skyWidth + gap + platformWidth/2,
+            groundLevel,
+            platformWidth,
+            platformHeight,
+            tileTexture
+          );
+          nextPlatform.setOrigin(0.5, 0.5);
+          this.groundPlatforms.add(nextPlatform, true);
+          this.lastSpawnX += skyWidth + gap + platformWidth;
+        } else {
+          // Another sky platform
+          const nextSkyY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 8));
+          const nextSkyPlatform = this.add.tileSprite(
+            this.lastSpawnX + skyWidth + gap + skyWidth/2,
+            nextSkyY,
+            skyWidth,
+            platformHeight,
+            tileTexture
+          );
+          nextSkyPlatform.setOrigin(0.5, 0.5);
+          this.groundPlatforms.add(nextSkyPlatform, true);
+          this.lastSpawnX += skyWidth + gap + skyWidth;
+        }
       }
     }
     
