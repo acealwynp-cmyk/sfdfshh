@@ -10,11 +10,14 @@ export class LaserBeam extends Phaser.GameObjects.Container {
   private maxLength: number = 1800;
   private damageTimer?: Phaser.Time.TimerEvent;
   
+  // CUMULATIVE DAMAGE TRACKING - damage persists even if laser stops and restarts
+  private enemyLaserDamage: Map<any, number> = new Map();
+  
   constructor(scene: Phaser.Scene, player: any) {
     super(scene, 0, 0);
     this.scene = scene;
     this.player = player;
-    this.damage = 2; // Low damage - takes ~5 seconds to kill (50 HP enemy / 2 damage per 0.05s = 5 seconds)
+    this.damage = 10; // 1/5th of 50 HP per second = 10 damage per second
     
     // Create graphics for beam
     this.beamGraphics = scene.add.graphics();
