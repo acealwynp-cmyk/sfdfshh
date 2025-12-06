@@ -52,17 +52,15 @@ export class TitleScreen extends Phaser.Scene {
     
     // Generate SVG Data URL for clickable container
     let uiHTML = `
-      <div id="title-screen-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-retro flex flex-col justify-between items-center" style="image-rendering: pixelated; background-image: url('https://cdn-game-mcp.gambo.ai/76bde59c-cefd-4ef9-8298-cb12489071b8/images/jungle_background.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+      <div id="title-screen-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-retro flex flex-col justify-between items-center" style="image-rendering: pixelated; background-color: #1a4d2e;">
         <!-- Main Content Container -->
         <div class="flex flex-col items-center space-y-10 justify-between pt-12 pb-20 w-full text-center pointer-events-auto h-full">
           
-          <!-- Game Title Image Container -->
+          <!-- Game Title Text Container -->
           <div id="game-title-container" class="flex-shrink-0 flex items-center justify-center">
-            <img id="game-title-image" 
-                 src="https://cdn-game-mcp.gambo.ai/fc29437f-f1db-49e4-a301-fd27921b195d/images/degen_force_title.png" 
-                 alt="Degen Force" 
-                 class="max-h-[460px] mx-20 object-contain pointer-events-none"
-                 style="filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.8));" />
+            <h1 class="text-8xl font-bold text-white" style="text-shadow: 4px 4px 8px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.5); letter-spacing: 0.1em;">
+              DEGEN FORCE
+            </h1>
           </div>
 
           <!-- Difficulty Selection -->
