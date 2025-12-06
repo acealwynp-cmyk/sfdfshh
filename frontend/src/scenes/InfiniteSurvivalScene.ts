@@ -829,6 +829,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       const multiplier = difficultyConfig[this.difficulty].value;
       this.addScore(scoreValue * multiplier);
       
+      // Increment enemies killed counter
+      this.enemiesKilled++;
+      
       // Remove from scene
       this.time.delayedCall(500, () => {
         if (enemy && enemy.active) {
