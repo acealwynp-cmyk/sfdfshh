@@ -212,10 +212,24 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.groundPlatforms = this.physics.add.staticGroup();
     
     // Start generating platforms from the beginning
-    this.lastSpawnX = 0;
+    this.lastSpawnX = -screenSize.width.value;
     
-    // Generate initial set of platforms
-    this.updateInfiniteGround();
+    // Generate initial set of platforms manually (before player exists)
+    const tileTexture = this.currentBiomeConfig.tilesetKey;
+    const platformWidth = this.tileWidth * 12;
+    const platformHeight = this.tileHeight * 3;
+    const platformY = 15 * this.tileHeight;
+    
+    // Create a starting platform runway
+    for (let i = 0; i < 10; i++) {
+      const platformX = i * platformWidth;
+      const platform = this.add.image(platformX + platformWidth/2, platformY, tileTexture);
+      platform.setDisplaySize(platformWidth, platformHeight);
+      platform.setOrigin(0.5, 0.5);
+      this.groundPlatforms.add(platform, true);
+    }
+    
+    this.lastSpawnX = 10 * platformWidth;
   }
 
   playBiomeMusic(): void {
