@@ -87,8 +87,7 @@ export class GameOverUIScene extends Phaser.Scene {
 
   async fetchLeaderboard(): Promise<void> {
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
-      const response = await fetch(`${backendUrl}/api/leaderboard?limit=10&difficulty=${this.difficulty}`);
+      const response = await fetch(`/api/leaderboard?limit=10&difficulty=${this.difficulty}`);
       const data = await response.json();
 
       if (data.status === 'success') {
