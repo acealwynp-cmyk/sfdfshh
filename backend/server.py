@@ -1,15 +1,19 @@
 """
 FastAPI backend for Phaser game with leaderboard support.
+Optimized for high traffic and concurrent users.
 """
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
-from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
+from pydantic import BaseModel, Field, validator
+from typing import Optional, Dict
+from datetime import datetime, timedelta
 import os
+import asyncio
+from collections import defaultdict
+import time
 
-app = FastAPI(title="Infinite Battle Game API")
+app = FastAPI(title="Degen Force Game API")
 
 # CORS middleware
 app.add_middleware(
@@ -20,11 +24,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# MongoDB connection
+# MongoDB connection with connection pooling
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017")
-client = AsyncIOMotorClient(MONGO_URL)
+client = AsyncIOMotorClient(
+    MONGO_URL,
+    maxPoolSize=50,  # Connection pool for high concurrency
+    minPoolSize=10,
+    maxIdleTimeMS=30000,
+    serverSelectionTimeoutMS=5000
+)
 db = client["degen_force"]
 leaderboard_collection = db["leaderboard"]
+
+# Rate limiting storage (in-memory for simplicity, use Redis in production)
+rate_limit_store: Dict[str, list] = defaultdict(list)
+RATE_LIMIT_WINDOW = 60  # seconds
+RATE_LIMIT_MAX_REQUESTS = 10  # max score submissions per minute per wallet
+
+# Cache for leaderboard (reduces DB load)
+leaderboard_cache = {
+    "data": None,
+    "timestamp": 0,
+    "ttl": 30  # Cache for 30 seconds
+}
 
 # Pydantic models
 class LeaderboardEntry(BaseModel):
