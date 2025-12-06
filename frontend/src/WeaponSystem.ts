@@ -42,17 +42,6 @@ export class WeaponManager {
       projectileSpeed: 500,
       animationKey: "brave_commando_flamethrower_shoot_anim",
       maxRange: 300  // Short range
-    },
-    [WeaponType.LASER_BLASTER]: {
-      name: "Laser Blaster",
-      spriteKey: "laser_blaster_weapon",
-      projectileKey: "laser_projectile",
-      fireRate: 300,
-      damage: 50,
-      soundKey: "laser_blaster_fire",
-      projectileSpeed: 1200,
-      animationKey: "brave_commando_laser_shoot_anim",
-      maxRange: 1800  // Very long range
     }
   };
 
