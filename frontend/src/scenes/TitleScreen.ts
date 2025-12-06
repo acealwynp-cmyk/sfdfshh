@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { LevelManager } from '../LevelManager.js';
 import * as utils from '../utils';
+import { connectWallet, disconnectWallet, getConnectedWallet, shortenAddress, isWalletConnected, autoReconnectWallet } from '../walletUtils';
 
 export class TitleScreen extends Phaser.Scene {
   // UI elements
@@ -9,6 +10,8 @@ export class TitleScreen extends Phaser.Scene {
   // Input controls - HTML event handlers
   keydownHandler?: (event: KeyboardEvent) => void;
   clickHandler?: (event: Event) => void;
+  walletHandler?: (event: Event) => void;
+  leaderboardHandler?: (event: Event) => void;
   
   // Audio
   backgroundMusic!: Phaser.Sound.BaseSound;
@@ -16,6 +19,7 @@ export class TitleScreen extends Phaser.Scene {
   // State flags
   isStarting: boolean = false;
   selectedDifficulty: "easy" | "hard" | "cursed" = "easy";
+  walletAddress: string | null = null;
 
   constructor() {
     super({
