@@ -368,14 +368,37 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.map = null as any;
     }
     
-    // 3. UPDATE PLATFORM TEXTURES (Keep platforms, just change texture)
-    console.log("Updating platform textures to new biome...");
+    // 3. DESTROY AND RECREATE PLATFORMS WITH NEW TEXTURES
+    console.log("Destroying old platforms and creating new ones with correct biome tiles...");
     const newTileTexture = this.currentBiomeConfig.tilesetKey;
+    const platformWidth = this.tileWidth * 12;
+    const platformHeight = this.tileHeight * 3;
+    
+    // Store old platform positions before destroying
+    const oldPlatforms: Array<{x: number, y: number, width: number, height: number}> = [];
     this.groundPlatforms.getChildren().forEach((platform: any) => {
       if (platform && platform.active) {
-        platform.setTexture(newTileTexture);
+        oldPlatforms.push({
+          x: platform.x,
+          y: platform.y,
+          width: platform.displayWidth,
+          height: platform.displayHeight
+        });
       }
     });
+    
+    // Clear all old platforms
+    this.groundPlatforms.clear(true, true);
+    
+    // Recreate platforms with new biome texture
+    oldPlatforms.forEach(pos => {
+      const newPlatform = this.add.sprite(pos.x, pos.y, newTileTexture);
+      newPlatform.setDisplaySize(pos.width, pos.height);
+      newPlatform.setOrigin(0.5, 0.5);
+      this.groundPlatforms.add(newPlatform, true);
+    });
+    
+    console.log(`Recreated ${oldPlatforms.length} platforms with ${newTileTexture}`);
     
     // 4. CREATE NEW TILEMAP FOR NEW BIOME
     console.log("Creating new tilemap...");
