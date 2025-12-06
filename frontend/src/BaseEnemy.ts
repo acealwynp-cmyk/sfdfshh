@@ -145,11 +145,31 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     const spawnX = this.x + offsetX;
     const spawnY = centerY;
 
-    // Calculate direction towards player
-    const direction = new Phaser.Math.Vector2(
-      player.x - spawnX,
-      player.y - spawnY
-    ).normalize();
+    // Get difficulty from scene
+    const difficulty = (this.scene as any).difficulty || "easy";
+    
+    let direction: Phaser.Math.Vector2;
+    
+    // DIFFICULTY-BASED SHOOTING
+    if (difficulty === "easy") {
+      // EASY: Shoot straight (horizontal only, no aiming)
+      direction = new Phaser.Math.Vector2(
+        this.facingDirection === "right" ? 1 : -1,
+        0
+      ).normalize();
+    } else if (difficulty === "hard" || difficulty === "cursed") {
+      // HARD & CURSED: Aim at player position
+      direction = new Phaser.Math.Vector2(
+        player.x - spawnX,
+        player.y - spawnY
+      ).normalize();
+    } else {
+      // Default: straight
+      direction = new Phaser.Math.Vector2(
+        this.facingDirection === "right" ? 1 : -1,
+        0
+      ).normalize();
+    }
 
     // Create projectile with range (enemies don't use rockets)
     const projectile = new Projectile(
