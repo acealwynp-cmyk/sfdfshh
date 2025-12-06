@@ -126,6 +126,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
     // Start survival timer
     this.startSurvivalTimer();
+    
+    // Start auto biome teleport timer (every 3 minutes)
+    this.startBiomeTeleportTimer();
 
     // Setup test controls
     this.setupTestControls();
