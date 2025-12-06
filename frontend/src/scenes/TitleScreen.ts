@@ -50,13 +50,9 @@ export class TitleScreen extends Phaser.Scene {
 
   createDOMUI(): void {
     
-    // Get background image URL from Phaser texture
-    const jungleBackground = this.textures.get('jungle_background');
-    const jungleBackgroundURL = jungleBackground.getSourceImage().src;
-    
-    // Get title image URL from Phaser texture
-    const titleImage = this.textures.get('degen_force_title');
-    const titleImageURL = titleImage ? titleImage.getSourceImage().src : '';
+    // Use asset paths directly (images are in public/assets/images/)
+    const jungleBackgroundURL = '/assets/images/jungle_background.png';
+    const titleImageURL = '/assets/images/degen_force_title.png';
     
     // Generate SVG Data URL for clickable container
     let uiHTML = `
@@ -66,11 +62,11 @@ export class TitleScreen extends Phaser.Scene {
           
           <!-- Game Title Image Container -->
           <div id="game-title-container" class="flex-shrink-0 flex items-center justify-center">
-            ${titleImageURL ? `<img id="game-title-image" 
+            <img id="game-title-image" 
                  src="${titleImageURL}" 
                  alt="Degen Force" 
                  class="max-h-[460px] mx-20 object-contain pointer-events-none"
-                 style="filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.8));" />` : `<h1 class="text-8xl font-bold text-white" style="text-shadow: 4px 4px 8px rgba(0,0,0,0.8);">DEGEN FORCE</h1>`}
+                 style="filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.8));" />
           </div>
 
           <!-- Difficulty Selection -->
