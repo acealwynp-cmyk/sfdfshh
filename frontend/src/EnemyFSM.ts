@@ -165,8 +165,7 @@ export class EnemyFSM extends FSM {
     const dieAnimKey = this.enemy.getDieAnimKey();
     this.enemy.playAnimation(dieAnimKey);
 
-    // Play death sound
-    this.enemy.deathSound?.play();
+    // Death sound removed for better gameplay experience
 
     // Award points to player
     const gameScene = this.scene as any;
