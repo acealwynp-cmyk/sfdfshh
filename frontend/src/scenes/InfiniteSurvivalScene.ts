@@ -857,6 +857,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
   addScore(points: number): void {
     this.score += points;
+    console.log(`[Score] Added ${points} points. Total score: ${this.score}`);
   }
 
   getScore(): number {
