@@ -282,8 +282,13 @@ export class TitleScreen extends Phaser.Scene {
     const walletAddressEl = document.getElementById('wallet-address');
     const disconnectContainer = document.getElementById('disconnect-wallet-container');
 
+    // Debug logging
+    const address = getConnectedWallet();
+    console.log('[Wallet Debug] Connected wallet:', address);
+    console.log('[Wallet Debug] Disconnect button element:', disconnectContainer);
+    console.log('[Wallet Debug] Wallet status element:', walletStatus);
+
     if (walletStatus && walletAddressEl) {
-      const address = getConnectedWallet();
       if (address) {
         walletStatus.classList.remove('hidden');
         walletAddressEl.textContent = shortenAddress(address);
@@ -291,6 +296,9 @@ export class TitleScreen extends Phaser.Scene {
         // Show disconnect button
         if (disconnectContainer) {
           disconnectContainer.classList.remove('hidden');
+          console.log('[Wallet Debug] Disconnect button shown');
+        } else {
+          console.warn('[Wallet Debug] Disconnect button container not found!');
         }
       } else {
         walletStatus.classList.add('hidden');
@@ -298,8 +306,11 @@ export class TitleScreen extends Phaser.Scene {
         // Hide disconnect button
         if (disconnectContainer) {
           disconnectContainer.classList.add('hidden');
+          console.log('[Wallet Debug] Disconnect button hidden');
         }
       }
+    } else {
+      console.warn('[Wallet Debug] Wallet status elements not found!');
     }
   }
 
