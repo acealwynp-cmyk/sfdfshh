@@ -143,8 +143,19 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     this.backgrounds = [];
     
-    console.log(`[createInfiniteBackground] Using texture key: ${this.currentBiomeConfig.backgroundKey}`);
+    const textureKey = this.currentBiomeConfig.backgroundKey;
+    console.log(`[createInfiniteBackground] Using texture key: ${textureKey}`);
     console.log(`[createInfiniteBackground] Current biome: ${this.currentBiomeConfig.displayName}`);
+    
+    // Ensure texture is loaded before using it
+    if (!this.textures.exists(textureKey)) {
+      console.error(`ERROR: Texture ${textureKey} not found!`);
+      return;
+    }
+    
+    // Force texture cache refresh by getting fresh texture reference
+    const texture = this.textures.get(textureKey);
+    console.log(`[createInfiniteBackground] Texture loaded: ${texture.key}, frames: ${texture.frameTotal}`);
     
     // Create multiple layers of parallax scrolling tile sprites
     const bgWidth = screenSize.width.value * 3; // Wide enough for seamless tiling
@@ -155,7 +166,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.mapHeight / 2,
       bgWidth,
       this.mapHeight,
-      this.currentBiomeConfig.backgroundKey
+      textureKey
     );
     bg1.setOrigin(0, 0.5);
     bg1.setScrollFactor(0.1);
