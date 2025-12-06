@@ -227,6 +227,11 @@ export class GameOverUIScene extends Phaser.Scene {
     this.scene.start(this.currentLevelKey!);
   }
 
+  fetchLeaderboard(): void {
+    // TODO: Implement leaderboard fetching logic
+    console.log('Fetching leaderboard...');
+  }
+
   update(): void {
     // Game Over UI scene doesn't need special update logic
   }
