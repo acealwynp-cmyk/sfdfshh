@@ -338,20 +338,47 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     const currentBiome = this.biomeManager.getCurrentBiome();
     const enemyType = Phaser.Utils.Array.GetRandom(currentBiome.enemyTypes);
     
+    let enemy: any;
+    
     switch (enemyType) {
       case "jungle_soldier":
-        return new JungleEnemy(this, x, y);
+        enemy = new JungleEnemy(this, x, y);
+        break;
       case "desert_trooper":
-        return new DesertEnemy(this, x, y);
+        enemy = new DesertEnemy(this, x, y);
+        break;
       case "urban_sniper":
-        return new UrbanEnemy(this, x, y);
+        enemy = new UrbanEnemy(this, x, y);
+        break;
       case "arctic_soldier":
-        return new ArcticEnemy(this, x, y);
+        enemy = new ArcticEnemy(this, x, y);
+        break;
       case "space_cyborg":
-        return new SpaceEnemy(this, x, y);
+        enemy = new SpaceEnemy(this, x, y);
+        break;
       default:
-        return new JungleEnemy(this, x, y); // Fallback
+        enemy = new JungleEnemy(this, x, y);
     }
+    
+    // Scale enemy health based on difficulty
+    if (enemy) {
+      switch(this.difficulty) {
+        case "easy":
+          enemy.maxHealth = 50; // Normal
+          enemy.health = 50;
+          break;
+        case "hard":
+          enemy.maxHealth = 80; // 60% more health
+          enemy.health = 80;
+          break;
+        case "cursed":
+          enemy.maxHealth = 120; // 140% more health
+          enemy.health = 120;
+          break;
+      }
+    }
+    
+    return enemy;
   }
 
   startSurvivalTimer(): void {
