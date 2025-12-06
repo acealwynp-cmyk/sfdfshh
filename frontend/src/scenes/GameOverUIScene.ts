@@ -306,7 +306,8 @@ export class GameOverUIScene extends Phaser.Scene {
     }
 
     try {
-      const response = await fetch(`/api/leaderboard/submit`, {
+      const { getApiUrl } = await import('../config');
+      const response = await fetch(getApiUrl('/api/leaderboard/submit'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
