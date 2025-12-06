@@ -24,8 +24,8 @@ export interface BiomeConfig {
 }
 
 export class BiomeManager {
-  // Biome cycle duration in milliseconds (10 minutes = 600,000ms)
-  public static readonly BIOME_CYCLE_TIME: number = 10 * 60 * 1000; // 10 minutes
+  // Biome cycle duration in milliseconds (3 minutes = 180,000ms)
+  public static readonly BIOME_CYCLE_TIME: number = 3 * 60 * 1000; // 3 minutes
   
   // All available biomes in order
   public static readonly BIOME_CONFIGS: { [key in BiomeType]: BiomeConfig } = {
