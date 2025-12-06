@@ -38,6 +38,8 @@ export class GameOverUIScene extends Phaser.Scene {
   private enemiesKilled: number = 0;
   private biomeReached: string = "Unknown";
   private difficulty: string = "easy";
+  private playMode: "guest" | "wallet" = "guest";
+  private walletAddress: string | null = null;
   
   // Leaderboard data
   private leaderboardData: LeaderboardEntry[] = [];
