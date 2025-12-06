@@ -268,55 +268,72 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   
   startBiomeTeleportTimer(): void {
     // Auto biome change every 3 minutes (180 seconds)
+    // Countdown starts at 2:50 (170 seconds) - 10 seconds before teleport
     this.biomeTeleportTimer = this.time.addEvent({
-      delay: 180000, // 3 minutes
+      delay: 170000, // 2 minutes 50 seconds (170 seconds)
       callback: () => {
-        this.showTeleportWarning();
+        this.showTeleportWarning(); // Shows 10-second countdown
       },
       loop: true
     });
     
-    console.log("Auto biome teleport timer started - triggers every 3 minutes");
+    console.log("Auto biome teleport timer started - countdown begins at 2:50 (every 3 minutes)");
   }
   
   showTeleportWarning(): void {
-    // Show "TELEPORT IMMINENT" warning
+    // Show countdown from 10 seconds
+    let countdown = 10;
+    
     if (this.teleportWarningText) {
       this.teleportWarningText.destroy();
     }
     
+    // Create countdown text
     this.teleportWarningText = this.add.text(
       this.cameras.main.centerX,
       this.cameras.main.centerY - 200,
-      'TELEPORT IMMINENT',
+      `Teleporting in ${countdown}`,
       {
-        fontSize: '64px',
-        color: '#ff0000',
+        fontSize: '72px',
+        color: '#ffff00',
         fontFamily: 'Arial Black',
         stroke: '#000000',
-        strokeThickness: 8
+        strokeThickness: 10
       }
     );
     this.teleportWarningText.setOrigin(0.5);
     this.teleportWarningText.setScrollFactor(0);
     this.teleportWarningText.setDepth(10000);
     
-    // Pulsing effect
-    this.tweens.add({
-      targets: this.teleportWarningText,
-      alpha: 0.3,
-      scale: 1.2,
-      duration: 500,
-      yoyo: true,
-      repeat: 5
-    });
-    
-    // Trigger biome change after 3 seconds
-    this.time.delayedCall(3000, () => {
-      if (this.teleportWarningText) {
-        this.teleportWarningText.destroy();
-      }
-      this.forceBiomeChange();
+    // Countdown timer - update every second
+    const countdownTimer = this.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        countdown--;
+        
+        if (countdown > 0 && this.teleportWarningText) {
+          this.teleportWarningText.setText(`Teleporting in ${countdown}`);
+          
+          // Flash red when countdown gets low
+          if (countdown <= 3) {
+            this.teleportWarningText.setColor('#ff0000');
+            this.tweens.add({
+              targets: this.teleportWarningText,
+              scale: 1.3,
+              duration: 200,
+              yoyo: true
+            });
+          }
+        } else if (countdown === 0) {
+          // Teleport NOW!
+          if (this.teleportWarningText) {
+            this.teleportWarningText.destroy();
+          }
+          this.forceBiomeChange();
+          countdownTimer.destroy();
+        }
+      },
+      repeat: 9 // 10 total ticks (10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
     });
   }
 
