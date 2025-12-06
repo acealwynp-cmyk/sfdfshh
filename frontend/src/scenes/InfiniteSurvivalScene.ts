@@ -803,7 +803,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
           survivalTimeSeconds: this.survivalTimeSeconds,
           enemiesKilled: this.enemiesKilled,
           biomeReached: this.getCurrentBiomeName(),
-          difficulty: this.difficulty
+          difficulty: this.difficulty,
+          playMode: this.playMode,
+          walletAddress: this.walletAddress
         });
       });
 
