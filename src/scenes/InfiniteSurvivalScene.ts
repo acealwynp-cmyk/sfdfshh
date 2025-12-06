@@ -389,22 +389,10 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.createInfiniteBackground();
 
     // 2. TRANSITION PLATFORM TILES
-    // Clear old platforms behind player, new ones ahead will use new tileset
-    console.log("Transitioning platform tiles...");
-    const playerX = this.player.x;
-    const platforms = this.groundPlatforms.getChildren();
-    
-    // Remove platforms that are far behind player (off-screen)
-    platforms.forEach((platform: any) => {
-      if (platform && platform.x < playerX - screenSize.width.value * 2) {
-        this.groundPlatforms.remove(platform, true, true);
-      }
-    });
-    
-    // Generate new platforms ahead immediately with the new tileset
-    this.updateInfiniteGround();
-    
-    console.log(`Platform transition complete. New platforms will use: ${this.currentBiomeConfig.tilesetKey}`);
+    // Keep existing platforms, new ones generated ahead will use new tileset
+    // Old platforms will naturally scroll off-screen as player moves forward
+    console.log("Platform tiles will transition as player moves forward");
+    console.log(`New platforms ahead will use: ${this.currentBiomeConfig.tilesetKey}`);
 
     // 6. PLAY NEW BIOME MUSIC
     console.log("Playing new music...");
