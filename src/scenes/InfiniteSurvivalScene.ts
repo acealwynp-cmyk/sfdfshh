@@ -374,78 +374,23 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Recreate backgrounds with new texture
     this.createInfiniteBackground();
 
-    // 2. DESTROY OLD TILEMAP
-    console.log("Destroying old tilemap...");
-    if (this.groundLayer) {
-      this.groundLayer.destroy();
-      this.groundLayer = null as any;
-    }
-    if (this.map) {
-      this.map.destroy();
-      this.map = null as any;
-    }
-    
-    // 3. PLATFORM TRANSITION STRATEGY
-    // Keep on-screen platforms, clear off-screen ones, new platforms use new tileset
+    // 2. TRANSITION PLATFORM TILES
+    // Clear old platforms behind player, new ones ahead will use new tileset
     console.log("Transitioning platform tiles...");
     const playerX = this.player.x;
     const platforms = this.groundPlatforms.getChildren();
     
-    // Remove platforms that are off-screen (behind or far ahead)
+    // Remove platforms that are far behind player (off-screen)
     platforms.forEach((platform: any) => {
-      if (platform && (platform.x < playerX - screenSize.width.value || platform.x > playerX + screenSize.width.value * 2)) {
+      if (platform && platform.x < playerX - screenSize.width.value * 2) {
         this.groundPlatforms.remove(platform, true, true);
       }
     });
     
-    // Force immediate generation of new platforms ahead with the new tileset
+    // Generate new platforms ahead immediately with the new tileset
     this.updateInfiniteGround();
     
     console.log(`Platform transition complete. New platforms will use: ${this.currentBiomeConfig.tilesetKey}`);
-    
-    // 4. CREATE NEW TILEMAP FOR NEW BIOME
-    console.log("Creating new tilemap...");
-    try {
-      this.map = this.make.tilemap({ key: this.currentBiomeConfig.tilemapKey });
-      this.groundTileset = this.map.addTilesetImage(
-        this.currentBiomeConfig.tilesetKey, 
-        this.currentBiomeConfig.tilesetKey
-      );
-      this.groundLayer = this.map.createLayer("ground_layer", this.groundTileset, 0, 0)!;
-      this.groundLayer.setCollisionByExclusion([-1]);
-      console.log("New tilemap created successfully!");
-    } catch (error) {
-      console.error("Error creating tilemap:", error);
-    }
-    
-    // 5. RE-SETUP COLLISIONS
-    console.log("Setting up collisions...");
-    if (this.groundLayer) {
-      utils.addCollider(this, this.player, this.groundLayer);
-      utils.addCollider(this, this.enemies, this.groundLayer);
-      
-      utils.addCollider(
-        this,
-        this.playerProjectiles,
-        this.groundLayer,
-        (projectile: any) => {
-          if (projectile && projectile.active) {
-            projectile.hit();
-          }
-        }
-      );
-
-      utils.addCollider(
-        this,
-        this.enemyProjectiles,
-        this.groundLayer,
-        (projectile: any) => {
-          if (projectile && projectile.active) {
-            projectile.hit();
-          }
-        }
-      );
-    }
 
     // 6. PLAY NEW BIOME MUSIC
     console.log("Playing new music...");
