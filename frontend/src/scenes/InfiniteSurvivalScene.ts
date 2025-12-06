@@ -40,6 +40,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   public difficulty: "easy" | "hard" | "cursed" = "easy";
   public survivalTimeSeconds: number = 0;
   public gameStartTime: number = 0;
+  public enemiesKilled: number = 0;
   
   // Enemy spawning
   public enemySpawner?: Phaser.Time.TimerEvent;
