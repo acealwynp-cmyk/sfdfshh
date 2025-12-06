@@ -211,25 +211,42 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Create static group for platforms
     this.groundPlatforms = this.physics.add.staticGroup();
     
-    // Generate initial SOLID ground platforms (no gaps)
+    // Generate initial platforms with GROUND + SKY layers
     const tileTexture = this.currentBiomeConfig.tilesetKey;
-    const platformWidth = this.tileWidth * 12; // 768 pixels wide
+    const platformWidth = this.tileWidth * 9; // 576 pixels wide
     const platformHeight = this.tileHeight * 3; // 192 pixels tall
-    const platformY = 17 * this.tileHeight; // Ground level
+    const groundLevel = 17 * this.tileHeight; // Ground level
     
-    console.log(`[createInfiniteGround] Creating solid ground with tileset: ${tileTexture}`);
+    console.log(`[createInfiniteGround] Creating ground + sky platforms with tileset: ${tileTexture}`);
     
-    // Create a SOLID starting runway with NO gaps (platforms touching each other)
+    // Create initial platforms with mix of ground and sky
     let currentX = 0;
-    for (let i = 0; i < 20; i++) {
-      const platform = this.add.tileSprite(currentX + platformWidth/2, platformY, platformWidth, platformHeight, tileTexture);
-      platform.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(platform, true);
-      currentX += platformWidth; // No gap - platforms touch
+    for (let i = 0; i < 15; i++) {
+      // Ground platform
+      const groundPlatform = this.add.tileSprite(currentX + platformWidth/2, groundLevel, platformWidth, platformHeight, tileTexture);
+      groundPlatform.setOrigin(0.5, 0.5);
+      this.groundPlatforms.add(groundPlatform, true);
+      
+      // Add sky platforms above ground (50% chance)
+      if (Math.random() < 0.5) {
+        const skyY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 6));
+        const skyWidth = platformWidth * 0.7;
+        const skyPlatform = this.add.tileSprite(
+          currentX + platformWidth/2 + Phaser.Math.Between(-100, 100), 
+          skyY, 
+          skyWidth, 
+          platformHeight, 
+          tileTexture
+        );
+        skyPlatform.setOrigin(0.5, 0.5);
+        this.groundPlatforms.add(skyPlatform, true);
+      }
+      
+      currentX += platformWidth; // Continuous ground
     }
     
     this.lastSpawnX = currentX;
-    console.log(`[createInfiniteGround] Created 20 solid platforms up to X=${this.lastSpawnX}`);
+    console.log(`[createInfiniteGround] Created initial platforms with sky layers up to X=${this.lastSpawnX}`);
   }
 
   playBiomeMusic(): void {
