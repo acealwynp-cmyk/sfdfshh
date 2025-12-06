@@ -88,6 +88,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     this.gameCompleted = false;
     this.score = 0;
     this.survivalTimeSeconds = 0;
+    this.enemiesKilled = 0;
     this.gameStartTime = Date.now();
     this.biomeTransitionInProgress = false;
 
