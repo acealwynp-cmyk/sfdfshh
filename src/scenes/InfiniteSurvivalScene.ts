@@ -336,22 +336,27 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       return;
     }
 
-    // Spawn enemy ahead of player on platforms
+    // PROFESSIONAL ENEMY PLACEMENT: Only spawn ON visible platforms
     const playerX = this.player.x;
     
-    // Get platforms ahead of player
+    // Get platforms ahead of player (visible on screen)
     const platforms = this.groundPlatforms.getChildren().filter((platform: any) => {
-      return platform.x > playerX + 200 && platform.x < playerX + screenSize.width.value * 1.5;
+      return platform.active && 
+             platform.x > playerX + 300 && 
+             platform.x < playerX + screenSize.width.value * 1.2;
     });
     
     if (platforms.length === 0) return;
     
-    // Choose random platform
-    const platform: any = Phaser.Utils.Array.GetRandom(platforms);
+    // Choose random platform that's not too small
+    const validPlatforms = platforms.filter((p: any) => p.displayWidth > 200);
+    if (validPlatforms.length === 0) return;
     
-    // Spawn enemy on platform
-    const spawnX = platform.x + Phaser.Math.Between(-100, 100);
-    const spawnY = platform.y - this.tileHeight * 2; // Above platform
+    const platform: any = Phaser.Utils.Array.GetRandom(validPlatforms);
+    
+    // Spawn enemy ON TOP of platform (standing, not floating)
+    const spawnX = platform.x + Phaser.Math.Between(-50, 50);
+    const spawnY = platform.y - (platform.displayHeight/2) - 40; // Just above platform surface
     
     const enemy = this.createEnemyForCurrentBiome(spawnX, spawnY);
     if (enemy) {
