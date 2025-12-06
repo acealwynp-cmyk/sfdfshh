@@ -657,25 +657,24 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   updateInfiniteGround(): void {
     const playerX = this.player.x;
     const tileTexture = this.currentBiomeConfig.tilesetKey;
-    const platformWidth = this.tileWidth * 12; // 768 pixels wide - THICK
-    const platformHeight = this.tileHeight * 4; // 256 pixels tall - THICK
-    const groundLevel = 18 * this.tileHeight; // Ground level
+    const platformWidth = this.tileWidth * 15; // 960 pixels - VERY WIDE
+    const platformHeight = this.tileHeight * 5; // 320 pixels - VERY THICK
+    const groundLevel = 18 * this.tileHeight; // Same as createInfiniteGround
     
-    // STRAIGHT THICK PLATFORMS - Simple and solid
+    // Generate CONTINUOUS FLAT platform ahead of player
     while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
       
-      // Create continuous thick ground platform
-      const ground = this.add.tileSprite(
+      const platform = this.add.tileSprite(
         this.lastSpawnX + platformWidth/2,
         groundLevel,
         platformWidth,
         platformHeight,
         tileTexture
       );
-      ground.setOrigin(0.5, 0.5);
-      this.groundPlatforms.add(ground, true);
+      platform.setOrigin(0.5, 0.5);
+      this.groundPlatforms.add(platform, true);
       
-      // No gaps - continuous platform
+      // EXACTLY touching - absolutely NO gaps
       this.lastSpawnX += platformWidth;
     }
     
