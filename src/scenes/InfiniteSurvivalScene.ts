@@ -539,65 +539,41 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   updateInfiniteGround(): void {
     const playerX = this.player.x;
     const tileTexture = this.currentBiomeConfig.tilesetKey;
-    const platformWidth = this.tileWidth * 12; // THICKER platforms (12 tiles wide)
-    const platformHeight = this.tileHeight * 3; // THICKER platforms (3 tiles tall)
+    const platformWidth = this.tileWidth * 12; // 768 pixels wide
+    const platformHeight = this.tileHeight * 3; // 192 pixels tall
+    const groundLevel = 17 * this.tileHeight;
     
     console.log(`[updateInfiniteGround] Creating platforms with tileset: ${tileTexture}`);
     
-    // Generate new platforms ahead of player
+    // Generate continuous ground platforms ahead of player
     while (this.lastSpawnX < playerX + screenSize.width.value * 3) {
-      // Get the last platform Y position for continuity
-      const platforms = this.groundPlatforms.getChildren();
-      let lastY = 15 * this.tileHeight; // Default mid-level
-      
-      if (platforms.length > 0) {
-        const lastPlatform: any = platforms[platforms.length - 1];
-        lastY = lastPlatform.y;
-      }
-      
-      // Calculate next platform position (varied heights)
-      let nextY = lastY;
-      const heightVariation = Phaser.Math.Between(-2, 2); // Vary height
-      const maxJumpHeight = 4; // Player can jump up to 4 tiles
-      
-      // Apply height change if it's jumpable
-      if (Math.abs(heightVariation) <= maxJumpHeight) {
-        nextY += heightVariation * this.tileHeight;
-      }
-      
-      // Clamp Y to playable range
-      nextY = Phaser.Math.Clamp(nextY, 8 * this.tileHeight, 17 * this.tileHeight);
-      
-      // Create thick platform with appropriate gap (always jumpable)
-      const gap = Phaser.Math.Between(120, 250);
-      const nextX = this.lastSpawnX + gap;
-      
-      // Create THICK platform using biome tileset
-      const platform = this.add.image(nextX + platformWidth/2, nextY, tileTexture);
-      console.log(`[PLATFORM] Creating at ${nextX}, requested texture: "${tileTexture}", actual texture: "${platform.texture.key}"`);
+      // Create platform at ground level with NO gaps (continuous ground)
+      const platform = this.add.image(this.lastSpawnX + platformWidth/2, groundLevel, tileTexture);
       platform.setDisplaySize(platformWidth, platformHeight);
       platform.setOrigin(0.5, 0.5);
       this.groundPlatforms.add(platform, true);
       
       // Sometimes add elevated platforms for variety
-      if (Math.random() < 0.3 && nextY > 12 * this.tileHeight) {
-        const elevatedY = nextY - (this.tileHeight * Phaser.Math.Between(3, 5));
+      if (Math.random() < 0.2) {
+        const elevatedY = groundLevel - (this.tileHeight * Phaser.Math.Between(4, 6));
+        const elevatedX = this.lastSpawnX + Phaser.Math.Between(platformWidth * 0.3, platformWidth * 0.7);
         const elevatedPlatform = this.add.image(
-          nextX + platformWidth/2 + Phaser.Math.Between(100, 200),
+          elevatedX,
           elevatedY,
           tileTexture
         );
-        elevatedPlatform.setDisplaySize(platformWidth * 0.7, platformHeight);
+        elevatedPlatform.setDisplaySize(platformWidth * 0.6, platformHeight);
         elevatedPlatform.setOrigin(0.5, 0.5);
         this.groundPlatforms.add(elevatedPlatform, true);
       }
       
-      this.lastSpawnX = nextX + platformWidth;
+      // Move to next platform position (NO gap - platforms touch)
+      this.lastSpawnX += platformWidth;
     }
     
     // Clean up platforms far behind player
     this.groundPlatforms.children.entries.forEach((platform: any) => {
-      if (platform && platform.x < playerX - screenSize.width.value * 2) {
+      if (platform && platform.x < playerX - screenSize.width.value * 3) {
         this.groundPlatforms.remove(platform, true, true);
       }
     });
