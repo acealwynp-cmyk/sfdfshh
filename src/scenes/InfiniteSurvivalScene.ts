@@ -262,40 +262,41 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   startEnemySpawning(): void {
-    // INSTANT enemy spawning - very aggressive!
+    // Difficulty-based enemy spawning
     let spawnDelay: number;
     let maxEnemies: number;
     
     switch(this.difficulty) {
       case "easy":
-        spawnDelay = 1500; // Fast spawns
-        maxEnemies = 8; // Good amount
+        spawnDelay = 2500; // Moderate spawns
+        maxEnemies = 6; // Few enemies, shoot straight
         break;
       case "hard":
-        spawnDelay = 800; // Very fast spawns
-        maxEnemies = 12; // Many enemies
+        spawnDelay = 1200; // Faster spawns
+        maxEnemies = 12; // More enemies, aim at player
         break;
       case "cursed":
-        spawnDelay = 500; // INSTANT spawns!
-        maxEnemies = 20; // Maximum enemies
+        spawnDelay = 400; // EVERYWHERE spawns!
+        maxEnemies = 25; // Tons of enemies, aim at player
         break;
       default:
-        spawnDelay = 1000;
-        maxEnemies = 10;
+        spawnDelay = 2000;
+        maxEnemies = 8;
     }
     
     // Apply biome difficulty multiplier
     const biomeDifficultyMultiplier = this.biomeManager.getDifficultyMultiplier();
-    const adjustedSpawnDelay = Math.max(400, spawnDelay / biomeDifficultyMultiplier);
+    const adjustedSpawnDelay = Math.max(300, spawnDelay / biomeDifficultyMultiplier);
     
-    console.log(`INSTANT Enemy spawning: Difficulty=${this.difficulty}, Spawn delay=${adjustedSpawnDelay}ms, Max enemies=${maxEnemies}`);
+    console.log(`Enemy spawning: Difficulty=${this.difficulty}, Spawn delay=${adjustedSpawnDelay}ms, Max enemies=${maxEnemies}`);
 
-    // Spawn initial wave IMMEDIATELY
-    for (let i = 0; i < 3; i++) {
-      setTimeout(() => this.spawnEnemy(), i * 200);
+    // Spawn initial wave
+    const initialWave = this.difficulty === "cursed" ? 5 : this.difficulty === "hard" ? 3 : 2;
+    for (let i = 0; i < initialWave; i++) {
+      setTimeout(() => this.spawnEnemy(), i * 300);
     }
 
-    // Then continue spawning with fast rate
+    // Then continue spawning
     this.enemySpawner = this.time.addEvent({
       delay: adjustedSpawnDelay,
       callback: () => {
