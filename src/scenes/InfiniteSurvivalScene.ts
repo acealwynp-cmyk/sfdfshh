@@ -203,22 +203,19 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   createInfiniteGround(): void {
-    // Create tilemap for current biome using actual tile assets
-    this.map = this.make.tilemap({ key: this.currentBiomeConfig.tilemapKey });
-    this.groundTileset = this.map.addTilesetImage(this.currentBiomeConfig.tilesetKey, this.currentBiomeConfig.tilesetKey);
-
-    // Create ground layer from tilemap
-    this.groundLayer = this.map.createLayer("ground_layer", this.groundTileset, 0, 0)!;
+    // For infinite runner, we don't use static tilemaps
+    // Instead, we dynamically generate platforms using the biome's tileset
+    console.log(`[createInfiniteGround] Setting up ground for biome: ${this.currentBiomeConfig.displayName}`);
+    console.log(`[createInfiniteGround] Using tileset: ${this.currentBiomeConfig.tilesetKey}`);
     
-    // Set collisions - exclude empty tiles (index -1)
-    this.groundLayer.setCollisionByExclusion([-1]);
-
-    // Create static group for additional platforms
+    // Create static group for platforms
     this.groundPlatforms = this.physics.add.staticGroup();
     
-    // Get map width
-    const mapWidth = this.map.widthInPixels;
-    this.lastSpawnX = mapWidth;
+    // Start generating platforms from the beginning
+    this.lastSpawnX = 0;
+    
+    // Generate initial set of platforms
+    this.updateInfiniteGround();
   }
 
   playBiomeMusic(): void {
