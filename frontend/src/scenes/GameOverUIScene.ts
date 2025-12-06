@@ -297,18 +297,12 @@ export class GameOverUIScene extends Phaser.Scene {
       return;
     }
 
-    if (!isWalletConnected()) {
-      // Show wallet required message
-      const walletRequired = document.getElementById('wallet-required');
-      if (walletRequired) {
-        walletRequired.classList.remove('hidden');
-      }
-      console.log('Please connect wallet to submit score');
+    // Use stored wallet address or get current one
+    const walletAddress = this.walletAddress || getConnectedWallet();
+    if (!walletAddress) {
+      console.log('No wallet address available');
       return;
     }
-
-    const walletAddress = getConnectedWallet();
-    if (!walletAddress) return;
 
     try {
       const response = await fetch(`/api/leaderboard/submit`, {
