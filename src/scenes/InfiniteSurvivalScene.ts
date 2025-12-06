@@ -179,7 +179,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.mapHeight / 2,
       bgWidth,
       this.mapHeight,
-      this.currentBiomeConfig.backgroundKey
+      textureKey
     );
     bg2.setOrigin(0, 0.5);
     bg2.setScrollFactor(0.3);
@@ -193,7 +193,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.mapHeight / 2,
       bgWidth,
       this.mapHeight,
-      this.currentBiomeConfig.backgroundKey
+      textureKey
     );
     bg3.setOrigin(0, 0.5);
     bg3.setScrollFactor(0.5);
