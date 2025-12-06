@@ -44,6 +44,7 @@ export class GameOverUIScene extends Phaser.Scene {
   // Event handlers
   private submitHandler?: (event: Event) => void;
   private viewLeaderboardHandler?: (event: Event) => void;
+  private restartHandler?: (event: Event) => void;
 
   constructor() {
     super({
@@ -73,86 +74,115 @@ export class GameOverUIScene extends Phaser.Scene {
   create(): void {
     // Create DOM UI
     this.createDOMUI();
-    // Populate survival stats
-    this.populateStats();
     // Setup input controls
     this.setupInputs();
     // Fetch top leaderboard
     this.fetchLeaderboard();
+
+    // Listen for scene shutdown to cleanup event listeners
+    this.events.once('shutdown', () => {
+      this.cleanupEventListeners();
+    });
   }
 
-  populateStats(): void {
-    if (!this.currentLevelKey) return;
-    
-    const gameScene = this.scene.get(this.currentLevelKey) as any;
-    if (!gameScene) return;
+  async fetchLeaderboard(): Promise<void> {
+    try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+      const response = await fetch(`${backendUrl}/api/leaderboard?limit=10&difficulty=${this.difficulty}`);
+      const data = await response.json();
 
-    // Update final score
-    const finalScoreElement = document.getElementById("final-score");
-    if (finalScoreElement && gameScene.getScore) {
-      finalScoreElement.textContent = gameScene.getScore().toString();
-    }
-
-    // Update survival time
-    const survivalTimeElement = document.getElementById("final-survival-time");
-    if (survivalTimeElement && gameScene.getFormattedSurvivalTime) {
-      survivalTimeElement.textContent = gameScene.getFormattedSurvivalTime();
-    }
-
-    // Update final biome
-    const biomeElement = document.getElementById("final-biome");
-    if (biomeElement && gameScene.getCurrentBiomeName) {
-      biomeElement.textContent = gameScene.getCurrentBiomeName();
+      if (data.status === 'success') {
+        this.leaderboardData = data.leaderboard || [];
+        this.updateLeaderboardDisplay();
+      }
+    } catch (error) {
+      console.error('Failed to fetch leaderboard:', error);
     }
   }
 
   createDOMUI(): void {
     const uiHTML = `
-      <div id="game-over-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-retro flex flex-col justify-center items-center" style="background-color: rgba(51, 0, 0, 0.8);">
+      <div id="game-over-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-retro flex flex-col justify-center items-center overflow-y-auto" style="background-color: rgba(51, 0, 0, 0.9);">
         <!-- Main Content Container -->
-        <div class="flex flex-col items-center justify-center gap-16 p-8 text-center pointer-events-auto">
+        <div class="flex flex-col items-center justify-center gap-8 p-8 text-center pointer-events-auto max-w-7xl">
           
           <!-- Game Over Title -->
           <div id="game-over-title" class="text-red-500 font-bold pointer-events-none" style="
-            font-size: clamp(56px, 8rem, 80px);
+            font-size: 64px;
             text-shadow: 4px 4px 0px #000000;
             animation: dangerBlink 0.5s ease-in-out infinite alternate;
           ">GAME OVER</div>
 
-          <!-- Stats Display -->
-          <div class="flex flex-col gap-4">
-            <div id="survival-stats" class="game-pixel-container-[#2C3E50] p-4 min-w-[400px]">
-              <div class="text-white font-bold text-2xl text-center mb-4" style="text-shadow: 2px 2px 0px #000000;">
-                MISSION STATS
+          <!-- Main Content Grid -->
+          <div class="grid grid-cols-2 gap-8 w-full">
+            
+            <!-- Left Column: Stats -->
+            <div class="flex flex-col gap-4">
+              <div id="survival-stats" class="game-pixel-container-[#2C3E50] p-6">
+                <div class="text-white font-bold text-2xl text-center mb-4" style="text-shadow: 2px 2px 0px #000000;">
+                  YOUR STATS
+                </div>
+                <div class="flex justify-between text-white font-bold text-lg mb-2" style="text-shadow: 1px 1px 0px #000000;">
+                  <span>SCORE:</span>
+                  <span id="final-score" class="text-yellow-400">${this.score}</span>
+                </div>
+                <div class="flex justify-between text-white font-bold text-lg mb-2" style="text-shadow: 1px 1px 0px #000000;">
+                  <span>TIME:</span>
+                  <span id="final-survival-time" class="text-green-400">${this.survivalTime}</span>
+                </div>
+                <div class="flex justify-between text-white font-bold text-lg mb-2" style="text-shadow: 1px 1px 0px #000000;">
+                  <span>KILLS:</span>
+                  <span id="final-enemies-killed" class="text-red-400">${this.enemiesKilled}</span>
+                </div>
+                <div class="flex justify-between text-white font-bold text-lg mb-2" style="text-shadow: 1px 1px 0px #000000;">
+                  <span>BIOME:</span>
+                  <span id="final-biome" class="text-purple-400">${this.biomeReached}</span>
+                </div>
+                <div class="flex justify-between text-white font-bold text-lg" style="text-shadow: 1px 1px 0px #000000;">
+                  <span>DIFFICULTY:</span>
+                  <span id="final-difficulty" class="text-orange-400 uppercase">${this.difficulty}</span>
+                </div>
               </div>
-              <div class="flex justify-between text-white font-bold text-lg mb-2" style="text-shadow: 1px 1px 0px #000000;">
-                <span>FINAL SCORE:</span>
-                <span id="final-score" class="text-yellow-400">0</span>
+
+              <!-- Wallet Actions -->
+              <div id="wallet-section" class="flex flex-col gap-2">
+                <button id="submit-score-btn" class="game-pixel-container-clickable-green-600 px-6 py-3 text-white font-bold text-lg">
+                  SUBMIT TO LEADERBOARD
+                </button>
+                <div id="submit-status" class="text-white font-bold text-sm hidden" style="text-shadow: 1px 1px 0px #000000;">
+                  Score submitted!
+                </div>
+                <div id="wallet-required" class="text-yellow-400 font-bold text-sm hidden" style="text-shadow: 1px 1px 0px #000000;">
+                  Connect wallet to submit score
+                </div>
               </div>
-              <div class="flex justify-between text-white font-bold text-lg mb-2" style="text-shadow: 1px 1px 0px #000000;">
-                <span>SURVIVAL TIME:</span>
-                <span id="final-survival-time" class="text-green-400">00:00</span>
-              </div>
-              <div class="flex justify-between text-white font-bold text-lg" style="text-shadow: 1px 1px 0px #000000;">
-                <span>FINAL BIOME:</span>
-                <span id="final-biome" class="text-cyan-400">Tropical Jungle</span>
+
+              <!-- Action Buttons -->
+              <div class="flex flex-col gap-2">
+                <button id="restart-btn" class="game-pixel-container-clickable-blue-600 px-6 py-3 text-white font-bold text-lg">
+                  PLAY AGAIN
+                </button>
+                <button id="view-full-leaderboard-btn" class="game-pixel-container-clickable-purple-600 px-6 py-3 text-white font-bold text-lg">
+                  VIEW FULL LEADERBOARD
+                </button>
               </div>
             </div>
-            
-            <!-- Failure Text -->
-            <div id="failure-text" class="text-white font-bold pointer-events-none" style="
-              font-size: clamp(18px, 2rem, 24px);
-              text-shadow: 2px 2px 0px #000000;
-              line-height: 1.4;
-            ">The mission continues...</div>
-          </div>
 
-          <!-- Press Enter Text -->
-          <div id="press-enter-text" class="text-yellow-400 font-bold pointer-events-none animate-pulse" style="
-            font-size: clamp(24px, 3rem, 36px);
-            text-shadow: 3px 3px 0px #000000;
-            animation: blink 0.8s ease-in-out infinite alternate;
-          ">PRESS ENTER TO RESTART</div>
+            <!-- Right Column: Top 10 Leaderboard -->
+            <div class="flex flex-col">
+              <div class="game-pixel-container-[#1a1a1a] p-6">
+                <div class="text-yellow-400 font-bold text-2xl text-center mb-4" style="text-shadow: 2px 2px 0px #000000;">
+                  TOP 10 - ${this.difficulty.toUpperCase()}
+                </div>
+                
+                <!-- Leaderboard List -->
+                <div id="leaderboard-list" class="space-y-2 max-h-[400px] overflow-y-auto">
+                  <div class="text-white text-center">Loading...</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
 
         </div>
 
@@ -173,6 +203,17 @@ export class GameOverUIScene extends Phaser.Scene {
             from { opacity: 0.3; }
             to { opacity: 1; }
           }
+
+          #leaderboard-list::-webkit-scrollbar {
+            width: 6px;
+          }
+          #leaderboard-list::-webkit-scrollbar-track {
+            background: #000;
+          }
+          #leaderboard-list::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 3px;
+          }
         </style>
       </div>
     `;
@@ -182,19 +223,148 @@ export class GameOverUIScene extends Phaser.Scene {
   }
 
   setupInputs(): void {
-    // Clear previous event listeners
-    this.input.off('pointerdown');
-    
+    // Submit score button
+    const submitBtn = document.getElementById('submit-score-btn');
+    if (submitBtn) {
+      const handler = async (e: Event) => {
+        e.stopPropagation();
+        await this.submitScore();
+      };
+      submitBtn.addEventListener('click', handler);
+      this.submitHandler = handler;
+    }
+
+    // View full leaderboard button
+    const viewLeaderboardBtn = document.getElementById('view-full-leaderboard-btn');
+    if (viewLeaderboardBtn) {
+      const handler = (e: Event) => {
+        e.stopPropagation();
+        this.viewFullLeaderboard();
+      };
+      viewLeaderboardBtn.addEventListener('click', handler);
+      this.viewLeaderboardHandler = handler;
+    }
+
+    // Restart button
+    const restartBtn = document.getElementById('restart-btn');
+    if (restartBtn) {
+      const handler = (e: Event) => {
+        e.stopPropagation();
+        this.restartGame();
+      };
+      restartBtn.addEventListener('click', handler);
+      this.restartHandler = handler;
+    }
+
     // Create keyboard input
     this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    // Listen for mouse click events
-    this.input.on('pointerdown', () => this.restartGame());
-
-    // Listen for key events
+    // Listen for key events - restart game
     this.enterKey.on('down', () => this.restartGame());
     this.spaceKey.on('down', () => this.restartGame());
+  }
+
+  async submitScore(): Promise<void> {
+    if (this.isSubmitted) {
+      console.log('Score already submitted');
+      return;
+    }
+
+    if (!isWalletConnected()) {
+      // Show wallet required message
+      const walletRequired = document.getElementById('wallet-required');
+      if (walletRequired) {
+        walletRequired.classList.remove('hidden');
+      }
+      console.log('Please connect wallet to submit score');
+      return;
+    }
+
+    const walletAddress = getConnectedWallet();
+    if (!walletAddress) return;
+
+    try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+      const response = await fetch(`${backendUrl}/api/leaderboard/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          wallet_address: walletAddress,
+          score: this.score,
+          survival_time_seconds: this.survivalTimeSeconds,
+          enemies_killed: this.enemiesKilled,
+          biome_reached: this.biomeReached,
+          difficulty: this.difficulty,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        this.isSubmitted = true;
+        
+        // Show success message
+        const submitStatus = document.getElementById('submit-status');
+        const submitBtn = document.getElementById('submit-score-btn');
+        if (submitStatus) {
+          submitStatus.classList.remove('hidden');
+        }
+        if (submitBtn) {
+          submitBtn.classList.add('hidden');
+        }
+
+        // Refresh leaderboard
+        await this.fetchLeaderboard();
+        
+        console.log('Score submitted successfully!');
+      }
+    } catch (error) {
+      console.error('Failed to submit score:', error);
+    }
+  }
+
+  updateLeaderboardDisplay(): void {
+    const leaderboardList = document.getElementById('leaderboard-list');
+    if (!leaderboardList) return;
+
+    if (this.leaderboardData.length === 0) {
+      leaderboardList.innerHTML = '<div class="text-white text-center">No scores yet</div>';
+      return;
+    }
+
+    let html = '';
+    this.leaderboardData.forEach((entry) => {
+      const rankColor = entry.rank === 1 ? 'text-yellow-400' : 
+                       entry.rank === 2 ? 'text-gray-300' : 
+                       entry.rank === 3 ? 'text-orange-400' : 'text-white';
+
+      html += `
+        <div class="flex justify-between items-center text-white text-sm py-2 px-2 hover:bg-gray-800 rounded" style="text-shadow: 1px 1px 0px #000000;">
+          <div class="${rankColor} font-bold w-12">#${entry.rank}</div>
+          <div class="text-cyan-400 font-mono text-xs w-24">${this.shortenAddress(entry.wallet_address)}</div>
+          <div class="text-yellow-400 font-bold w-24 text-right">${entry.score.toLocaleString()}</div>
+          <div class="text-gray-400 w-16 text-center">${entry.survival_time}</div>
+          <div class="text-red-400 w-12 text-center">${entry.enemies_killed}</div>
+        </div>
+      `;
+    });
+
+    leaderboardList.innerHTML = html;
+  }
+
+  shortenAddress(address: string): string {
+    if (!address) return '';
+    return `${address.slice(0, 4)}...${address.slice(-4)}`;
+  }
+
+  viewFullLeaderboard(): void {
+    this.cleanupEventListeners();
+    this.scene.stop('UIScene');
+    this.scene.stop(this.currentLevelKey!);
+    this.scene.start('LeaderboardScene');
   }
 
   restartGame(): void {
@@ -211,13 +381,7 @@ export class GameOverUIScene extends Phaser.Scene {
     }
 
     // Clear event listeners
-    this.input.off('pointerdown');
-    if (this.enterKey) {
-      this.enterKey.off('down');
-    }
-    if (this.spaceKey) {
-      this.spaceKey.off('down');
-    }
+    this.cleanupEventListeners();
 
     // Stop all game-related scenes
     this.scene.stop("UIScene");
@@ -227,9 +391,34 @@ export class GameOverUIScene extends Phaser.Scene {
     this.scene.start(this.currentLevelKey!);
   }
 
-  fetchLeaderboard(): void {
-    // TODO: Implement leaderboard fetching logic
-    console.log('Fetching leaderboard...');
+  cleanupEventListeners(): void {
+    if (this.submitHandler) {
+      const submitBtn = document.getElementById('submit-score-btn');
+      if (submitBtn) {
+        submitBtn.removeEventListener('click', this.submitHandler);
+      }
+    }
+
+    if (this.viewLeaderboardHandler) {
+      const viewBtn = document.getElementById('view-full-leaderboard-btn');
+      if (viewBtn) {
+        viewBtn.removeEventListener('click', this.viewLeaderboardHandler);
+      }
+    }
+
+    if (this.restartHandler) {
+      const restartBtn = document.getElementById('restart-btn');
+      if (restartBtn) {
+        restartBtn.removeEventListener('click', this.restartHandler);
+      }
+    }
+
+    if (this.enterKey) {
+      this.enterKey.off('down');
+    }
+    if (this.spaceKey) {
+      this.spaceKey.off('down');
+    }
   }
 
   update(): void {
