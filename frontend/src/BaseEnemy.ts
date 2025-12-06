@@ -260,9 +260,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
   // Initialize sound effects
   initializeSounds() {
-    this.deathSound = this.scene.sound.add("enemy_death", {
-      volume: 0.3,
-    });
+    // Death sound removed for better gameplay experience
   }
 
   // Cleanup when destroyed
