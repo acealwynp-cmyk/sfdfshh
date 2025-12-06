@@ -109,7 +109,9 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     const startY = this.y;
     const direction = this.player.facingDirection === "right" ? 1 : -1;
 
-    // Check all enemies
+    let enemiesHitThisTick = 0;
+
+    // Check all enemies - EACH enemy gets FULL damage independently
     gameScene.enemies.children.entries.forEach((enemy: any) => {
       if (!enemy || !enemy.active || enemy.isDead) return;
 
@@ -133,20 +135,23 @@ export class LaserBeam extends Phaser.GameObjects.Container {
       const inBeamY = Math.abs(enemyY - startY) < 80;
 
       if (inBeamX && inBeamY) {
-        // CUMULATIVE DAMAGE - track total laser damage dealt to this enemy
+        enemiesHitThisTick++;
+        
+        // FULL DAMAGE TO EACH ENEMY - no splitting!
         // 50 HP / 3 seconds = 16.67 dmg/sec, 5 ticks/sec = 3.34 per tick
-        const damagePerTick = 3.34;
+        // Increased to ensure 3 second kills even with groups
+        const damagePerTick = 3.5; // Slightly increased for reliability
+        
         const currentDamage = this.enemyLaserDamage.get(enemy) || 0;
         const newDamage = currentDamage + damagePerTick;
         
         this.enemyLaserDamage.set(enemy, newDamage);
         
-        // Deal damage to enemy
+        // Deal FULL damage to THIS enemy (not split among group)
         enemy.takeDamage(damagePerTick);
         
         // Calculate contact time for logging
-        const contactTimeSeconds = (newDamage / 16.67).toFixed(1);
-        console.log(`Laser hitting enemy: ${newDamage.toFixed(1)} / 50 HP (${contactTimeSeconds}s contact time)`);
+        const contactTimeSeconds = (newDamage / 17.5).toFixed(1);
         
         // Visual feedback - bright cyan flash
         if (enemy.setTint && enemy.clearTint) {
@@ -161,10 +166,15 @@ export class LaserBeam extends Phaser.GameObjects.Container {
         // Clean up tracking if enemy dies
         if (enemy.isDead) {
           this.enemyLaserDamage.delete(enemy);
-          console.log(`Enemy killed by laser after ${contactTimeSeconds}s of contact!`);
+          console.log(`✓ Enemy killed by laser! (${contactTimeSeconds}s contact, ${enemiesHitThisTick} enemies in beam)`);
         }
       }
     });
+
+    // Log group damage info occasionally
+    if (enemiesHitThisTick > 1 && Math.random() < 0.1) {
+      console.log(`Laser hitting ${enemiesHitThisTick} enemies simultaneously - EACH getting full damage!`);
+    }
   }
 
   destroy(): void {
