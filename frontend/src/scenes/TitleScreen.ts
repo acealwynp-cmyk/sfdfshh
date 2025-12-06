@@ -93,6 +93,21 @@ export class TitleScreen extends Phaser.Scene {
             animation: titleBlink 1s ease-in-out infinite alternate;
           ">PRESS ENTER TO START</div>
 
+          <!-- Additional Buttons -->
+          <div class="flex space-x-6">
+            <button id="wallet-btn" class="game-pixel-container-clickable-purple-600 px-6 py-3 text-white font-bold text-lg">
+              CONNECT WALLET
+            </button>
+            <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-6 py-3 text-white font-bold text-lg">
+              LEADERBOARD
+            </button>
+          </div>
+
+          <!-- Wallet Status -->
+          <div id="wallet-status" class="text-white font-bold text-sm hidden" style="text-shadow: 2px 2px 0px #000000;">
+            Connected: <span id="wallet-address" class="text-green-400"></span>
+          </div>
+
         </div>
 
         <!-- Custom Animations and Styles -->
