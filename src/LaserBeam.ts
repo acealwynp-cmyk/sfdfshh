@@ -133,8 +133,16 @@ export class LaserBeam extends Phaser.GameObjects.Container {
       const inBeamY = Math.abs(enemyY - startY) < 80;
 
       if (inBeamX && inBeamY) {
-        // Enemy is hit by beam! Deal damage
-        enemy.takeDamage(this.damage);
+        // CUMULATIVE DAMAGE - track total laser damage dealt to this enemy
+        const currentDamage = this.enemyLaserDamage.get(enemy) || 0;
+        const newDamage = currentDamage + 2; // 2 damage per tick (10 dmg/sec / 5 ticks = 2 per tick)
+        
+        this.enemyLaserDamage.set(enemy, newDamage);
+        
+        // Deal damage to enemy
+        enemy.takeDamage(2);
+        
+        console.log(`Laser damage on enemy: ${newDamage} / 50 (${Math.floor(newDamage/10)} seconds of contact)`);
         
         // Visual feedback - bright cyan flash
         if (enemy.setTint && enemy.clearTint) {
@@ -144,6 +152,11 @@ export class LaserBeam extends Phaser.GameObjects.Container {
               enemy.clearTint();
             }
           });
+        }
+        
+        // Clean up tracking if enemy dies
+        if (enemy.isDead) {
+          this.enemyLaserDamage.delete(enemy);
         }
       }
     });
