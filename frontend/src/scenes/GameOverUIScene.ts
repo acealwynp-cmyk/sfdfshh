@@ -68,6 +68,8 @@ export class GameOverUIScene extends Phaser.Scene {
     this.enemiesKilled = data.enemiesKilled || 0;
     this.biomeReached = data.biomeReached || "Unknown";
     this.difficulty = data.difficulty || "easy";
+    this.playMode = data.playMode || "guest";
+    this.walletAddress = data.walletAddress || null;
     
     // Reset flags
     this.isRestarting = false;
