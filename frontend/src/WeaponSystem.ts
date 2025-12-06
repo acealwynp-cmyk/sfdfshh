@@ -47,8 +47,7 @@ export class WeaponManager {
 
   public static readonly WEAPON_ORDER: WeaponType[] = [
     WeaponType.COMBAT_RIFLE,
-    WeaponType.FLAME_THROWER,
-    WeaponType.LASER_BLASTER
+    WeaponType.FLAME_THROWER
   ];
 
   public static getNextWeapon(currentWeapon: WeaponType): WeaponType {
