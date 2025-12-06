@@ -1,5 +1,26 @@
 import Phaser from 'phaser';
 import * as utils from '../utils';
+import { isWalletConnected, getConnectedWallet } from '../walletUtils';
+
+interface GameOverData {
+  currentLevelKey?: string;
+  score?: number;
+  survivalTime?: string;
+  survivalTimeSeconds?: number;
+  enemiesKilled?: number;
+  biomeReached?: string;
+  difficulty?: string;
+}
+
+interface LeaderboardEntry {
+  rank: number;
+  wallet_address: string;
+  score: number;
+  survival_time: string;
+  enemies_killed: number;
+  biome_reached: string;
+  difficulty: string;
+}
 
 export class GameOverUIScene extends Phaser.Scene {
   private currentLevelKey: string | null;
@@ -7,6 +28,22 @@ export class GameOverUIScene extends Phaser.Scene {
   private uiContainer: Phaser.GameObjects.DOMElement | null;
   private enterKey?: Phaser.Input.Keyboard.Key;
   private spaceKey?: Phaser.Input.Keyboard.Key;
+  
+  // Game stats
+  private score: number = 0;
+  private survivalTime: string = "00:00";
+  private survivalTimeSeconds: number = 0;
+  private enemiesKilled: number = 0;
+  private biomeReached: string = "Unknown";
+  private difficulty: string = "easy";
+  
+  // Leaderboard data
+  private leaderboardData: LeaderboardEntry[] = [];
+  private isSubmitted: boolean = false;
+  
+  // Event handlers
+  private submitHandler?: (event: Event) => void;
+  private viewLeaderboardHandler?: (event: Event) => void;
 
   constructor() {
     super({
@@ -17,11 +54,20 @@ export class GameOverUIScene extends Phaser.Scene {
     this.uiContainer = null;
   }
 
-  init(data: { currentLevelKey?: string }) {
+  init(data: GameOverData) {
     // Receive data from level scene
     this.currentLevelKey = data.currentLevelKey || "InfiniteSurvivalScene";
-    // Reset restart flag
+    this.score = data.score || 0;
+    this.survivalTime = data.survivalTime || "00:00";
+    this.survivalTimeSeconds = data.survivalTimeSeconds || 0;
+    this.enemiesKilled = data.enemiesKilled || 0;
+    this.biomeReached = data.biomeReached || "Unknown";
+    this.difficulty = data.difficulty || "easy";
+    
+    // Reset flags
     this.isRestarting = false;
+    this.isSubmitted = false;
+    this.leaderboardData = [];
   }
 
   create(): void {
