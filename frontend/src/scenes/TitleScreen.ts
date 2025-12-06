@@ -31,6 +31,9 @@ export class TitleScreen extends Phaser.Scene {
   init(): void {
     // Reset start flag
     this.isStarting = false;
+    
+    // Try to auto-reconnect wallet
+    this.walletAddress = getConnectedWallet();
   }
 
   create(): void {
