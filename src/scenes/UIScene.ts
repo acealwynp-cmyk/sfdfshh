@@ -73,12 +73,7 @@ export class UIScene extends Phaser.Scene {
               </div>
             </div>
             
-            <!-- Biome Timer -->
-            <div class="game-pixel-container-[#F39C12] p-2 min-w-[300px]">
-              <div class="text-white font-bold text-sm text-center" style="text-shadow: 2px 2px 0px #000000;">
-                NEXT BIOME: <span id="biome-timer" class="text-orange-400">09:59</span>
-              </div>
-            </div>
+            <!-- Biome Timer - REMOVED (teleport is now a surprise!) -->
           </div>
 
           <!-- Right Side - Health and Status -->
