@@ -280,16 +280,34 @@ export class TitleScreen extends Phaser.Scene {
   updateWalletDisplay(): void {
     const walletStatus = document.getElementById('wallet-status');
     const walletAddressEl = document.getElementById('wallet-address');
+    const disconnectContainer = document.getElementById('disconnect-wallet-container');
 
     if (walletStatus && walletAddressEl) {
       const address = getConnectedWallet();
       if (address) {
         walletStatus.classList.remove('hidden');
         walletAddressEl.textContent = shortenAddress(address);
+        
+        // Show disconnect button
+        if (disconnectContainer) {
+          disconnectContainer.classList.remove('hidden');
+        }
       } else {
         walletStatus.classList.add('hidden');
+        
+        // Hide disconnect button
+        if (disconnectContainer) {
+          disconnectContainer.classList.add('hidden');
+        }
       }
     }
+  }
+
+  async handleDisconnectWallet(): Promise<void> {
+    await disconnectWallet();
+    this.walletAddress = null;
+    this.updateWalletDisplay();
+    console.log('Wallet disconnected');
   }
 
   showLeaderboard(): void {
