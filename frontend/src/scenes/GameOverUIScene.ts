@@ -236,8 +236,21 @@ export class GameOverUIScene extends Phaser.Scene {
   }
 
   setupInputs(): void {
-    // Submit score button
+    // Show appropriate message based on play mode
     const submitBtn = document.getElementById('submit-score-btn');
+    const walletRequired = document.getElementById('wallet-required');
+    
+    if (this.playMode === 'guest') {
+      // Guest mode - show info message
+      if (walletRequired) {
+        walletRequired.classList.remove('hidden');
+      }
+    } else if (this.playMode === 'wallet' && this.walletAddress) {
+      // Wallet mode - will auto-submit
+      // Button stays hidden, status will show after submit
+    }
+    
+    // Submit score button (for manual submission if needed)
     if (submitBtn) {
       const handler = async (e: Event) => {
         e.stopPropagation();
