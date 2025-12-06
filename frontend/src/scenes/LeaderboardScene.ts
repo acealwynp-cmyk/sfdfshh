@@ -44,7 +44,9 @@ export class LeaderboardScene extends Phaser.Scene {
 
   async fetchLeaderboard(): Promise<void> {
     try {
-      const response = await fetch(`/api/leaderboard?limit=100`);
+      // Import at runtime to avoid circular dependencies
+      const { getApiUrl } = await import('../config');
+      const response = await fetch(getApiUrl('/api/leaderboard?limit=100'));
       const data = await response.json();
 
       if (data.status === 'success') {
