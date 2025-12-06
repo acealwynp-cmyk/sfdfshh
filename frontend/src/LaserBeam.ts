@@ -17,7 +17,7 @@ export class LaserBeam extends Phaser.GameObjects.Container {
     super(scene, 0, 0);
     this.scene = scene;
     this.player = player;
-    this.damage = 10; // 1/5th of 50 HP per second = 10 damage per second
+    this.damage = 16.67; // 50 HP / 3 seconds = 16.67 damage per second (kills in 3 seconds)
     
     // Create graphics for beam
     this.beamGraphics = scene.add.graphics();
