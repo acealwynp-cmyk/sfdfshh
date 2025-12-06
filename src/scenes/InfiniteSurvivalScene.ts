@@ -268,15 +268,16 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   
   startBiomeTeleportTimer(): void {
     // Auto biome change every 3 minutes (180 seconds)
+    // Countdown starts at 2:50 (170 seconds) - 10 seconds before teleport
     this.biomeTeleportTimer = this.time.addEvent({
-      delay: 180000, // 3 minutes
+      delay: 170000, // 2 minutes 50 seconds (170 seconds)
       callback: () => {
-        this.showTeleportWarning();
+        this.showTeleportWarning(); // Shows 10-second countdown
       },
       loop: true
     });
     
-    console.log("Auto biome teleport timer started - triggers every 3 minutes");
+    console.log("Auto biome teleport timer started - countdown begins at 2:50 (every 3 minutes)");
   }
   
   showTeleportWarning(): void {
