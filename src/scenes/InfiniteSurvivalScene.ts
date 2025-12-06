@@ -388,25 +388,34 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Recreate backgrounds with new texture
     this.createInfiniteBackground();
 
-    // 2. SMART PLATFORM TRANSITION
-    // Keep platforms near player, clear far ones, generate new ahead
-    console.log("Smart platform transition...");
+    // 2. IMMEDIATE PLATFORM TRANSITION
+    // Clear platforms behind player, keep only directly under and ahead
+    console.log("Immediate platform transition...");
     const playerX = this.player.x;
-    const keepRadius = screenSize.width.value * 1.5; // Keep platforms within 1.5 screens
+    const platformWidth = this.tileWidth * 10;
     
-    // Remove only platforms FAR from player
+    // Remove ALL platforms except those directly under/near player (within 2 platform widths)
     const platforms = this.groundPlatforms.getChildren();
+    let platformsKept = 0;
     platforms.forEach((platform: any) => {
-      if (platform && (platform.x < playerX - keepRadius || platform.x > playerX + keepRadius * 2)) {
-        this.groundPlatforms.remove(platform, true, true);
+      if (platform) {
+        const distance = Math.abs(platform.x - playerX);
+        // Keep only platforms within 2 platform widths of player
+        if (distance > platformWidth * 2) {
+          this.groundPlatforms.remove(platform, true, true);
+        } else {
+          platformsKept++;
+        }
       }
     });
     
-    // Set spawn point ahead of player for new platforms
-    this.lastSpawnX = playerX + keepRadius;
+    console.log(`Kept ${platformsKept} platforms near player, cleared rest`);
     
-    // Generate new platforms ahead with new tileset
-    console.log(`Generating new platforms ahead with tileset: ${this.currentBiomeConfig.tilesetKey}`);
+    // Set spawn point just ahead of player for immediate new platform generation
+    this.lastSpawnX = playerX + platformWidth * 1.5;
+    
+    // Generate new platforms IMMEDIATELY with new tileset
+    console.log(`Generating new platforms with tileset: ${this.currentBiomeConfig.tilesetKey}`);
     this.updateInfiniteGround();
 
     // 6. PLAY NEW BIOME MUSIC
