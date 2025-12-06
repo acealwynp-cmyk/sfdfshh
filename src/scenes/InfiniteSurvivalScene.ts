@@ -143,6 +143,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     this.backgrounds = [];
     
+    console.log(`[createInfiniteBackground] Using texture key: ${this.currentBiomeConfig.backgroundKey}`);
+    console.log(`[createInfiniteBackground] Current biome: ${this.currentBiomeConfig.displayName}`);
+    
     // Create multiple layers of parallax scrolling tile sprites
     const bgWidth = screenSize.width.value * 3; // Wide enough for seamless tiling
     
