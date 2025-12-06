@@ -305,17 +305,23 @@ export class GameOverUIScene extends Phaser.Scene {
   }
 
   async submitScore(): Promise<void> {
+    console.log('[submitScore] Called!');
+    
     if (this.isSubmitted) {
-      console.log('Score already submitted');
+      console.log('[submitScore] Already submitted, skipping');
       return;
     }
 
     // Use stored wallet address or get current one
     const walletAddress = this.walletAddress || getConnectedWallet();
+    console.log('[submitScore] Wallet address:', walletAddress);
+    
     if (!walletAddress) {
-      console.log('No wallet address available');
+      console.log('[submitScore] ERROR: No wallet address available!');
       return;
     }
+    
+    console.log('[submitScore] Preparing to submit score:', this.score);
 
     try {
       const { getApiUrl } = await import('../config');
