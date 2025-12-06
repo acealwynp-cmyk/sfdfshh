@@ -161,9 +161,17 @@ async def api_health():
     return {"status": "healthy", "service": "degen-force-api"}
 
 @app.post("/api/leaderboard/submit")
-async def submit_score(entry: LeaderboardEntry):
-    """Submit a score to the leaderboard - requires wallet address"""
+async def submit_score(entry: LeaderboardEntry, request: Request):
+    """Submit a score to the leaderboard - requires wallet address
+    Rate limited to prevent spam and abuse"""
     try:
+        # Rate limiting check
+        if not await check_rate_limit(entry.wallet_address):
+            raise HTTPException(
+                status_code=429, 
+                detail=f"Rate limit exceeded. Max {RATE_LIMIT_MAX_REQUESTS} submissions per {RATE_LIMIT_WINDOW} seconds"
+            )
+        
         # Validate wallet address is provided
         if not entry.wallet_address or len(entry.wallet_address) < 10:
             raise HTTPException(status_code=400, detail="Valid wallet address is required")
@@ -171,9 +179,16 @@ async def submit_score(entry: LeaderboardEntry):
         # Add timestamp
         entry_dict = entry.model_dump()
         entry_dict["timestamp"] = datetime.utcnow()
+        entry_dict["ip_address"] = request.client.host if request.client else "unknown"
         
-        # Insert into database
+        # Insert into database (non-blocking)
         result = await leaderboard_collection.insert_one(entry_dict)
+        
+        # Invalidate cache for fresh leaderboard
+        invalidate_leaderboard_cache()
+        
+        # Log for monitoring
+        print(f"✓ Score submitted: {entry.wallet_address[:8]}... - {entry.score} pts")
         
         return {
             "status": "success",
@@ -182,8 +197,11 @@ async def submit_score(entry: LeaderboardEntry):
         }
     except HTTPException:
         raise
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to submit score: {str(e)}")
+        print(f"✗ Error submitting score: {e}")
+        raise HTTPException(status_code=500, detail="Failed to submit score")
 
 @app.get("/api/leaderboard")
 async def get_leaderboard(limit: int = 100, difficulty: Optional[str] = None):
