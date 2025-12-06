@@ -20,6 +20,8 @@ export class TitleScreen extends Phaser.Scene {
   isStarting: boolean = false;
   selectedDifficulty: "easy" | "hard" | "cursed" = "easy";
   walletAddress: string | null = null;
+  showDifficultySelection: boolean = false;
+  playMode: "guest" | "wallet" = "guest";
 
   constructor() {
     super({
@@ -31,6 +33,8 @@ export class TitleScreen extends Phaser.Scene {
   init(): void {
     // Reset start flag
     this.isStarting = false;
+    this.showDifficultySelection = false;
+    this.playMode = "guest";
     
     // Try to auto-reconnect wallet
     this.walletAddress = getConnectedWallet();
