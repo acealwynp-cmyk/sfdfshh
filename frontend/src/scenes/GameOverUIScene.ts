@@ -10,6 +10,8 @@ interface GameOverData {
   enemiesKilled?: number;
   biomeReached?: string;
   difficulty?: string;
+  playMode?: "guest" | "wallet";
+  walletAddress?: string;
 }
 
 interface LeaderboardEntry {
