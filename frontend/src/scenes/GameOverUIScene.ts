@@ -171,7 +171,7 @@ export class GameOverUIScene extends Phaser.Scene {
             <div class="flex flex-col">
               <div class="game-pixel-container-[#1a1a1a] p-6">
                 <div class="text-yellow-400 font-bold text-2xl text-center mb-4" style="text-shadow: 2px 2px 0px #000000;">
-                  TOP 10 - ${this.difficulty.toUpperCase()}
+                  TOP 10 LEADERBOARD
                 </div>
                 
                 <!-- Leaderboard List -->
