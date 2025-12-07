@@ -37,7 +37,7 @@ export class WeaponManager {
       spriteKey: "flame_thrower_weapon", 
       projectileKey: "flame_projectile",
       fireRate: 150,
-      damage: 35,
+      damage: 100,  // One-shot kill (enemies have 50 HP)
       soundKey: "flame_thrower_fire",
       projectileSpeed: 500,
       animationKey: "brave_commando_flamethrower_shoot_anim",
