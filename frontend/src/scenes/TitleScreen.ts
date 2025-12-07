@@ -66,6 +66,14 @@ export class TitleScreen extends Phaser.Scene {
     let uiHTML = `
       <div id="title-screen-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-retro flex flex-col justify-center items-center" style="image-rendering: pixelated; background-image: url('${jungleBackgroundURL}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         
+        <!-- Follow Button (Top Left) -->
+        <div class="fixed top-4 left-4 pointer-events-auto">
+          <a href="https://x.com/degenforcegame" target="_blank" rel="noopener noreferrer" 
+             class="game-pixel-container-clickable-blue-500 px-6 py-3 text-white font-bold text-base flex items-center gap-2 no-underline">
+            <span>🐦 FOLLOW</span>
+          </a>
+        </div>
+
         <!-- Disconnect Wallet Button (Top Right) -->
         <div id="disconnect-wallet-container" class="fixed top-4 right-4 pointer-events-auto hidden">
           <button id="disconnect-wallet-btn" class="game-pixel-container-clickable-red-600 px-4 py-2 text-white font-bold text-sm flex items-center gap-2">
