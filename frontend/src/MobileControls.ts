@@ -246,29 +246,57 @@ export class MobileControls {
   }
 
   private setupButtonInput(fireButton: HTMLButtonElement, switchButton: HTMLButtonElement): void {
-    // Fire button
+    // Fire button - retro press effect
     fireButton.addEventListener('touchstart', (e: TouchEvent) => {
       e.preventDefault();
       this.shootPressed = true;
-      fireButton.style.background = 'rgba(255, 0, 0, 0.8)';
+      fireButton.style.transform = 'translateY(3px)';
+      fireButton.style.boxShadow = `
+        inset -3px -3px 0px rgba(0, 0, 0, 0.5),
+        inset 3px 3px 0px rgba(255, 255, 255, 0.1),
+        0 0 0 2px #000,
+        0 2px 0 #000,
+        0 3px 5px rgba(0, 0, 0, 0.4)
+      `;
     });
 
     fireButton.addEventListener('touchend', (e: TouchEvent) => {
       e.preventDefault();
       this.shootPressed = false;
-      fireButton.style.background = 'rgba(255, 0, 0, 0.5)';
+      fireButton.style.transform = 'translateY(0)';
+      fireButton.style.boxShadow = `
+        inset -3px -3px 0px rgba(0, 0, 0, 0.3),
+        inset 3px 3px 0px rgba(255, 255, 255, 0.2),
+        0 0 0 2px #000,
+        0 5px 0 #000,
+        0 6px 8px rgba(0, 0, 0, 0.4)
+      `;
     });
 
-    // Switch weapon button
+    // Switch weapon button - retro press effect
     switchButton.addEventListener('touchstart', (e: TouchEvent) => {
       e.preventDefault();
       this.switchWeapon = true;
-      switchButton.style.background = 'rgba(0, 0, 255, 0.8)';
+      switchButton.style.transform = 'translateY(3px)';
+      switchButton.style.boxShadow = `
+        inset -3px -3px 0px rgba(0, 0, 0, 0.5),
+        inset 3px 3px 0px rgba(255, 255, 255, 0.1),
+        0 0 0 2px #000,
+        0 2px 0 #000,
+        0 3px 5px rgba(0, 0, 0, 0.4)
+      `;
       
       // Reset after short delay
       setTimeout(() => {
         this.switchWeapon = false;
-        switchButton.style.background = 'rgba(0, 0, 255, 0.5)';
+        switchButton.style.transform = 'translateY(0)';
+        switchButton.style.boxShadow = `
+          inset -3px -3px 0px rgba(0, 0, 0, 0.3),
+          inset 3px 3px 0px rgba(255, 255, 255, 0.2),
+          0 0 0 2px #000,
+          0 5px 0 #000,
+          0 6px 8px rgba(0, 0, 0, 0.4)
+        `;
       }, 200);
     });
   }
