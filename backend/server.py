@@ -130,14 +130,15 @@ def invalidate_leaderboard_cache():
 async def startup_event():
     """Initialize database indexes for optimal performance"""
     try:
-        # Create indexes for fast queries
+        # Create indexes for fast queries and concurrent operations
         await leaderboard_collection.create_index([("score", -1)])  # Descending score for ranking
-        await leaderboard_collection.create_index([("wallet_address", 1)])  # Fast wallet lookup
-        await leaderboard_collection.create_index([("difficulty", 1)])  # Filter by difficulty
-        await leaderboard_collection.create_index([("timestamp", -1)])  # Recent scores
-        await leaderboard_collection.create_index([("score", -1), ("timestamp", -1)])  # Compound index
+        await leaderboard_collection.create_index([("wallet_address", 1)], unique=True)  # Unique wallet with fast lookup
+        await leaderboard_collection.create_index([("last_difficulty", 1)])  # Filter by difficulty
+        await leaderboard_collection.create_index([("last_played", -1)])  # Recent activity
+        await leaderboard_collection.create_index([("score", -1), ("last_played", -1)])  # Compound index for leaderboard
+        await leaderboard_collection.create_index([("total_games", -1)])  # Most active players
         
-        print("✓ Database indexes created successfully")
+        print("✓ Database indexes created successfully (with unique wallet constraint)")
     except Exception as e:
         print(f"⚠ Warning: Failed to create indexes: {e}")
 
