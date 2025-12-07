@@ -151,67 +151,68 @@ export class MobileControls {
   }
 
   private setupJoystickInput(): void {
-    if (!this.joystickBase) return;
+    if (!this.joystickContainer || !this.joystickThumb) return;
 
-    // Touch/Mouse down on joystick area
-    this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      const distance = Phaser.Math.Distance.Between(
-        pointer.x,
-        pointer.y,
-        this.joystickCenterX,
-        this.joystickCenterY
-      );
-
-      if (distance < 60) {
-        this.joystickActive = true;
-        this.joystickStartX = pointer.x;
-        this.joystickStartY = pointer.y;
+    const resetJoystick = () => {
+      if (this.joystickThumb) {
+        this.joystickThumb.style.transform = 'translate(-50%, -50%)';
       }
+      this.joystickActive = false;
+      this.moveDirection = 0;
+    };
+
+    // Touch start on joystick
+    this.joystickContainer.addEventListener('touchstart', (e: TouchEvent) => {
+      e.preventDefault();
+      this.joystickActive = true;
+      const touch = e.touches[0];
+      const rect = this.joystickContainer!.getBoundingClientRect();
+      this.touchStartX = touch.clientX - rect.left - rect.width / 2;
+      this.touchStartY = touch.clientY - rect.top - rect.height / 2;
     });
 
-    // Touch/Mouse move
-    this.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-      if (this.joystickActive) {
-        const deltaX = pointer.x - this.joystickCenterX;
-        const deltaY = pointer.y - this.joystickCenterY;
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        const maxDistance = 40;
+    // Touch move on joystick
+    this.joystickContainer.addEventListener('touchmove', (e: TouchEvent) => {
+      if (!this.joystickActive || !this.joystickThumb) return;
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      const rect = this.joystickContainer!.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      let deltaX = touch.clientX - centerX;
+      let deltaY = touch.clientY - centerY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      const maxDistance = 30;
 
-        let thumbX, thumbY;
-        if (distance > maxDistance) {
-          const angle = Math.atan2(deltaY, deltaX);
-          thumbX = this.joystickCenterX + Math.cos(angle) * maxDistance;
-          thumbY = this.joystickCenterY + Math.sin(angle) * maxDistance;
-        } else {
-          thumbX = pointer.x;
-          thumbY = pointer.y;
-        }
-
-        // Update thumb position
-        this.joystickThumb.clear();
-        this.joystickThumb.fillStyle(0xffffff, 0.8);
-        this.joystickThumb.fillCircle(thumbX, thumbY, 30);
-
-        // Calculate move direction
-        if (Math.abs(deltaX) > 10) {
-          this.moveDirection = deltaX > 0 ? 1 : -1;
-        } else {
-          this.moveDirection = 0;
-        }
+      // Limit thumb movement
+      if (distance > maxDistance) {
+        const angle = Math.atan2(deltaY, deltaX);
+        deltaX = Math.cos(angle) * maxDistance;
+        deltaY = Math.sin(angle) * maxDistance;
       }
-    });
 
-    // Touch/Mouse up
-    this.scene.input.on('pointerup', () => {
-      if (this.joystickActive) {
-        this.joystickActive = false;
+      // Update thumb position
+      this.joystickThumb.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`;
+
+      // Update move direction
+      if (Math.abs(deltaX) > 10) {
+        this.moveDirection = deltaX > 0 ? 1 : -1;
+      } else {
         this.moveDirection = 0;
-
-        // Reset thumb to center
-        this.joystickThumb.clear();
-        this.joystickThumb.fillStyle(0xffffff, 0.6);
-        this.joystickThumb.fillCircle(this.joystickCenterX, this.joystickCenterY, 30);
       }
+    });
+
+    // Touch end on joystick
+    this.joystickContainer.addEventListener('touchend', (e: TouchEvent) => {
+      e.preventDefault();
+      resetJoystick();
+    });
+
+    this.joystickContainer.addEventListener('touchcancel', (e: TouchEvent) => {
+      e.preventDefault();
+      resetJoystick();
     });
   }
 
