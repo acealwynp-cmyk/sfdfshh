@@ -28,112 +28,126 @@ export class MobileControls {
 
     console.log('[MobileControls] Creating mobile controls for screen:', window.innerWidth, 'x', window.innerHeight);
 
-    // Joystick on bottom left
-    const joystickX = 100;
-    const joystickY = height - 100;
+    // Create DOM-based mobile controls container
+    this.controlsContainer = document.createElement('div');
+    this.controlsContainer.id = 'mobile-controls';
+    this.controlsContainer.style.cssText = `
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 180px;
+      z-index: 9999;
+      pointer-events: auto;
+      background: rgba(0, 0, 0, 0.3);
+    `;
 
-    // Joystick Base (larger circle)
-    this.joystickBase = this.scene.add.graphics();
-    this.joystickBase.setDepth(10000);
-    this.joystickBase.fillStyle(0x000000, 0.3);
-    this.joystickBase.fillCircle(joystickX, joystickY, 60);
-    this.joystickBase.lineStyle(3, 0xffffff, 0.5);
-    this.joystickBase.strokeCircle(joystickX, joystickY, 60);
-    this.joystickBase.setScrollFactor(0);
+    // Create joystick container
+    this.joystickContainer = document.createElement('div');
+    this.joystickContainer.style.cssText = `
+      position: absolute;
+      left: 60px;
+      bottom: 60px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.5);
+    `;
 
-    // Joystick Thumb (smaller circle)
-    this.joystickThumb = this.scene.add.graphics();
-    this.joystickThumb.setDepth(10001);
-    this.joystickThumb.fillStyle(0xffffff, 0.6);
-    this.joystickThumb.fillCircle(joystickX, joystickY, 30);
-    this.joystickThumb.setScrollFactor(0);
+    // Create joystick thumb
+    this.joystickThumb = document.createElement('div');
+    this.joystickThumb.style.cssText = `
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      transition: all 0.1s;
+    `;
+    this.joystickContainer.appendChild(this.joystickThumb);
 
-    this.joystickCenterX = joystickX;
-    this.joystickCenterY = joystickY;
+    // Create Jump button (green)
+    const jumpButton = document.createElement('button');
+    jumpButton.id = 'mobile-jump-btn';
+    jumpButton.innerHTML = 'W';
+    jumpButton.style.cssText = `
+      position: absolute;
+      right: 130px;
+      bottom: 60px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(0, 255, 0, 0.5);
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+      font-family: Arial;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    `;
 
-    // Jump Button (bottom right)
-    const jumpX = width - 220;
-    const jumpY = height - 100;
-    
-    this.jumpButton = this.scene.add.graphics();
-    this.jumpButton.setDepth(10000);
-    this.jumpButton.fillStyle(0x00ff00, 0.5);
-    this.jumpButton.fillCircle(jumpX, jumpY, 50);
-    this.jumpButton.lineStyle(3, 0xffffff, 0.8);
-    this.jumpButton.strokeCircle(jumpX, jumpY, 50);
-    this.jumpButton.setScrollFactor(0);
-    this.jumpButton.setInteractive(
-      new Phaser.Geom.Circle(jumpX, jumpY, 50),
-      Phaser.Geom.Circle.Contains
-    );
+    // Create Fire button (red)
+    const fireButton = document.createElement('button');
+    fireButton.id = 'mobile-fire-btn';
+    fireButton.innerHTML = 'FIRE';
+    fireButton.style.cssText = `
+      position: absolute;
+      right: 20px;
+      bottom: 60px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(255, 0, 0, 0.5);
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      font-family: Arial;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    `;
 
-    // Add "W" text
-    const jumpText = this.scene.add.text(jumpX, jumpY, 'W', {
-      fontSize: '32px',
-      fontFamily: 'Arial',
-      color: '#ffffff',
-      fontStyle: 'bold'
-    });
-    jumpText.setOrigin(0.5);
-    jumpText.setDepth(10001);
-    jumpText.setScrollFactor(0);
+    // Create Switch Weapon button (blue)
+    const switchButton = document.createElement('button');
+    switchButton.id = 'mobile-switch-btn';
+    switchButton.innerHTML = 'Q/E';
+    switchButton.style.cssText = `
+      position: absolute;
+      right: 70px;
+      top: 20px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: rgba(0, 0, 255, 0.5);
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      font-family: Arial;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    `;
 
-    // Fire Button
-    const fireX = width - 110;
-    const fireY = height - 100;
-    
-    this.fireButton = this.scene.add.graphics();
-    this.fireButton.setDepth(10000);
-    this.fireButton.fillStyle(0xff0000, 0.5);
-    this.fireButton.fillCircle(fireX, fireY, 50);
-    this.fireButton.lineStyle(3, 0xffffff, 0.8);
-    this.fireButton.strokeCircle(fireX, fireY, 50);
-    this.fireButton.setScrollFactor(0);
-    this.fireButton.setInteractive(
-      new Phaser.Geom.Circle(fireX, fireY, 50),
-      Phaser.Geom.Circle.Contains
-    );
+    // Append all controls
+    this.controlsContainer.appendChild(this.joystickContainer);
+    this.controlsContainer.appendChild(jumpButton);
+    this.controlsContainer.appendChild(fireButton);
+    this.controlsContainer.appendChild(switchButton);
+    document.body.appendChild(this.controlsContainer);
 
-    // Add "SPACE" text (smaller)
-    const fireText = this.scene.add.text(fireX, fireY, 'SPACE', {
-      fontSize: '16px',
-      fontFamily: 'Arial',
-      color: '#ffffff',
-      fontStyle: 'bold'
-    });
-    fireText.setOrigin(0.5);
-    fireText.setDepth(10001);
-    fireText.setScrollFactor(0);
-
-    // Switch Weapon Button (above fire)
-    const switchX = width - 110;
-    const switchY = height - 200;
-    
-    this.switchButton = this.scene.add.graphics();
-    this.switchButton.setDepth(10000);
-    this.switchButton.fillStyle(0x0000ff, 0.5);
-    this.switchButton.fillCircle(switchX, switchY, 40);
-    this.switchButton.lineStyle(3, 0xffffff, 0.8);
-    this.switchButton.strokeCircle(switchX, switchY, 40);
-    this.switchButton.setScrollFactor(0);
-    this.switchButton.setInteractive(
-      new Phaser.Geom.Circle(switchX, switchY, 40),
-      Phaser.Geom.Circle.Contains
-    );
-
-    // Add "Q/E" text
-    const switchText = this.scene.add.text(switchX, switchY, 'Q/E', {
-      fontSize: '18px',
-      fontFamily: 'Arial',
-      color: '#ffffff',
-      fontStyle: 'bold'
-    });
-    switchText.setOrigin(0.5);
-    switchText.setDepth(10001);
-    switchText.setScrollFactor(0);
-
+    // Setup event listeners
     this.setupJoystickInput();
-    this.setupButtonInput();
+    this.setupButtonInput(jumpButton, fireButton, switchButton);
+
+    console.log('[MobileControls] DOM controls created');
   }
 
   private setupJoystickInput(): void {
