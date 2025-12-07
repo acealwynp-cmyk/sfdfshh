@@ -55,17 +55,22 @@ export class PlayerFSM extends FSM {
 
     const cursors = this.player.cursors;
     const mobile = (this.scene as any).mobileControls;
+    const wasd = this.player;
     
-    // Left/right movement input detection
-    if (cursors.left.isDown || cursors.right.isDown || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
+    // Left/right movement input detection (Arrow keys OR WASD)
+    const leftPressed = cursors.left.isDown || (wasd.aKey && wasd.aKey.isDown);
+    const rightPressed = cursors.right.isDown || (wasd.dKey && wasd.dKey.isDown);
+    
+    if (leftPressed || rightPressed || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
       this.goto("moving");
     } 
     // Shooting input detection  
     else if ((this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) || (mobile && mobile.shootPressed)) {
       this.goto("shooting");
     }
-    // Jump input detection (must be on ground)
-    else if ((cursors.up.isDown && this.player.body.onFloor()) || (mobile && mobile.jumpPressed && this.player.body.onFloor())) {
+    // Jump input detection (must be on ground) - UP arrow OR W key
+    const jumpPressed = cursors.up.isDown || (wasd.wKey && wasd.wKey.isDown);
+    if ((jumpPressed && this.player.body.onFloor()) || (mobile && mobile.jumpPressed && this.player.body.onFloor())) {
       this.goto("jumping");
     }
   }
