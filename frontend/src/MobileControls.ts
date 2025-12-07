@@ -10,9 +10,11 @@ export class MobileControls {
   private touchStartX: number = 0;
   private touchStartY: number = 0;
   
-  public moveDirection: number = 0; // -1 = left, 0 = none, 1 = right
-  public isJumping: boolean = false;
-  public isFiring: boolean = false;
+  // Properties expected by PlayerFSM
+  public leftPressed: boolean = false;
+  public rightPressed: boolean = false;
+  public jumpPressed: boolean = false;
+  public shootPressed: boolean = false;
   public switchWeapon: boolean = false;
 
   constructor(scene: Phaser.Scene) {
