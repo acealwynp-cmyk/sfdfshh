@@ -174,11 +174,15 @@ export class PlayerFSM extends FSM {
     // Don't stop movement completely while shooting
     const cursors = this.player.cursors;
     const mobile = (this.scene as any).mobileControls;
+    const wasd = this.player;
     
-    if (cursors.left.isDown || (mobile && mobile.leftPressed)) {
+    const leftPressed = cursors.left.isDown || (wasd.aKey && wasd.aKey.isDown);
+    const rightPressed = cursors.right.isDown || (wasd.dKey && wasd.dKey.isDown);
+    
+    if (leftPressed || (mobile && mobile.leftPressed)) {
       this.player.setVelocityX(-this.player.walkSpeed * 0.6); // Reduced speed while shooting
       this.player.facingDirection = "left";
-    } else if (cursors.right.isDown || (mobile && mobile.rightPressed)) {
+    } else if (rightPressed || (mobile && mobile.rightPressed)) {
       this.player.setVelocityX(this.player.walkSpeed * 0.6);
       this.player.facingDirection = "right";
     }
@@ -201,7 +205,7 @@ export class PlayerFSM extends FSM {
         // Determine next state based on ground/air and input
         if (!this.player.body.onFloor()) {
           this.goto("jumping");
-        } else if (cursors.left.isDown || cursors.right.isDown || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
+        } else if (leftPressed || rightPressed || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
           this.goto("moving");
         } else {
           this.goto("idle");
