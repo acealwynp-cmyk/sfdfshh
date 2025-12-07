@@ -44,10 +44,10 @@ export class LeaderboardScene extends Phaser.Scene {
 
   async fetchLeaderboard(): Promise<void> {
     try {
-      // Import at runtime to avoid circular dependencies
-      const { getApiUrl } = await import('../config');
-      const apiUrl = getApiUrl('/api/leaderboard?limit=100');
+      // Use absolute path for production - Kubernetes ingress will route /api/* to backend
+      const apiUrl = '/api/leaderboard?limit=100';
       console.log('[Leaderboard] Fetching from:', apiUrl);
+      console.log('[Leaderboard] Full URL:', window.location.origin + apiUrl);
       
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -59,8 +59,11 @@ export class LeaderboardScene extends Phaser.Scene {
       });
 
       console.log('[Leaderboard] Response status:', response.status);
+      console.log('[Leaderboard] Response ok:', response.ok);
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('[Leaderboard] Error response:', errorText);
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
@@ -77,6 +80,7 @@ export class LeaderboardScene extends Phaser.Scene {
       }
     } catch (error) {
       console.error('[Leaderboard] ERROR:', error);
+      console.error('[Leaderboard] Error type:', error instanceof Error ? error.message : 'Unknown error');
       this.isLoading = false;
       this.leaderboardData = [];
       this.updateLeaderboardUI();
