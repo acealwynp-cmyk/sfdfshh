@@ -324,8 +324,8 @@ export class GameOverUIScene extends Phaser.Scene {
     console.log('[submitScore] Preparing to submit score:', this.score);
 
     try {
-      const { getApiUrl } = await import('../config');
-      const apiUrl = getApiUrl('/api/leaderboard/submit');
+      // Use direct relative path - Kubernetes ingress will route to backend
+      const apiUrl = '/api/leaderboard/submit';
       
       const payload = {
         wallet_address: walletAddress,
