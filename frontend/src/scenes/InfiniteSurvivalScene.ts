@@ -20,6 +20,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   public player!: CommandoPlayer;
   public enemies!: Phaser.GameObjects.Group;
   public playerProjectiles!: Phaser.GameObjects.Group;
+  private mobileControls?: MobileControls;
   public enemyProjectiles!: Phaser.GameObjects.Group;
   
   // Ground platforms for infinite scrolling
