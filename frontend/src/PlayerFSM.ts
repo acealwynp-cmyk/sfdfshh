@@ -242,10 +242,14 @@ export class PlayerFSM extends FSM {
     }
 
     // Allow movement while shooting (already reduced in enter_shooting)
-    if (cursors.left.isDown || (mobile && mobile.leftPressed)) {
+    const wasd = this.player;
+    const leftPressed = cursors.left.isDown || (wasd.aKey && wasd.aKey.isDown);
+    const rightPressed = cursors.right.isDown || (wasd.dKey && wasd.dKey.isDown);
+    
+    if (leftPressed || (mobile && mobile.leftPressed)) {
       this.player.setVelocityX(-this.player.walkSpeed * 0.6);
       this.player.facingDirection = "left";
-    } else if (cursors.right.isDown || (mobile && mobile.rightPressed)) {
+    } else if (rightPressed || (mobile && mobile.rightPressed)) {
       this.player.setVelocityX(this.player.walkSpeed * 0.6);
       this.player.facingDirection = "right";
     } else if (this.player.body.onFloor()) {
