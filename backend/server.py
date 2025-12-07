@@ -206,62 +206,52 @@ async def submit_score(entry: LeaderboardEntry, request: Request):
         if not entry.wallet_address or len(entry.wallet_address) < 10:
             raise HTTPException(status_code=400, detail="Valid wallet address is required")
         
-        # Check if wallet already exists
-        existing = await leaderboard_collection.find_one(
-            {"wallet_address": entry.wallet_address},
-            {"_id": 0, "score": 1, "total_games": 1}
-        )
-        
         current_time = datetime.utcnow()
         ip_address = request.client.host if request.client else "unknown"
         
-        if existing:
-            # Accumulate scores for existing wallet
-            new_total_score = existing.get("score", 0) + entry.score
-            total_games = existing.get("total_games", 1) + 1
-            
-            # Update with accumulated score and latest game stats
-            result = await leaderboard_collection.update_one(
-                {"wallet_address": entry.wallet_address},
-                {
-                    "$set": {
-                        "score": new_total_score,
-                        "total_games": total_games,
-                        "last_survival_time_seconds": entry.survival_time_seconds,
-                        "last_enemies_killed": entry.enemies_killed,
-                        "last_biome_reached": entry.biome_reached,
-                        "last_difficulty": entry.difficulty,
-                        "last_played": current_time,
-                        "ip_address": ip_address
-                    },
-                    "$max": {
-                        "best_survival_time_seconds": entry.survival_time_seconds,
-                        "best_enemies_killed": entry.enemies_killed
-                    }
+        # Use atomic upsert to handle concurrent submissions
+        # This prevents race conditions when multiple games finish simultaneously
+        result = await leaderboard_collection.update_one(
+            {"wallet_address": entry.wallet_address},
+            {
+                "$inc": {
+                    "score": entry.score,  # Atomically increment score
+                    "total_games": 1  # Atomically increment game count
+                },
+                "$set": {
+                    "last_survival_time_seconds": entry.survival_time_seconds,
+                    "last_enemies_killed": entry.enemies_killed,
+                    "last_biome_reached": entry.biome_reached,
+                    "last_difficulty": entry.difficulty,
+                    "last_played": current_time,
+                    "ip_address": ip_address
+                },
+                "$max": {
+                    "best_survival_time_seconds": entry.survival_time_seconds,
+                    "best_enemies_killed": entry.enemies_killed
+                },
+                "$setOnInsert": {
+                    "timestamp": current_time,  # Only set on first insert
+                    "wallet_address": entry.wallet_address
                 }
-            )
-            
-            message = f"Score updated (accumulated): {new_total_score} pts"
-            print(f"✓ {entry.wallet_address[:8]}... - Added {entry.score} pts → Total: {new_total_score} pts ({total_games} games)")
-        else:
-            # First time playing - create new entry
-            entry_dict = entry.model_dump()
-            entry_dict["timestamp"] = current_time
-            entry_dict["last_played"] = current_time
-            entry_dict["ip_address"] = ip_address
-            entry_dict["total_games"] = 1
-            
-            # Store current stats as both "last" and "best"
-            entry_dict["last_survival_time_seconds"] = entry.survival_time_seconds
-            entry_dict["last_enemies_killed"] = entry.enemies_killed
-            entry_dict["last_biome_reached"] = entry.biome_reached
-            entry_dict["last_difficulty"] = entry.difficulty
-            entry_dict["best_survival_time_seconds"] = entry.survival_time_seconds
-            entry_dict["best_enemies_killed"] = entry.enemies_killed
-            
-            result = await leaderboard_collection.insert_one(entry_dict)
+            },
+            upsert=True  # Create document if it doesn't exist
+        )
+        
+        # Check if this was an insert or update
+        if result.upserted_id:
             message = "New player score created"
             print(f"✓ New player: {entry.wallet_address[:8]}... - {entry.score} pts")
+        else:
+            # Fetch updated score for logging
+            updated = await leaderboard_collection.find_one(
+                {"wallet_address": entry.wallet_address},
+                {"score": 1, "total_games": 1}
+            )
+            total_score = updated.get("score", entry.score)
+            total_games = updated.get("total_games", 1)
+            message = f"Score updated (accumulated): {total_score} pts"
+            print(f"✓ {entry.wallet_address[:8]}... - Added {entry.score} pts → Total: {total_score} pts ({total_games} games)")
         
         # Invalidate cache for fresh leaderboard
         invalidate_leaderboard_cache()
