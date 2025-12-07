@@ -258,10 +258,9 @@ export class MobileControls {
   }
 
   public destroy(): void {
-    if (this.joystickBase) this.joystickBase.destroy();
-    if (this.joystickThumb) this.joystickThumb.destroy();
-    if (this.jumpButton) this.jumpButton.destroy();
-    if (this.fireButton) this.fireButton.destroy();
-    if (this.switchButton) this.switchButton.destroy();
+    if (this.controlsContainer && this.controlsContainer.parentNode) {
+      this.controlsContainer.parentNode.removeChild(this.controlsContainer);
+    }
+    console.log('[MobileControls] Controls destroyed');
   }
 }
