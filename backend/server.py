@@ -354,3 +354,20 @@ async def get_leaderboard(limit: int = 100, difficulty: Optional[str] = None):
     except Exception as e:
         print(f"✗ Error fetching leaderboard: {e}")
         raise HTTPException(status_code=500, detail="Failed to fetch leaderboard")
+
+@app.delete("/api/leaderboard/reset")
+async def reset_leaderboard():
+    """Reset leaderboard (for testing/admin use)"""
+    try:
+        result = await leaderboard_collection.delete_many({})
+        invalidate_leaderboard_cache()
+        print(f"✓ Leaderboard reset: {result.deleted_count} entries removed")
+        return {
+            "status": "success",
+            "message": f"Deleted {result.deleted_count} entries",
+            "deleted_count": result.deleted_count
+        }
+    except Exception as e:
+        print(f"✗ Error resetting leaderboard: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reset leaderboard")
+
