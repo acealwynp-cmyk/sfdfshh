@@ -9,6 +9,7 @@ import { SpaceEnemy } from "../SpaceEnemy";
 import { BiomeManager, BiomeType } from "../BiomeManager";
 import type { BiomeConfig } from "../BiomeManager";
 import { screenSize, enemyConfig, difficultyConfig, gameplayConfig } from "../gameConfig.json";
+import { MobileControls } from "../MobileControls.js";
 
 export class InfiniteSurvivalScene extends Phaser.Scene {
   // Scene properties
