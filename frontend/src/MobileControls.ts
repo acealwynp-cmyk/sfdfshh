@@ -205,20 +205,7 @@ export class MobileControls {
     });
   }
 
-  private setupButtonInput(jumpButton: HTMLButtonElement, fireButton: HTMLButtonElement, switchButton: HTMLButtonElement): void {
-    // Jump button
-    jumpButton.addEventListener('touchstart', (e: TouchEvent) => {
-      e.preventDefault();
-      this.jumpPressed = true;
-      jumpButton.style.background = 'rgba(0, 255, 0, 0.8)';
-    });
-
-    jumpButton.addEventListener('touchend', (e: TouchEvent) => {
-      e.preventDefault();
-      this.jumpPressed = false;
-      jumpButton.style.background = 'rgba(0, 255, 0, 0.5)';
-    });
-
+  private setupButtonInput(fireButton: HTMLButtonElement, switchButton: HTMLButtonElement): void {
     // Fire button
     fireButton.addEventListener('touchstart', (e: TouchEvent) => {
       e.preventDefault();
