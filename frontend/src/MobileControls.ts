@@ -225,26 +225,26 @@ export class MobileControls {
     // Jump button
     jumpButton.addEventListener('touchstart', (e: TouchEvent) => {
       e.preventDefault();
-      this.isJumping = true;
+      this.jumpPressed = true;
       jumpButton.style.background = 'rgba(0, 255, 0, 0.8)';
     });
 
     jumpButton.addEventListener('touchend', (e: TouchEvent) => {
       e.preventDefault();
-      this.isJumping = false;
+      this.jumpPressed = false;
       jumpButton.style.background = 'rgba(0, 255, 0, 0.5)';
     });
 
     // Fire button
     fireButton.addEventListener('touchstart', (e: TouchEvent) => {
       e.preventDefault();
-      this.isFiring = true;
+      this.shootPressed = true;
       fireButton.style.background = 'rgba(255, 0, 0, 0.8)';
     });
 
     fireButton.addEventListener('touchend', (e: TouchEvent) => {
       e.preventDefault();
-      this.isFiring = false;
+      this.shootPressed = false;
       fireButton.style.background = 'rgba(255, 0, 0, 0.5)';
     });
 
