@@ -184,6 +184,13 @@ export class MobileControls {
         this.leftPressed = false;
         this.rightPressed = false;
       }
+
+      // Jump when pulling joystick up (negative Y)
+      if (deltaY < -15) {
+        this.jumpPressed = true;
+      } else {
+        this.jumpPressed = false;
+      }
     });
 
     // Touch end on joystick
