@@ -191,7 +191,8 @@ async def get_stats():
 @app.post("/api/leaderboard/submit")
 async def submit_score(entry: LeaderboardEntry, request: Request):
     """Submit a score to the leaderboard - requires wallet address
-    Rate limited to prevent spam and abuse"""
+    Rate limited to prevent spam and abuse
+    Accumulates scores for the same wallet address"""
     try:
         # Rate limiting check
         if not await check_rate_limit(entry.wallet_address):
@@ -204,24 +205,69 @@ async def submit_score(entry: LeaderboardEntry, request: Request):
         if not entry.wallet_address or len(entry.wallet_address) < 10:
             raise HTTPException(status_code=400, detail="Valid wallet address is required")
         
-        # Add timestamp
-        entry_dict = entry.model_dump()
-        entry_dict["timestamp"] = datetime.utcnow()
-        entry_dict["ip_address"] = request.client.host if request.client else "unknown"
+        # Check if wallet already exists
+        existing = await leaderboard_collection.find_one(
+            {"wallet_address": entry.wallet_address},
+            {"_id": 0, "score": 1, "total_games": 1}
+        )
         
-        # Insert into database (non-blocking)
-        result = await leaderboard_collection.insert_one(entry_dict)
+        current_time = datetime.utcnow()
+        ip_address = request.client.host if request.client else "unknown"
+        
+        if existing:
+            # Accumulate scores for existing wallet
+            new_total_score = existing.get("score", 0) + entry.score
+            total_games = existing.get("total_games", 1) + 1
+            
+            # Update with accumulated score and latest game stats
+            result = await leaderboard_collection.update_one(
+                {"wallet_address": entry.wallet_address},
+                {
+                    "$set": {
+                        "score": new_total_score,
+                        "total_games": total_games,
+                        "last_survival_time_seconds": entry.survival_time_seconds,
+                        "last_enemies_killed": entry.enemies_killed,
+                        "last_biome_reached": entry.biome_reached,
+                        "last_difficulty": entry.difficulty,
+                        "last_played": current_time,
+                        "ip_address": ip_address
+                    },
+                    "$max": {
+                        "best_survival_time_seconds": entry.survival_time_seconds,
+                        "best_enemies_killed": entry.enemies_killed
+                    }
+                }
+            )
+            
+            message = f"Score updated (accumulated): {new_total_score} pts"
+            print(f"✓ {entry.wallet_address[:8]}... - Added {entry.score} pts → Total: {new_total_score} pts ({total_games} games)")
+        else:
+            # First time playing - create new entry
+            entry_dict = entry.model_dump()
+            entry_dict["timestamp"] = current_time
+            entry_dict["last_played"] = current_time
+            entry_dict["ip_address"] = ip_address
+            entry_dict["total_games"] = 1
+            
+            # Store current stats as both "last" and "best"
+            entry_dict["last_survival_time_seconds"] = entry.survival_time_seconds
+            entry_dict["last_enemies_killed"] = entry.enemies_killed
+            entry_dict["last_biome_reached"] = entry.biome_reached
+            entry_dict["last_difficulty"] = entry.difficulty
+            entry_dict["best_survival_time_seconds"] = entry.survival_time_seconds
+            entry_dict["best_enemies_killed"] = entry.enemies_killed
+            
+            result = await leaderboard_collection.insert_one(entry_dict)
+            message = "New player score created"
+            print(f"✓ New player: {entry.wallet_address[:8]}... - {entry.score} pts")
         
         # Invalidate cache for fresh leaderboard
         invalidate_leaderboard_cache()
         
-        # Log for monitoring
-        print(f"✓ Score submitted: {entry.wallet_address[:8]}... - {entry.score} pts")
-        
         return {
             "status": "success",
-            "message": "Score submitted successfully",
-            "id": str(result.inserted_id)
+            "message": message
         }
     except HTTPException:
         raise
