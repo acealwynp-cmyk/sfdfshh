@@ -42,7 +42,7 @@
       "description": "Player gravity"
     },
     "maxHealth": {
-      "value": 100,
+      "value": 200,
       "type": "number",
       "description": "Player maximum health"
     },
