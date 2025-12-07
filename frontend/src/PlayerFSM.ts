@@ -85,12 +85,16 @@ export class PlayerFSM extends FSM {
 
     const cursors = this.player.cursors;
     const mobile = (this.scene as any).mobileControls;
+    const wasd = this.player;
     
-    // Handle left/right movement
-    if (cursors.left.isDown || (mobile && mobile.leftPressed)) {
+    // Handle left/right movement (Arrow keys OR WASD)
+    const leftPressed = cursors.left.isDown || (wasd.aKey && wasd.aKey.isDown);
+    const rightPressed = cursors.right.isDown || (wasd.dKey && wasd.dKey.isDown);
+    
+    if (leftPressed || (mobile && mobile.leftPressed)) {
       this.player.setVelocityX(-this.player.walkSpeed);
       this.player.facingDirection = "left";
-    } else if (cursors.right.isDown || (mobile && mobile.rightPressed)) {
+    } else if (rightPressed || (mobile && mobile.rightPressed)) {
       this.player.setVelocityX(this.player.walkSpeed);
       this.player.facingDirection = "right";
     } else {
@@ -99,9 +103,10 @@ export class PlayerFSM extends FSM {
     }
 
     // Shooting and jump input detection
+    const jumpPressed = cursors.up.isDown || (wasd.wKey && wasd.wKey.isDown);
     if ((this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) || (mobile && mobile.shootPressed)) {
       this.goto("shooting");
-    } else if ((cursors.up.isDown && this.player.body.onFloor()) || (mobile && mobile.jumpPressed && this.player.body.onFloor())) {
+    } else if ((jumpPressed && this.player.body.onFloor()) || (mobile && mobile.jumpPressed && this.player.body.onFloor())) {
       this.goto("jumping");
     }
 
