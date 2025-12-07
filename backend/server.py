@@ -308,10 +308,12 @@ async def get_leaderboard(limit: int = 100, difficulty: Optional[str] = None):
             "_id": 0,
             "wallet_address": 1,
             "score": 1,
-            "survival_time_seconds": 1,
-            "enemies_killed": 1,
-            "biome_reached": 1,
-            "difficulty": 1,
+            "total_games": 1,
+            "best_survival_time_seconds": 1,
+            "best_enemies_killed": 1,
+            "last_biome_reached": 1,
+            "last_difficulty": 1,
+            "last_played": 1,
             "timestamp": 1
         }
         
@@ -321,8 +323,8 @@ async def get_leaderboard(limit: int = 100, difficulty: Optional[str] = None):
         # Format response with ranks
         leaderboard = []
         for idx, entry in enumerate(entries):
-            # Format survival time
-            seconds = entry.get("survival_time_seconds", 0)
+            # Format survival time (use best time)
+            seconds = entry.get("best_survival_time_seconds", 0)
             minutes = seconds // 60
             secs = seconds % 60
             survival_time = f"{minutes:02d}:{secs:02d}"
@@ -331,11 +333,12 @@ async def get_leaderboard(limit: int = 100, difficulty: Optional[str] = None):
                 "rank": idx + 1,
                 "wallet_address": entry["wallet_address"],
                 "score": entry["score"],
+                "total_games": entry.get("total_games", 1),
                 "survival_time": survival_time,
-                "enemies_killed": entry.get("enemies_killed", 0),
-                "biome_reached": entry["biome_reached"],
-                "difficulty": entry["difficulty"],
-                "timestamp": entry["timestamp"].isoformat() if "timestamp" in entry else ""
+                "enemies_killed": entry.get("best_enemies_killed", 0),
+                "biome_reached": entry.get("last_biome_reached", "Unknown"),
+                "difficulty": entry.get("last_difficulty", "easy"),
+                "timestamp": entry.get("last_played", entry.get("timestamp")).isoformat() if entry.get("last_played") or entry.get("timestamp") else ""
             })
         
         # Cache the result
