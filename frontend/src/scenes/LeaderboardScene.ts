@@ -172,12 +172,21 @@ export class LeaderboardScene extends Phaser.Scene {
 
     if (!loadingState || !tableContainer || !emptyState || !rowsContainer) return;
 
+    if (this.isLoading) {
+      // Still loading - show loading state
+      loadingState.classList.remove('hidden');
+      tableContainer.classList.add('hidden');
+      emptyState.classList.add('hidden');
+      return;
+    }
+
     // Hide loading
     loadingState.classList.add('hidden');
 
     if (this.leaderboardData.length === 0) {
       // Show empty state
       emptyState.classList.remove('hidden');
+      emptyState.innerHTML = 'No scores yet. Be the first to play!';
       tableContainer.classList.add('hidden');
     } else {
       // Show table with data
