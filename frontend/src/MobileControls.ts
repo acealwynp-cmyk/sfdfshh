@@ -2,17 +2,13 @@ import Phaser from 'phaser';
 
 export class MobileControls {
   private scene: Phaser.Scene;
-  private joystickBase!: Phaser.GameObjects.Graphics;
-  private joystickThumb!: Phaser.GameObjects.Graphics;
-  private jumpButton!: Phaser.GameObjects.Graphics;
-  private fireButton!: Phaser.GameObjects.Graphics;
-  private switchButton!: Phaser.GameObjects.Graphics;
+  private controlsContainer?: HTMLDivElement;
+  private joystickContainer?: HTMLDivElement;
+  private joystickThumb?: HTMLDivElement;
   
   private joystickActive: boolean = false;
-  private joystickStartX: number = 0;
-  private joystickStartY: number = 0;
-  private joystickCenterX: number = 0;
-  private joystickCenterY: number = 0;
+  private touchStartX: number = 0;
+  private touchStartY: number = 0;
   
   public moveDirection: number = 0; // -1 = left, 0 = none, 1 = right
   public isJumping: boolean = false;
@@ -25,13 +21,12 @@ export class MobileControls {
   }
 
   private createControls(): void {
-    const width = this.scene.scale.width;
-    const height = this.scene.scale.height;
-
-    // Only show on mobile/tablet
-    if (width > 1024) {
+    // Only show on mobile/tablet (screen width <= 1024px)
+    if (window.innerWidth > 1024) {
       return; // Desktop - no touch controls needed
     }
+
+    console.log('[MobileControls] Creating mobile controls for screen:', window.innerWidth, 'x', window.innerHeight);
 
     // Joystick on bottom left
     const joystickX = 100;
