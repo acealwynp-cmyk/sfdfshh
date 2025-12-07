@@ -46,18 +46,39 @@ export class LeaderboardScene extends Phaser.Scene {
     try {
       // Import at runtime to avoid circular dependencies
       const { getApiUrl } = await import('../config');
-      const response = await fetch(getApiUrl('/api/leaderboard?limit=100'));
+      const apiUrl = getApiUrl('/api/leaderboard?limit=100');
+      console.log('[Leaderboard] Fetching from:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+        // Add timeout
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+      });
+
+      console.log('[Leaderboard] Response status:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
       const data = await response.json();
+      console.log('[Leaderboard] Data received:', data);
 
       if (data.status === 'success') {
         this.leaderboardData = data.leaderboard || [];
         this.isLoading = false;
-        // Refresh UI with data
+        console.log('[Leaderboard] Loaded', this.leaderboardData.length, 'scores');
         this.updateLeaderboardUI();
+      } else {
+        throw new Error('Invalid response status');
       }
     } catch (error) {
-      console.error('Failed to fetch leaderboard:', error);
+      console.error('[Leaderboard] ERROR:', error);
       this.isLoading = false;
+      this.leaderboardData = [];
       this.updateLeaderboardUI();
     }
   }
