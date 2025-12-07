@@ -216,59 +216,44 @@ export class MobileControls {
     });
   }
 
-  private setupButtonInput(): void {
-    if (!this.jumpButton || !this.fireButton || !this.switchButton) return;
-
+  private setupButtonInput(jumpButton: HTMLButtonElement, fireButton: HTMLButtonElement, switchButton: HTMLButtonElement): void {
     // Jump button
-    this.jumpButton.on('pointerdown', () => {
+    jumpButton.addEventListener('touchstart', (e: TouchEvent) => {
+      e.preventDefault();
       this.isJumping = true;
-      this.jumpButton.clear();
-      this.jumpButton.fillStyle(0x00ff00, 0.8); // Brighter when pressed
-      this.jumpButton.fillCircle(this.scene.scale.width - 220, this.scene.scale.height - 100, 50);
+      jumpButton.style.background = 'rgba(0, 255, 0, 0.8)';
     });
 
-    this.jumpButton.on('pointerup', () => {
+    jumpButton.addEventListener('touchend', (e: TouchEvent) => {
+      e.preventDefault();
       this.isJumping = false;
-      this.jumpButton.clear();
-      this.jumpButton.fillStyle(0x00ff00, 0.5);
-      this.jumpButton.fillCircle(this.scene.scale.width - 220, this.scene.scale.height - 100, 50);
-      this.jumpButton.lineStyle(3, 0xffffff, 0.8);
-      this.jumpButton.strokeCircle(this.scene.scale.width - 220, this.scene.scale.height - 100, 50);
+      jumpButton.style.background = 'rgba(0, 255, 0, 0.5)';
     });
 
     // Fire button
-    this.fireButton.on('pointerdown', () => {
+    fireButton.addEventListener('touchstart', (e: TouchEvent) => {
+      e.preventDefault();
       this.isFiring = true;
-      this.fireButton.clear();
-      this.fireButton.fillStyle(0xff0000, 0.8);
-      this.fireButton.fillCircle(this.scene.scale.width - 110, this.scene.scale.height - 100, 50);
+      fireButton.style.background = 'rgba(255, 0, 0, 0.8)';
     });
 
-    this.fireButton.on('pointerup', () => {
+    fireButton.addEventListener('touchend', (e: TouchEvent) => {
+      e.preventDefault();
       this.isFiring = false;
-      this.fireButton.clear();
-      this.fireButton.fillStyle(0xff0000, 0.5);
-      this.fireButton.fillCircle(this.scene.scale.width - 110, this.scene.scale.height - 100, 50);
-      this.fireButton.lineStyle(3, 0xffffff, 0.8);
-      this.fireButton.strokeCircle(this.scene.scale.width - 110, this.scene.scale.height - 100, 50);
+      fireButton.style.background = 'rgba(255, 0, 0, 0.5)';
     });
 
     // Switch weapon button
-    this.switchButton.on('pointerdown', () => {
+    switchButton.addEventListener('touchstart', (e: TouchEvent) => {
+      e.preventDefault();
       this.switchWeapon = true;
-      this.switchButton.clear();
-      this.switchButton.fillStyle(0x0000ff, 0.8);
-      this.switchButton.fillCircle(this.scene.scale.width - 110, this.scene.scale.height - 200, 40);
+      switchButton.style.background = 'rgba(0, 0, 255, 0.8)';
       
       // Reset after short delay
-      this.scene.time.delayedCall(200, () => {
+      setTimeout(() => {
         this.switchWeapon = false;
-        this.switchButton.clear();
-        this.switchButton.fillStyle(0x0000ff, 0.5);
-        this.switchButton.fillCircle(this.scene.scale.width - 110, this.scene.scale.height - 200, 40);
-        this.switchButton.lineStyle(3, 0xffffff, 0.8);
-        this.switchButton.strokeCircle(this.scene.scale.width - 110, this.scene.scale.height - 200, 40);
-      });
+        switchButton.style.background = 'rgba(0, 0, 255, 0.5)';
+      }, 200);
     });
   }
 
