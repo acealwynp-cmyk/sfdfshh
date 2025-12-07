@@ -30,7 +30,7 @@ export class MobileControls {
 
     console.log('[MobileControls] Creating mobile controls for screen:', window.innerWidth, 'x', window.innerHeight);
 
-    // Create DOM-based mobile controls container
+    // Create DOM-based mobile controls container with retro styling
     this.controlsContainer = document.createElement('div');
     this.controlsContainer.id = 'mobile-controls';
     this.controlsContainer.style.cssText = `
@@ -41,92 +41,132 @@ export class MobileControls {
       height: 180px;
       z-index: 9999;
       pointer-events: auto;
-      background: rgba(0, 0, 0, 0.3);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-sizing: border-box;
     `;
 
-    // Create joystick container
+    // Create joystick container with retro pixel art style
     this.joystickContainer = document.createElement('div');
     this.joystickContainer.style.cssText = `
-      position: absolute;
-      left: 60px;
-      bottom: 60px;
-      width: 120px;
-      height: 120px;
+      position: relative;
+      width: 110px;
+      height: 110px;
+      background: #1a1a1a;
+      border: 4px solid #333;
+      box-shadow: 
+        inset -4px -4px 0px rgba(0, 0, 0, 0.5),
+        inset 4px 4px 0px rgba(255, 255, 255, 0.1),
+        0 0 0 2px #000,
+        0 6px 0 #000;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.3);
-      border: 3px solid rgba(255, 255, 255, 0.5);
+      flex-shrink: 0;
     `;
 
-    // Create joystick thumb
+    // Create joystick thumb with pixel art style
     this.joystickThumb = document.createElement('div');
     this.joystickThumb.style.cssText = `
       position: absolute;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+      border: 3px solid #666;
+      box-shadow: 
+        inset -2px -2px 0px rgba(0, 0, 0, 0.5),
+        inset 2px 2px 0px rgba(255, 255, 255, 0.2),
+        0 0 0 1px #000;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.6);
       transition: all 0.1s;
     `;
     this.joystickContainer.appendChild(this.joystickThumb);
 
-    // Create Fire button (red) - rightmost
-    const fireButton = document.createElement('button');
-    fireButton.id = 'mobile-fire-btn';
-    fireButton.innerHTML = 'FIRE';
-    fireButton.style.cssText = `
-      position: absolute;
-      right: 20px;
-      bottom: 60px;
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: rgba(255, 0, 0, 0.5);
-      border: 3px solid rgba(255, 255, 255, 0.8);
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      font-family: Arial;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+    // Create buttons container for perfect alignment
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.style.cssText = `
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-shrink: 0;
     `;
 
-    // Create Switch Weapon button (blue) - middle
+    // Create Switch Weapon button with retro pixel style
     const switchButton = document.createElement('button');
     switchButton.id = 'mobile-switch-btn';
-    switchButton.innerHTML = 'Q/E';
+    switchButton.innerHTML = '<div style="font-size: 18px; font-weight: bold; text-shadow: 2px 2px 0px #000;">SWITCH</div>';
     switchButton.style.cssText = `
-      position: absolute;
-      right: 130px;
-      bottom: 60px;
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: rgba(0, 0, 255, 0.5);
-      border: 3px solid rgba(255, 255, 255, 0.8);
+      width: 85px;
+      height: 85px;
+      background: linear-gradient(135deg, #5555ff 0%, #3333dd 100%);
+      border: 4px solid #7777ff;
+      box-shadow: 
+        inset -3px -3px 0px rgba(0, 0, 0, 0.3),
+        inset 3px 3px 0px rgba(255, 255, 255, 0.2),
+        0 0 0 2px #000,
+        0 5px 0 #000,
+        0 6px 8px rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
       color: white;
-      font-size: 20px;
-      font-weight: bold;
-      font-family: Arial;
+      font-family: 'Arial Black', Arial, sans-serif;
       cursor: pointer;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      image-rendering: pixelated;
+      transition: transform 0.1s;
     `;
+
+    // Create Fire button with retro pixel style
+    const fireButton = document.createElement('button');
+    fireButton.id = 'mobile-fire-btn';
+    fireButton.innerHTML = '<div style="font-size: 20px; font-weight: bold; text-shadow: 2px 2px 0px #000;">FIRE</div>';
+    fireButton.style.cssText = `
+      width: 85px;
+      height: 85px;
+      background: linear-gradient(135deg, #ff3333 0%, #dd1111 100%);
+      border: 4px solid #ff6666;
+      box-shadow: 
+        inset -3px -3px 0px rgba(0, 0, 0, 0.3),
+        inset 3px 3px 0px rgba(255, 255, 255, 0.2),
+        0 0 0 2px #000,
+        0 5px 0 #000,
+        0 6px 8px rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      color: white;
+      font-family: 'Arial Black', Arial, sans-serif;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      image-rendering: pixelated;
+      transition: transform 0.1s;
+    `;
+
+    // Append buttons to container
+    buttonsContainer.appendChild(switchButton);
+    buttonsContainer.appendChild(fireButton);
 
     // Append all controls
     this.controlsContainer.appendChild(this.joystickContainer);
-    this.controlsContainer.appendChild(fireButton);
-    this.controlsContainer.appendChild(switchButton);
+    this.controlsContainer.appendChild(buttonsContainer);
     document.body.appendChild(this.controlsContainer);
 
     // Setup event listeners
     this.setupJoystickInput();
     this.setupButtonInput(fireButton, switchButton);
 
-    console.log('[MobileControls] DOM controls created');
+    console.log('[MobileControls] Retro-styled controls created');
   }
 
   private setupJoystickInput(): void {
