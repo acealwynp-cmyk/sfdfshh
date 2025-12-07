@@ -124,6 +124,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Create player
     this.createPlayer();
 
+    // Initialize mobile controls (will only show on mobile/tablet)
+    this.mobileControls = new MobileControls(this);
+
     // Set camera to follow player smoothly
     this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
     this.cameras.main.setBounds(0, 0, Number.MAX_SAFE_INTEGER, this.mapHeight);
