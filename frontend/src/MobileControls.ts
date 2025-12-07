@@ -72,29 +72,7 @@ export class MobileControls {
     `;
     this.joystickContainer.appendChild(this.joystickThumb);
 
-    // Create Jump button (green)
-    const jumpButton = document.createElement('button');
-    jumpButton.id = 'mobile-jump-btn';
-    jumpButton.innerHTML = 'W';
-    jumpButton.style.cssText = `
-      position: absolute;
-      right: 130px;
-      bottom: 60px;
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: rgba(0, 255, 0, 0.5);
-      border: 3px solid rgba(255, 255, 255, 0.8);
-      color: white;
-      font-size: 32px;
-      font-weight: bold;
-      font-family: Arial;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    `;
-
-    // Create Fire button (red)
+    // Create Fire button (red) - rightmost
     const fireButton = document.createElement('button');
     fireButton.id = 'mobile-fire-btn';
     fireButton.innerHTML = 'FIRE';
@@ -116,21 +94,21 @@ export class MobileControls {
       -webkit-tap-highlight-color: transparent;
     `;
 
-    // Create Switch Weapon button (blue)
+    // Create Switch Weapon button (blue) - middle
     const switchButton = document.createElement('button');
     switchButton.id = 'mobile-switch-btn';
     switchButton.innerHTML = 'Q/E';
     switchButton.style.cssText = `
       position: absolute;
-      right: 70px;
-      top: 20px;
-      width: 70px;
-      height: 70px;
+      right: 130px;
+      bottom: 60px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       background: rgba(0, 0, 255, 0.5);
       border: 3px solid rgba(255, 255, 255, 0.8);
       color: white;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
       font-family: Arial;
       cursor: pointer;
@@ -140,14 +118,13 @@ export class MobileControls {
 
     // Append all controls
     this.controlsContainer.appendChild(this.joystickContainer);
-    this.controlsContainer.appendChild(jumpButton);
     this.controlsContainer.appendChild(fireButton);
     this.controlsContainer.appendChild(switchButton);
     document.body.appendChild(this.controlsContainer);
 
     // Setup event listeners
     this.setupJoystickInput();
-    this.setupButtonInput(jumpButton, fireButton, switchButton);
+    this.setupButtonInput(fireButton, switchButton);
 
     console.log('[MobileControls] DOM controls created');
   }
