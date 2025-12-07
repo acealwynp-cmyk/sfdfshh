@@ -677,42 +677,13 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-    // Apply mobile controls to player
-    if (this.mobileControls && this.player && this.player.active) {
-      // Handle movement from joystick
-      if (this.mobileControls.moveDirection !== 0) {
-        const speed = this.player.walkSpeed || 200;
-        this.player.setVelocityX(speed * this.mobileControls.moveDirection);
-        this.player.facingDirection = this.mobileControls.moveDirection > 0 ? "right" : "left";
-      }
-      
-      // Handle jump button
-      if (this.mobileControls.isJumping && this.player.body && this.player.body.onFloor()) {
-        const jumpPower = this.player.jumpPower || 500;
-        this.player.body.setVelocityY(-jumpPower);
-        if (this.player.jumpSound) {
-          this.player.jumpSound.play();
-        }
-      }
-      
-      // Handle fire button
-      if (this.mobileControls.isFiring) {
-        this.player.fireWeapon();
-      } else {
-        // Stop firing when button released
-        if (this.player.stopFiring) {
-          this.player.stopFiring();
-        }
-      }
-      
-      // Handle weapon switch
-      if (this.mobileControls.switchWeapon) {
-        this.player.switchWeapon("next");
-        this.mobileControls.switchWeapon = false; // Reset flag
-      }
+    // Handle weapon switch from mobile controls
+    if (this.mobileControls && this.player && this.player.active && this.mobileControls.switchWeapon) {
+      this.player.switchWeapon("next");
+      this.mobileControls.switchWeapon = false; // Reset flag
     }
 
-    // Update player
+    // Update player (FSM will handle mobile controls for movement, jump, and shooting)
     if (this.player && this.player.active) {
       this.player.update(time, delta);
       
