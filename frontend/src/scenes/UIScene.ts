@@ -108,7 +108,6 @@ export class UIScene extends Phaser.Scene {
               <div>UP ARROW: Jump</div>
               <div>SPACE: Shoot</div>
               <div>Q: Switch Weapon</div>
-              <div>B: Force Biome Change (Test)</div>
             </div>
           </div>
         </div>
