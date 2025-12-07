@@ -128,12 +128,16 @@ export class PlayerFSM extends FSM {
 
     const cursors = this.player.cursors;
     const mobile = (this.scene as any).mobileControls;
+    const wasd = this.player;
 
-    // Air movement control
-    if (cursors.left.isDown || (mobile && mobile.leftPressed)) {
+    // Air movement control (Arrow keys OR WASD)
+    const leftPressed = cursors.left.isDown || (wasd.aKey && wasd.aKey.isDown);
+    const rightPressed = cursors.right.isDown || (wasd.dKey && wasd.dKey.isDown);
+    
+    if (leftPressed || (mobile && mobile.leftPressed)) {
       this.player.setVelocityX(-this.player.walkSpeed * 0.8); // Reduced air control
       this.player.facingDirection = "left";
-    } else if (cursors.right.isDown || (mobile && mobile.rightPressed)) {
+    } else if (rightPressed || (mobile && mobile.rightPressed)) {
       this.player.setVelocityX(this.player.walkSpeed * 0.8);
       this.player.facingDirection = "right";
     }
@@ -147,7 +151,7 @@ export class PlayerFSM extends FSM {
 
     // Landing detection
     if (this.player.body.onFloor()) {
-      if (cursors.left.isDown || cursors.right.isDown || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
+      if (leftPressed || rightPressed || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
         this.goto("moving");
       } else {
         this.goto("idle");
