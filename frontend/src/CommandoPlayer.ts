@@ -49,6 +49,10 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
   public cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   public spaceKey?: Phaser.Input.Keyboard.Key;
   public qKey?: Phaser.Input.Keyboard.Key; // Weapon switch
+  public wKey?: Phaser.Input.Keyboard.Key;
+  public aKey?: Phaser.Input.Keyboard.Key;
+  public sKey?: Phaser.Input.Keyboard.Key;
+  public dKey?: Phaser.Input.Keyboard.Key;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "brave_commando_idle_frame1");
