@@ -113,8 +113,8 @@ export class GameOverUIScene extends Phaser.Scene {
 
   async fetchLeaderboard(): Promise<void> {
     try {
-      const { getApiUrl } = await import('../config');
-      const response = await fetch(getApiUrl('/api/leaderboard?limit=10'));
+      // Use direct relative path - Kubernetes ingress will route to backend
+      const response = await fetch('/api/leaderboard?limit=10');
       const data = await response.json();
 
       if (data.status === 'success') {
