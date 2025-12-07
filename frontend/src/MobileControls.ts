@@ -160,7 +160,8 @@ export class MobileControls {
         this.joystickThumb.style.transform = 'translate(-50%, -50%)';
       }
       this.joystickActive = false;
-      this.moveDirection = 0;
+      this.leftPressed = false;
+      this.rightPressed = false;
     };
 
     // Touch start on joystick
