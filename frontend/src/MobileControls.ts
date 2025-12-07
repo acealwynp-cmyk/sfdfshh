@@ -199,11 +199,13 @@ export class MobileControls {
       // Update thumb position
       this.joystickThumb.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`;
 
-      // Update move direction
+      // Update move direction using FSM-compatible properties
       if (Math.abs(deltaX) > 10) {
-        this.moveDirection = deltaX > 0 ? 1 : -1;
+        this.leftPressed = deltaX < 0;
+        this.rightPressed = deltaX > 0;
       } else {
-        this.moveDirection = 0;
+        this.leftPressed = false;
+        this.rightPressed = false;
       }
     });
 
