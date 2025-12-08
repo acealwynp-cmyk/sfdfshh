@@ -6414,10 +6414,6 @@ return new `+this.key+`();
             <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-12 py-4 text-white font-bold text-lg min-w-[320px]">
               🏆 LEADERBOARD
             </button>
-            
-            <button id="franklin-mode-btn" class="game-pixel-container-clickable-orange-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
-              🏖️ FRANKLIN MODE (LIMITED TIME)
-            </button>
           </div>
 
           <!-- Wallet Status -->
@@ -6450,6 +6446,13 @@ return new `+this.key+`();
               </button>
               <button id="cursed-btn" class="game-pixel-container-clickable-red-600 px-8 py-4 text-white font-bold text-xl">
                 CURSED
+              </button>
+            </div>
+            
+            <!-- Franklin Mode Button -->
+            <div class="mt-4">
+              <button id="franklin-mode-btn" class="game-pixel-container-clickable-orange-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
+                🏖️ FRANKLIN MODE (LIMITED TIME)
               </button>
             </div>
           </div>
