@@ -138,6 +138,17 @@ frontend:
       - working: true
         agent: "testing"
         comment: "🎯 NARCOS ENEMY IMPLEMENTATION VERIFICATION COMPLETE (Dec 8, 2025): ✅ ALL CRITICAL NARCOS ENEMY REQUIREMENTS VERIFIED! Comprehensive testing of Narcos Enemy implementation in Franklin Mode completed with excellent results. Key findings: ✅ NARCOS ENEMY VISUALS: Enemies display with correct dark brown/black outfits (NOT green jungle soldiers) - visually distinct Narcos character models confirmed ✅ ENEMY SPAWNING: 4-7 enemies spawn correctly in Easy mode, standing on beach platforms as expected ✅ NARCOS ENEMY BEHAVIOR: Enemies walk/patrol correctly, shoot at player with visible projectiles, take damage when shot, die correctly and disappear from screen ✅ SCORE SYSTEM: Score increases when Narcos enemies are killed (verified score jump from 0 to 2700 during combat) ✅ ANIMATION SYSTEM: Enemies animate correctly (idle, walk, attack, die) with no critical console errors affecting gameplay ✅ GAMEPLAY INTEGRATION: Player can shoot and kill Narcos enemies successfully, enemies can damage player (health decreased from 200 to 175), gameplay feels smooth and responsive ✅ CONTINUOUS SPAWNING: Enemy count varies dynamically (7→3→7→5→7) confirming continuous enemy spawning during 30+ second gameplay session. ALL NARCOS ENEMY IMPLEMENTATION REQUIREMENTS EXCEEDED - FRANKLIN MODE NARCOS ENEMIES ARE PRODUCTION READY!"
+  - task: "Narcos Enemy Shooting Animation Timing Fix"
+    implemented: true
+    working: false
+    file: "src/EnemyFSM.ts, src/NarcosEnemy.ts"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "🎯 NARCOS ENEMY SHOOTING ANIMATION TIMING TEST RESULTS: ✅ TIMING FIX IMPLEMENTED: Code analysis confirms 100ms delay correctly implemented in EnemyFSM.ts (line 132) - projectiles fire at midpoint of attack animation as requested ✅ FRANKLIN MODE VERIFICATION: Difficulty screen shows 'EASY MODE ONLY' label correctly, game loads directly with Easy difficulty ✅ GAME FUNCTIONALITY: All core systems working (movement, shooting, UI, power-ups, enemy spawning) ❌ CRITICAL ANIMATION ISSUE: Console logs show repeated 'Animation config not found for key: narco_walk_anim' and 'narco_idle_anim' errors - Narcos enemy animations are missing or not properly configured ❌ VISUAL IMPACT: While shooting timing fix is implemented in code, players cannot see proper shooting animations due to missing animation assets ❌ TESTING LIMITATION: Unable to visually verify that bullets appear when animation shows shooting pose because shooting animations don't display correctly. CONCLUSION: Shooting timing fix is correctly implemented but animation assets need to be fixed for proper visual verification."
 
 metadata:
   created_by: "testing_agent"
