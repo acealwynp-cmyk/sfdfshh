@@ -224,9 +224,10 @@ export class TitleScreen extends Phaser.Scene {
       franklinModeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         this.playMode = 'guest';
+        this.selectedDifficulty = 'easy'; // Franklin Mode uses easy difficulty
         // Store franklin mode flag in registry for game scene to read
         this.registry.set('franklinMode', true);
-        this.showDifficultySelectionScreen();
+        this.startGame(); // Start the game directly instead of showing difficulty screen
       });
     }
 
