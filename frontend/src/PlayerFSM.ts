@@ -271,10 +271,11 @@ export class PlayerFSM extends FSM {
     // Use jump down animation for crouching
     this.player.playAnimation("brave_commando_jump_down_anim");
     
-    // Store original hitbox if not already stored
+    // Store original hitbox and sprite position if not already stored
     if (!(this.player as any).originalBodyHeight) {
       (this.player as any).originalBodyHeight = this.player.body.height;
       (this.player as any).originalBodyOffsetY = this.player.body.offset.y;
+      (this.player as any).originalSpriteY = this.player.y;
     }
     
     // Reduce hitbox height by 50% to make player smaller (duck under bullets)
@@ -282,9 +283,13 @@ export class PlayerFSM extends FSM {
     const crouchHeight = originalHeight * 0.5;
     const heightDifference = originalHeight - crouchHeight;
     
-    // Set smaller hitbox and adjust offset so player stays on ground
+    // Set smaller hitbox - keep offset the same (don't change it)
     this.player.body.setSize(this.player.body.width, crouchHeight);
-    this.player.body.setOffset(this.player.body.offset.x, (this.player as any).originalBodyOffsetY + heightDifference);
+    // Don't change offset - keep it at original value
+    this.player.body.setOffset(this.player.body.offset.x, (this.player as any).originalBodyOffsetY);
+    
+    // Move sprite up visually so legs stay on platform
+    this.player.y = (this.player as any).originalSpriteY - heightDifference;
   }
 
   update_crouching(time: number, delta: number) {
