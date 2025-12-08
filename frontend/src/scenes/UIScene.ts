@@ -25,6 +25,9 @@ export class UIScene extends Phaser.Scene {
     // Create UI DOM
     this.createUI();
     
+    // Setup power-up button visuals and handlers
+    this.setupPowerUpButtons();
+    
     // Start UI update timer
     this.updateTimer = this.time.addEvent({
       delay: 100, // Update every 100ms
