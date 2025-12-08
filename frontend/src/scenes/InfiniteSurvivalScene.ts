@@ -115,8 +115,15 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.currentBiomeConfig.displayName = "Beach";
       this.currentBiomeConfig.backgroundKey = "beach_background";
       this.currentBiomeConfig.tilesKey = "beach_tileset";
+      
+      // Create Franklin animations
+      this.createFranklinAnimations();
+      
+      // Store franklin mode flag for player/enemy creation
+      (this as any).franklinMode = true;
     } else {
       this.currentBiomeConfig = this.biomeManager.getCurrentBiome();
+      (this as any).franklinMode = false;
     }
 
     // Set map height (20 tiles high)
