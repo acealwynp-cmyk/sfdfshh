@@ -150,11 +150,21 @@ export class TitleScreen extends Phaser.Scene {
               </button>
             </div>
             
-            <!-- Franklin Mode Button -->
-            <div class="mt-4">
+            <!-- Divider -->
+            <div class="my-4 w-full flex items-center">
+              <div class="flex-grow border-t-2 border-yellow-400" style="border-style: solid;"></div>
+              <span class="px-4 text-yellow-400 font-bold text-sm" style="text-shadow: 2px 2px 0px #000000;">OR</span>
+              <div class="flex-grow border-t-2 border-yellow-400" style="border-style: solid;"></div>
+            </div>
+            
+            <!-- Franklin Mode Button (Always Easy Difficulty) -->
+            <div class="flex flex-col items-center space-y-2">
               <button id="franklin-mode-btn" class="game-pixel-container-clickable-orange-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
-                🏖️ FRANKLIN MODE (LIMITED TIME)
+                🏖️ FRANKLIN MODE
               </button>
+              <div class="text-cyan-400 text-sm font-bold" style="text-shadow: 1px 1px 0px #000000;">
+                ⚡ LIMITED TIME EVENT - EASY MODE ONLY
+              </div>
             </div>
           </div>
 
