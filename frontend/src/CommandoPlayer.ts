@@ -319,7 +319,40 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
 
   // Get current weapon animation key
   getCurrentWeaponAnimationKey(): string {
-    return WeaponManager.WEAPON_CONFIGS[this.currentWeapon].animationKey;
+    const franklinMode = (this.scene as any).franklinMode || false;
+    const baseKey = WeaponManager.WEAPON_CONFIGS[this.currentWeapon].animationKey;
+    
+    if (!franklinMode) {
+      return baseKey;
+    }
+    
+    // Map commando animations to franklin animations
+    if (baseKey.includes('rifle')) return 'franklin_rifle_anim';
+    if (baseKey.includes('flamethrower')) return 'franklin_flamethrower_anim';
+    if (baseKey.includes('slingshot') || this.currentWeapon === 'turtle_slingshot') return 'franklin_slingshot_anim';
+    
+    return baseKey;
+  }
+  
+  /**
+   * Get the correct animation key for Franklin or Commando mode
+   */
+  getAnimationKey(baseAnim: string): string {
+    const franklinMode = (this.scene as any).franklinMode || false;
+    if (!franklinMode) {
+      return baseAnim;
+    }
+    
+    // Map commando animations to franklin animations
+    const animMap: {[key: string]: string} = {
+      'brave_commando_idle_anim': 'franklin_idle_anim',
+      'brave_commando_walk_anim': 'franklin_walk_anim',
+      'brave_commando_jump_up_anim': 'franklin_jump_up_anim',
+      'brave_commando_jump_down_anim': 'franklin_jump_down_anim',
+      'brave_commando_die_anim': 'franklin_die_anim'
+    };
+    
+    return animMap[baseAnim] || baseAnim;
   }
 
   // Initialize sound effects
