@@ -127,8 +127,13 @@ export class EnemyFSM extends FSM {
     const shootAnimKey = this.enemy.getShootAnimKey();
     this.enemy.playAnimation(shootAnimKey);
     
-    // Fire at player
-    this.enemy.fireAtPlayer();
+    // Delay firing to match the shooting animation (fire at midpoint of animation)
+    // Most attack animations are 2 frames at 10fps = 200ms total, fire at 100ms
+    this.scene.time.delayedCall(100, () => {
+      if (this.enemy && this.enemy.active && !this.enemy.isDead) {
+        this.enemy.fireAtPlayer();
+      }
+    });
 
     // State transition after attack animation completes
     this.enemy.once(`animationcomplete-${shootAnimKey}`, () => {
