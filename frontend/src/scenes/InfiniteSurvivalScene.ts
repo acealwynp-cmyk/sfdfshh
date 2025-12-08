@@ -920,6 +920,133 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   getDifficulty(): string {
+
+
+  /**
+   * Create Franklin mode animations
+   */
+  createFranklinAnimations(): void {
+    console.log('[Franklin] Creating Franklin animations');
+    
+    // Franklin player animations
+    this.anims.create({
+      key: 'franklin_idle_anim',
+      frames: [
+        { key: 'franklin_idle_1' },
+        { key: 'franklin_idle_2' }
+      ],
+      frameRate: 8,
+      repeat: -1
+    });
+    
+    this.anims.create({
+      key: 'franklin_walk_anim',
+      frames: [
+        { key: 'franklin_walk_1' },
+        { key: 'franklin_walk_2' }
+      ],
+      frameRate: 10,
+      repeat: -1
+    });
+    
+    this.anims.create({
+      key: 'franklin_jump_up_anim',
+      frames: [{ key: 'franklin_jump_1' }],
+      frameRate: 10,
+      repeat: 0
+    });
+    
+    this.anims.create({
+      key: 'franklin_jump_down_anim',
+      frames: [{ key: 'franklin_jump_2' }],
+      frameRate: 10,
+      repeat: 0
+    });
+    
+    this.anims.create({
+      key: 'franklin_slingshot_anim',
+      frames: [
+        { key: 'franklin_slingshot_1' },
+        { key: 'franklin_slingshot_2' }
+      ],
+      frameRate: 10,
+      repeat: 0
+    });
+    
+    this.anims.create({
+      key: 'franklin_rifle_anim',
+      frames: [
+        { key: 'franklin_rifle_1' },
+        { key: 'franklin_rifle_2' }
+      ],
+      frameRate: 10,
+      repeat: 0
+    });
+    
+    this.anims.create({
+      key: 'franklin_flamethrower_anim',
+      frames: [
+        { key: 'franklin_flamethrower_1' },
+        { key: 'franklin_flamethrower_2' }
+      ],
+      frameRate: 10,
+      repeat: 0
+    });
+    
+    this.anims.create({
+      key: 'franklin_die_anim',
+      frames: [
+        { key: 'franklin_die_1' },
+        { key: 'franklin_die_2' }
+      ],
+      frameRate: 8,
+      repeat: 0
+    });
+    
+    // Narcos enemy animations
+    this.anims.create({
+      key: 'narco_idle_anim',
+      frames: [
+        { key: 'narco_idle_1' },
+        { key: 'narco_idle_2' }
+      ],
+      frameRate: 6,
+      repeat: -1
+    });
+    
+    this.anims.create({
+      key: 'narco_walk_anim',
+      frames: [
+        { key: 'narco_walk_1' },
+        { key: 'narco_walk_2' }
+      ],
+      frameRate: 8,
+      repeat: -1
+    });
+    
+    this.anims.create({
+      key: 'narco_attack_anim',
+      frames: [
+        { key: 'narco_attack_1' },
+        { key: 'narco_attack_2' }
+      ],
+      frameRate: 10,
+      repeat: 0
+    });
+    
+    this.anims.create({
+      key: 'narco_die_anim',
+      frames: [
+        { key: 'narco_die_1' },
+        { key: 'narco_die_2' }
+      ],
+      frameRate: 8,
+      repeat: 0
+    });
+    
+    console.log('[Franklin] All animations created');
+  }
+
     return this.difficulty.toUpperCase();
   }
 
