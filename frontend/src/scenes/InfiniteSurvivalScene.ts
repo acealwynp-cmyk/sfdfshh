@@ -934,7 +934,8 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   getDifficulty(): string {
-
+    return this.difficulty;
+  }
 
   /**
    * Create Franklin mode animations
