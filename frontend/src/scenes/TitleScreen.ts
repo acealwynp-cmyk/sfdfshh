@@ -149,6 +149,13 @@ export class TitleScreen extends Phaser.Scene {
                 CURSED
               </button>
             </div>
+            
+            <!-- Franklin Mode Button -->
+            <div class="mt-4">
+              <button id="franklin-mode-btn" class="game-pixel-container-clickable-orange-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
+                🏖️ FRANKLIN MODE (LIMITED TIME)
+              </button>
+            </div>
           </div>
 
           <!-- Back Button -->
