@@ -77,7 +77,7 @@ export class PlayerFSM extends FSM {
 
   // Moving state
   enter_moving() {
-    this.player.playAnimation("brave_commando_walk_anim");
+    this.player.playAnimation(this.player.getAnimationKey("brave_commando_walk_anim"));
   }
 
   update_moving(time: number, delta: number) {
