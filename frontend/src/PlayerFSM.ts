@@ -278,11 +278,12 @@ export class PlayerFSM extends FSM {
 
   // Death state
   enter_dying() {
+    this.player.isDead = true;
     this.player.setVelocityX(0);
-    this.player.playAnimation("brave_commando_die_anim");
+    const dieAnim = this.player.getAnimationKey("brave_commando_die_anim");
+    this.player.playAnimation(dieAnim);
 
-    // Launch game over UI when death animation completes
-    this.player.once('animationcomplete-brave_commando_die_anim', () => {
+    this.player.once(`animationcomplete-${dieAnim}`, () => {
       this.scene.scene.launch("GameOverUIScene", {
         currentLevelKey: this.scene.scene.key,
       });
