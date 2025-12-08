@@ -183,6 +183,7 @@ export class MobileControls {
       this.leftPressed = false;
       this.rightPressed = false;
       this.jumpPressed = false;  // Reset jump when joystick is released
+      this.crouchPressed = false;  // Reset crouch when joystick is released
     };
 
     // Touch start on joystick
