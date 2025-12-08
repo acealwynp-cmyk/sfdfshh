@@ -9,6 +9,8 @@ export class MobileControls {
   private joystickActive: boolean = false;
   private touchStartX: number = 0;
   private touchStartY: number = 0;
+  private lastJumpTime: number = 0;
+  private jumpCooldown: number = 500;  // 500ms cooldown between jumps
   
   // Properties expected by PlayerFSM
   public leftPressed: boolean = false;
