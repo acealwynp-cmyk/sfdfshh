@@ -123,7 +123,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       // Override with beach visuals
       this.currentBiomeConfig.displayName = "Beach";
       this.currentBiomeConfig.backgroundKey = "beach_background";
-      this.currentBiomeConfig.tilesKey = "beach_tileset";
+      this.currentBiomeConfig.tilesetKey = "beach_tileset";
       
       // Create Franklin animations
       this.createFranklinAnimations();
