@@ -243,6 +243,13 @@ export class MobileControls {
         // Reset jump when not pulling up
         this.jumpPressed = false;
       }
+
+      // Crouch when pulling joystick down (positive Y)
+      if (deltaY > 15) {
+        this.crouchPressed = true;
+      } else {
+        this.crouchPressed = false;
+      }
     });
 
     // Touch end on joystick
