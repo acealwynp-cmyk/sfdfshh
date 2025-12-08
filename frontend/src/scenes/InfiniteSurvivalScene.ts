@@ -93,7 +93,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   create(): void {
-    console.log(`Starting Infinite Survival Mode! Difficulty: ${this.difficulty}`);
+    // Check if Franklin mode is active
+    const franklinMode = this.registry.get('franklinMode') || false;
+    console.log(`Starting ${franklinMode ? 'FRANKLIN MODE' : 'Infinite Survival Mode'}! Difficulty: ${this.difficulty}`);
     
     // Initialize game state
     this.gameCompleted = false;
@@ -105,7 +107,17 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
     // Initialize biome manager
     this.biomeManager = new BiomeManager(this);
-    this.currentBiomeConfig = this.biomeManager.getCurrentBiome();
+    
+    // If Franklin mode, lock to beach biome (force jungle config but use beach assets)
+    if (franklinMode) {
+      this.currentBiomeConfig = this.biomeManager.getCurrentBiome();
+      // Override with beach visuals
+      this.currentBiomeConfig.displayName = "Beach";
+      this.currentBiomeConfig.backgroundKey = "beach_background";
+      this.currentBiomeConfig.tilesKey = "beach_tileset";
+    } else {
+      this.currentBiomeConfig = this.biomeManager.getCurrentBiome();
+    }
 
     // Set map height (20 tiles high)
     this.mapHeight = 20 * this.tileHeight;
