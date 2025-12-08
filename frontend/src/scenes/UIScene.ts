@@ -168,6 +168,88 @@ export class UIScene extends Phaser.Scene {
 
     this.uiContainer = utils.initUIDom(this, uiHTML);
   }
+  
+  setupPowerUpButtons(): void {
+    // Wait a bit for DOM to be ready
+    setTimeout(() => {
+      // Render potion images onto canvases
+      this.renderPotionImage('health-potion-canvas', 'health_potion');
+      this.renderPotionImage('shield-potion-canvas', 'shield_potion');
+      this.renderPotionImage('invincibility-potion-canvas', 'invincibility_potion');
+      
+      // Add click handlers for power-up buttons
+      const healthBtn = document.getElementById('health-potion-btn');
+      const shieldBtn = document.getElementById('shield-potion-btn');
+      const invincibilityBtn = document.getElementById('invincibility-potion-btn');
+      
+      if (healthBtn) {
+        healthBtn.addEventListener('click', () => {
+          this.usePowerUp(1);
+        });
+      }
+      
+      if (shieldBtn) {
+        shieldBtn.addEventListener('click', () => {
+          this.usePowerUp(2);
+        });
+      }
+      
+      if (invincibilityBtn) {
+        invincibilityBtn.addEventListener('click', () => {
+          this.usePowerUp(3);
+        });
+      }
+    }, 500);
+  }
+  
+  renderPotionImage(canvasId: string, textureKey: string): void {
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Get texture from Phaser
+    const texture = this.textures.get(textureKey);
+    if (!texture) {
+      console.error(`Texture ${textureKey} not found`);
+      return;
+    }
+    
+    // Get the image source
+    const frame = texture.getSourceImage();
+    
+    // Draw image scaled to fit canvas
+    ctx.imageSmoothingEnabled = false; // Keep pixel art crisp
+    ctx.drawImage(frame as any, 0, 0, 64, 64);
+  }
+  
+  usePowerUp(potionNumber: 1 | 2 | 3): void {
+    if (!this.currentGameSceneKey) return;
+    
+    const gameScene = this.scene.get(this.currentGameSceneKey) as any;
+    if (!gameScene || !gameScene.powerUpSystem) return;
+    
+    const powerUpSystem = gameScene.powerUpSystem;
+    
+    switch(potionNumber) {
+      case 1:
+        if (powerUpSystem.useHealthPotion()) {
+          console.log('[UI] Health potion used via button click!');
+        }
+        break;
+      case 2:
+        if (powerUpSystem.useShieldPotion()) {
+          console.log('[UI] Shield potion used via button click!');
+        }
+        break;
+      case 3:
+        if (powerUpSystem.useInvincibilityPotion()) {
+          console.log('[UI] Invincibility potion used via button click!');
+        }
+        break;
+    }
+  }
 
   updateUI(): void {
     if (!this.currentGameSceneKey) return;
