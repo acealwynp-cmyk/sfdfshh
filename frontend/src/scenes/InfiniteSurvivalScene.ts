@@ -470,24 +470,38 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     
     let enemy: any;
     
-    switch (enemyType) {
-      case "jungle_soldier":
-        enemy = new JungleEnemy(this, x, y);
-        break;
-      case "desert_trooper":
-        enemy = new DesertEnemy(this, x, y);
-        break;
-      case "urban_sniper":
-        enemy = new UrbanEnemy(this, x, y);
-        break;
-      case "arctic_soldier":
-        enemy = new ArcticEnemy(this, x, y);
-        break;
-      case "space_cyborg":
-        enemy = new SpaceEnemy(this, x, y);
-        break;
-      default:
-        enemy = new JungleEnemy(this, x, y);
+    // In Franklin mode, always spawn Narcos enemies
+    const franklinMode = (this as any).franklinMode || false;
+    if (franklinMode) {
+      enemy = new JungleEnemy(this, x, y);  // Use JungleEnemy as base
+      // Override animations to use Narcos
+      enemy.idleAnimKey = 'narco_idle_anim';
+      enemy.walkAnimKey = 'narco_walk_anim';
+      enemy.shootAnimKey = 'narco_attack_anim';
+      enemy.dieAnimKey = 'narco_die_anim';
+      // Update sprite texture
+      enemy.setTexture('narco_idle_1');
+    } else {
+      // Normal mode - spawn based on biome
+      switch (enemyType) {
+        case "jungle_soldier":
+          enemy = new JungleEnemy(this, x, y);
+          break;
+        case "desert_trooper":
+          enemy = new DesertEnemy(this, x, y);
+          break;
+        case "urban_sniper":
+          enemy = new UrbanEnemy(this, x, y);
+          break;
+        case "arctic_soldier":
+          enemy = new ArcticEnemy(this, x, y);
+          break;
+        case "space_cyborg":
+          enemy = new SpaceEnemy(this, x, y);
+          break;
+        default:
+          enemy = new JungleEnemy(this, x, y);
+      }
     }
     
     // Scale enemy health based on difficulty
