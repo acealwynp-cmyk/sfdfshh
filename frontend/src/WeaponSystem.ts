@@ -43,10 +43,22 @@ export class WeaponManager {
       projectileSpeed: 500,
       animationKey: "brave_commando_flamethrower_shoot_anim",
       maxRange: 300  // Short range
+    },
+    [WeaponType.TURTLE_SLINGSHOT]: {
+      name: "Turtle Slingshot",
+      spriteKey: "turtle_shell",
+      projectileKey: "turtle_shell",
+      fireRate: 300,
+      damage: 35,
+      soundKey: "rifle_fire",  // Reuse rifle sound for now
+      projectileSpeed: 600,
+      animationKey: "franklin_slingshot_anim",  // Franklin slingshot animation
+      maxRange: 500  // Medium range
     }
   };
 
   public static readonly WEAPON_ORDER: WeaponType[] = [
+    WeaponType.TURTLE_SLINGSHOT,
     WeaponType.COMBAT_RIFLE,
     WeaponType.FLAME_THROWER
   ];
