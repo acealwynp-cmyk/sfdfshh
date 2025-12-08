@@ -140,12 +140,10 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     if (!player || player.isDead) return;
 
     // Calculate projectile spawn position
-    // Fire from upper chest area (40% from top of enemy) so player can crouch under
-    const enemyTop = this.y - this.body.height;
-    const chestHeight = this.body.height * 0.4;  // 40% from top = upper chest
-    const spawnY = enemyTop + chestHeight;
+    const centerY = this.y - this.body.height / 2;
     const offsetX = this.facingDirection === "right" ? 40 : -40;
     const spawnX = this.x + offsetX;
+    const spawnY = centerY;
 
     // Get difficulty from scene
     const difficulty = (this.scene as any).difficulty || "easy";
