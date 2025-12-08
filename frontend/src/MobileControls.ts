@@ -16,7 +16,6 @@ export class MobileControls {
   public leftPressed: boolean = false;
   public rightPressed: boolean = false;
   public jumpPressed: boolean = false;
-  public crouchPressed: boolean = false;
   public shootPressed: boolean = false;
   public switchWeapon: boolean = false;
 
