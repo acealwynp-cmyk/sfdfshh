@@ -483,14 +483,8 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // In Franklin mode, always spawn Narcos enemies
     const franklinMode = (this as any).franklinMode || false;
     if (franklinMode) {
-      enemy = new JungleEnemy(this, x, y);  // Use JungleEnemy as base
-      // Override animations to use Narcos
-      enemy.idleAnimKey = 'narco_idle_anim';
-      enemy.walkAnimKey = 'narco_walk_anim';
-      enemy.shootAnimKey = 'narco_attack_anim';
-      enemy.dieAnimKey = 'narco_die_anim';
-      // Update sprite texture
-      enemy.setTexture('narco_idle_1');
+      enemy = new NarcosEnemy(this, x, y);
+      console.log('[Franklin] Spawned Narcos enemy at', x, y);
     } else {
       // Normal mode - spawn based on biome
       switch (enemyType) {
