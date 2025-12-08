@@ -934,7 +934,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   getDifficulty(): string {
-    return this.difficulty;
+    return this.difficulty.toUpperCase();
   }
 
   /**
