@@ -1062,9 +1062,6 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     console.log('[Franklin] All animations created');
   }
 
-    return this.difficulty.toUpperCase();
-  }
-
   setDifficulty(difficulty: "easy" | "hard" | "cursed"): void {
     this.difficulty = difficulty;
   }
