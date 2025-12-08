@@ -115,6 +115,10 @@ export class TitleScreen extends Phaser.Scene {
             <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-12 py-4 text-white font-bold text-lg min-w-[320px]">
               🏆 LEADERBOARD
             </button>
+            
+            <button id="franklin-mode-btn" class="game-pixel-container-clickable-orange-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
+              🏖️ FRANKLIN MODE (LIMITED TIME)
+            </button>
           </div>
 
           <!-- Wallet Status -->
