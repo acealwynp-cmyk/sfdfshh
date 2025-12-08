@@ -69,6 +69,14 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   // Test key for manual biome cycling
   public bKey?: Phaser.Input.Keyboard.Key;
 
+  // Franklin Mode Power-Up System
+  public powerUpSystem?: PowerUpSystem;
+  
+  // Power-up keyboard controls
+  public key1?: Phaser.Input.Keyboard.Key;
+  public key2?: Phaser.Input.Keyboard.Key;
+  public key3?: Phaser.Input.Keyboard.Key;
+
   // Infinite scrolling tracking
   public tileWidth: number = 64;
   public tileHeight: number = 64;
