@@ -55,7 +55,11 @@ export class CommandoPlayer extends Phaser.Physics.Arcade.Sprite {
   public dKey?: Phaser.Input.Keyboard.Key;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, "brave_commando_idle_frame1");
+    // Check if Franklin mode
+    const franklinMode = (scene as any).franklinMode || false;
+    const initialTexture = franklinMode ? "franklin_idle_1" : "brave_commando_idle_frame1";
+    
+    super(scene, x, y, initialTexture);
 
     // Add to scene and physics system
     scene.add.existing(this);
