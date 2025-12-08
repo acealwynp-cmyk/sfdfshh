@@ -57,11 +57,6 @@ export class PlayerFSM extends FSM {
     const mobile = (this.scene as any).mobileControls;
     const wasd = this.player;
     
-    // Crouch input detection - DOWN arrow OR S key (must be on ground)
-    const crouchPressed = cursors.down.isDown || (wasd.sKey && wasd.sKey.isDown);
-    if ((crouchPressed && this.player.body.onFloor()) || (mobile && mobile.crouchPressed && this.player.body.onFloor())) {
-      this.goto("crouching");
-    }
     // Left/right movement input detection (Arrow keys OR WASD)
     const leftPressed = cursors.left.isDown || (wasd.aKey && wasd.aKey.isDown);
     const rightPressed = cursors.right.isDown || (wasd.dKey && wasd.dKey.isDown);
