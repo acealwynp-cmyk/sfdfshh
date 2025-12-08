@@ -47,7 +47,7 @@ export class PlayerFSM extends FSM {
   // Idle state
   enter_idle() {
     this.player.setVelocityX(0);
-    this.player.playAnimation("brave_commando_idle_anim");
+    this.player.playAnimation(this.player.getAnimationKey("brave_commando_idle_anim"));
   }
 
   update_idle(time: number, delta: number) {
