@@ -308,6 +308,20 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     const spawnY = 15 * this.tileHeight;
     
     this.player = new CommandoPlayer(this, spawnX, spawnY);
+    
+    // Initialize PowerUpSystem for Franklin mode
+    const franklinMode = (this as any).franklinMode || false;
+    if (franklinMode) {
+      this.powerUpSystem = new PowerUpSystem(this, this.player);
+      console.log('[Franklin] PowerUp system initialized with 3 starting potions');
+      
+      // Set up keyboard controls for power-ups (1, 2, 3 keys)
+      this.key1 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+      this.key2 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
+      this.key3 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
+      
+      console.log('[Franklin] Power-up controls: 1=Health, 2=Shield, 3=Invincibility');
+    }
   }
   
   startBiomeTeleportTimer(): void {
