@@ -939,7 +939,7 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   /**
    * Create Franklin mode animations
    */
-  createFranklinAnimations(): void {
+  createFranklinAnimations() {
     console.log('[Franklin] Creating Franklin animations');
     
     // Franklin player animations
