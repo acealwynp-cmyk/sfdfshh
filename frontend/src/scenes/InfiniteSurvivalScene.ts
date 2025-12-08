@@ -208,35 +208,21 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     const texture = this.textures.get(textureKey);
     console.log(`[createInfiniteBackground] Texture loaded: ${texture.key}, frames: ${texture.frameTotal}`);
     
-    // Create multiple layers of parallax scrolling tile sprites
-    const bgWidth = screenSize.width.value * 3; // Wide enough for seamless tiling
+    // Create background - simpler approach for Franklin beach mode
+    const bgWidth = screenSize.width.value * 3;
     
-    // Layer 1 - Far background (slower parallax)
+    // Single background layer positioned at top of the map
     const bg1 = this.add.tileSprite(
       0,
-      this.mapHeight / 2,
+      0,
       bgWidth,
       this.mapHeight,
       textureKey
     );
-    bg1.setOrigin(0, 0.5);
-    bg1.setScrollFactor(0.1);
+    bg1.setOrigin(0, 0); // Top-left origin
+    bg1.setScrollFactor(0.2); // Slow parallax
     bg1.setDepth(-20);
     this.backgrounds.push(bg1);
-    
-    // Layer 2 - Mid background
-    const bg2 = this.add.tileSprite(
-      0,
-      this.mapHeight / 2,
-      bgWidth,
-      this.mapHeight,
-      textureKey
-    );
-    bg2.setOrigin(0, 0.5);
-    bg2.setScrollFactor(0.3);
-    bg2.setDepth(-15);
-    bg2.setAlpha(0.7);
-    this.backgrounds.push(bg2);
     
     // Layer 3 - Near background
     const bg3 = this.add.tileSprite(
