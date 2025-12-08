@@ -215,6 +215,18 @@ export class TitleScreen extends Phaser.Scene {
       });
     }
 
+    // Franklin Mode button
+    const franklinModeBtn = document.getElementById('franklin-mode-btn');
+    if (franklinModeBtn) {
+      franklinModeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.playMode = 'guest';
+        // Store franklin mode flag in registry for game scene to read
+        this.registry.set('franklinMode', true);
+        this.showDifficultySelectionScreen();
+      });
+    }
+
     // Disconnect Wallet button
     const disconnectWalletBtn = document.getElementById('disconnect-wallet-btn');
     if (disconnectWalletBtn) {
