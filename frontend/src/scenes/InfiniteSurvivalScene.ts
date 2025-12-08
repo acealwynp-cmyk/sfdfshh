@@ -778,6 +778,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
 
     // Handle test controls
     this.handleTestControls();
+    
+    // Handle power-up controls (Franklin mode only)
+    this.handlePowerUpControls();
 
     // Update survival time
     this.updateSurvivalTime();
