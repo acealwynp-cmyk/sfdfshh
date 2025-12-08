@@ -174,6 +174,31 @@ export class UIScene extends Phaser.Scene {
 
     const player = gameScene.player;
     
+    // Check if Franklin mode is active
+    const isFranklinMode = (gameScene as any).franklinMode || false;
+    
+    // Show/hide Franklin mode UI elements
+    const powerupControls = document.getElementById("powerup-controls");
+    const powerupsDisplay = document.getElementById("powerups-display");
+    
+    if (powerupControls) {
+      if (isFranklinMode) {
+        powerupControls.classList.remove("hidden");
+      } else {
+        powerupControls.classList.add("hidden");
+      }
+    }
+    
+    if (powerupsDisplay) {
+      if (isFranklinMode) {
+        powerupsDisplay.classList.remove("hidden");
+        // Update power-up status
+        this.updatePowerUpStatus(gameScene);
+      } else {
+        powerupsDisplay.classList.add("hidden");
+      }
+    }
+    
     // Update score
     const scoreElement = document.getElementById("score-value");
     if (scoreElement && gameScene.getScore) {
