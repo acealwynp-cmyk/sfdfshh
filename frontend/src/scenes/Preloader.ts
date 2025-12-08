@@ -20,6 +20,11 @@ export class Preloader extends Phaser.Scene {
 		this.load.image('beach_tileset', '/assets/franklin/beach_tileset.png');
 		this.load.image('turtle_shell', '/assets/franklin/turtle_shell.png');
 		
+		// Power-up potions
+		this.load.image('health_potion', '/assets/franklin/health_potion.png');
+		this.load.image('shield_potion', '/assets/franklin/shield_potion.png');
+		this.load.image('invincibility_potion', '/assets/franklin/invincibility_potion.png');
+		
 		// Franklin character sprites
 		this.load.image('franklin_idle_1', '/assets/franklin/franklin_sprites/franklin_idle_1.png');
 		this.load.image('franklin_idle_2', '/assets/franklin/franklin_sprites/franklin_idle_2.png');
