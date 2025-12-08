@@ -271,6 +271,54 @@ export class UIScene extends Phaser.Scene {
       warningElement.classList.add("hidden");
     }
   }
+  
+  updatePowerUpStatus(gameScene: any): void {
+    if (!gameScene.powerUpSystem) return;
+    
+    const powerUpSystem = gameScene.powerUpSystem;
+    
+    // Update Health Potion status
+    const healthStatus = document.getElementById("health-potion-status");
+    if (healthStatus) {
+      if (!powerUpSystem.healthPotionAvailable) {
+        healthStatus.textContent = "USED";
+        healthStatus.className = "text-gray-500 text-xs font-bold";
+      } else {
+        healthStatus.textContent = "READY";
+        healthStatus.className = "text-green-400 text-xs font-bold";
+      }
+    }
+    
+    // Update Shield Potion status
+    const shieldStatus = document.getElementById("shield-potion-status");
+    if (shieldStatus) {
+      if (powerUpSystem.shieldActive) {
+        shieldStatus.textContent = "ACTIVE";
+        shieldStatus.className = "text-cyan-400 text-xs font-bold animate-pulse";
+      } else if (!powerUpSystem.shieldPotionAvailable) {
+        shieldStatus.textContent = "USED";
+        shieldStatus.className = "text-gray-500 text-xs font-bold";
+      } else {
+        shieldStatus.textContent = "READY";
+        shieldStatus.className = "text-green-400 text-xs font-bold";
+      }
+    }
+    
+    // Update Invincibility Potion status
+    const invincibilityStatus = document.getElementById("invincibility-potion-status");
+    if (invincibilityStatus) {
+      if (powerUpSystem.invincibilityActive) {
+        invincibilityStatus.textContent = "ACTIVE";
+        invincibilityStatus.className = "text-yellow-400 text-xs font-bold animate-pulse";
+      } else if (!powerUpSystem.invincibilityPotionAvailable) {
+        invincibilityStatus.textContent = "USED";
+        invincibilityStatus.className = "text-gray-500 text-xs font-bold";
+      } else {
+        invincibilityStatus.textContent = "READY";
+        invincibilityStatus.className = "text-green-400 text-xs font-bold";
+      }
+    }
+  }
 
   shutdown(): void {
     // Clean up timer
