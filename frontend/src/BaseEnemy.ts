@@ -56,8 +56,17 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   public deathSound?: Phaser.Sound.BaseSound;
 
   constructor(scene: Phaser.Scene, x: number, y: number, customEnemyConfig: EnemyConfig) {
-    // Use the idle animation first frame as texture key
-    super(scene, x, y, customEnemyConfig.idleAnimKey.replace("_anim", "_frame1"));
+    // Determine initial texture key based on animation key pattern
+    let initialTexture: string;
+    if (customEnemyConfig.idleAnimKey.includes("narco")) {
+      // Narcos enemies use numbered sprites
+      initialTexture = "narco_idle_1";
+    } else {
+      // Other enemies use the _frame1 pattern
+      initialTexture = customEnemyConfig.idleAnimKey.replace("_anim", "_frame1");
+    }
+    
+    super(scene, x, y, initialTexture);
 
     // Store enemy config
     this.enemyConfig = customEnemyConfig;
