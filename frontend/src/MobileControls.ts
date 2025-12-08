@@ -228,10 +228,18 @@ export class MobileControls {
         this.rightPressed = false;
       }
 
-      // Jump when pulling joystick up (negative Y)
-      if (deltaY < -15) {
+      // Jump when pulling joystick up (negative Y) with cooldown to prevent continuous jumping
+      const currentTime = Date.now();
+      if (deltaY < -15 && currentTime - this.lastJumpTime > this.jumpCooldown) {
         this.jumpPressed = true;
-      } else {
+        this.lastJumpTime = currentTime;
+        
+        // Auto-reset jump after a short delay to make it act like a button press
+        setTimeout(() => {
+          this.jumpPressed = false;
+        }, 100);
+      } else if (deltaY >= -15) {
+        // Reset jump when not pulling up
         this.jumpPressed = false;
       }
     });
