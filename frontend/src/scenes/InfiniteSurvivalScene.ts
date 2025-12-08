@@ -702,6 +702,11 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
       this.player,
       (projectile: any, player: any) => {
         if (projectile && player && projectile.active && player.active && !player.isInvulnerable) {
+          // Check if PowerUpSystem (Franklin mode) should block damage
+          if (this.powerUpSystem && !this.powerUpSystem.shouldTakeDamage()) {
+            projectile.hit();
+            return;
+          }
           player.takeDamage(projectile.damage);
           projectile.hit();
         }
