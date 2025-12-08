@@ -271,10 +271,20 @@ export class PlayerFSM extends FSM {
     // Use jump down animation for crouching
     this.player.playAnimation("brave_commando_jump_down_anim");
     
+    // Store original hitbox if not already stored
+    if (!(this.player as any).originalBodyHeight) {
+      (this.player as any).originalBodyHeight = this.player.body.height;
+      (this.player as any).originalBodyOffsetY = this.player.body.offset.y;
+    }
+    
     // Reduce hitbox height by 50% to make player smaller (duck under bullets)
-    const originalHeight = this.player.body.height;
-    this.player.body.setSize(this.player.body.width, originalHeight * 0.5);
-    this.player.body.setOffset(this.player.body.offset.x, originalHeight * 0.5);
+    const originalHeight = (this.player as any).originalBodyHeight;
+    const crouchHeight = originalHeight * 0.5;
+    const heightDifference = originalHeight - crouchHeight;
+    
+    // Set smaller hitbox and adjust offset so player stays on ground
+    this.player.body.setSize(this.player.body.width, crouchHeight);
+    this.player.body.setOffset(this.player.body.offset.x, (this.player as any).originalBodyOffsetY + heightDifference);
   }
 
   update_crouching(time: number, delta: number) {
@@ -289,9 +299,10 @@ export class PlayerFSM extends FSM {
     
     if (!crouchPressed && !(mobile && mobile.crouchPressed)) {
       // Restore original hitbox
-      const originalHeight = this.player.body.height * 2;  // Since we reduced by 50%
+      const originalHeight = (this.player as any).originalBodyHeight;
+      const originalOffsetY = (this.player as any).originalBodyOffsetY;
       this.player.body.setSize(this.player.body.width, originalHeight);
-      this.player.body.setOffset(this.player.body.offset.x, 0);
+      this.player.body.setOffset(this.player.body.offset.x, originalOffsetY);
       
       this.goto("idle");
     }
@@ -299,9 +310,10 @@ export class PlayerFSM extends FSM {
     // Can still shoot while crouching
     if ((this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) || (mobile && mobile.shootPressed)) {
       // Restore hitbox before shooting
-      const originalHeight = this.player.body.height * 2;
+      const originalHeight = (this.player as any).originalBodyHeight;
+      const originalOffsetY = (this.player as any).originalBodyOffsetY;
       this.player.body.setSize(this.player.body.width, originalHeight);
-      this.player.body.setOffset(this.player.body.offset.x, 0);
+      this.player.body.setOffset(this.player.body.offset.x, originalOffsetY);
       
       this.goto("shooting");
     }
