@@ -144,9 +144,9 @@ export class PlayerFSM extends FSM {
 
     // Choose jump up or down animation based on vertical velocity
     if (this.player.body.velocity.y < 0) {
-      this.player.playAnimation("brave_commando_jump_up_anim");
+      this.player.playAnimation(this.player.getAnimationKey("brave_commando_jump_up_anim"));
     } else {
-      this.player.playAnimation("brave_commando_jump_down_anim");
+      this.player.playAnimation(this.player.getAnimationKey("brave_commando_jump_down_anim"));
     }
 
     // Landing detection
