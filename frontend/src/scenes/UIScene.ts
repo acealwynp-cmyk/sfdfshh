@@ -106,7 +106,6 @@ export class UIScene extends Phaser.Scene {
             <div class="text-white font-bold text-xs" style="text-shadow: 1px 1px 0px #000000;">
               <div>WASD / ARROWS: Move</div>
               <div>W / UP: Jump</div>
-              <div>S / DOWN: Crouch</div>
               <div>SPACE: Shoot</div>
               <div>Q: Switch Weapon</div>
             </div>
