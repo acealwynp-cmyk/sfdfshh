@@ -179,6 +179,7 @@ export class MobileControls {
       this.joystickActive = false;
       this.leftPressed = false;
       this.rightPressed = false;
+      this.jumpPressed = false;  // Reset jump when joystick is released
     };
 
     // Touch start on joystick
