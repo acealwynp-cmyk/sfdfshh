@@ -108,6 +108,43 @@ export class UIScene extends Phaser.Scene {
               <div>W / UP: Jump</div>
               <div>SPACE: Shoot</div>
               <div>Q: Switch Weapon</div>
+              <div id="powerup-controls" class="mt-2 hidden">
+                <div class="text-yellow-300">--- FRANKLIN MODE ---</div>
+                <div>1: Health Potion 💊</div>
+                <div>2: Shield Potion 🛡️</div>
+                <div>3: Invincibility ⭐</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Power-Ups Display (Bottom Center) - Franklin Mode Only -->
+        <div id="powerups-display" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 pointer-events-auto hidden">
+          <div class="game-pixel-container-[#F39C12] p-3 min-w-[400px]">
+            <div class="text-white font-bold text-sm text-center mb-2" style="text-shadow: 2px 2px 0px #000000;">
+              POWER-UPS
+            </div>
+            <div class="flex justify-around gap-4">
+              <!-- Health Potion -->
+              <div id="health-potion" class="flex flex-col items-center">
+                <div class="text-2xl">💊</div>
+                <div class="text-white text-xs mt-1">1: Health</div>
+                <div id="health-potion-status" class="text-green-400 text-xs font-bold">READY</div>
+              </div>
+              
+              <!-- Shield Potion -->
+              <div id="shield-potion" class="flex flex-col items-center">
+                <div class="text-2xl">🛡️</div>
+                <div class="text-white text-xs mt-1">2: Shield</div>
+                <div id="shield-potion-status" class="text-green-400 text-xs font-bold">READY</div>
+              </div>
+              
+              <!-- Invincibility Potion -->
+              <div id="invincibility-potion" class="flex flex-col items-center">
+                <div class="text-2xl">⭐</div>
+                <div class="text-white text-xs mt-1">3: Invincible</div>
+                <div id="invincibility-potion-status" class="text-green-400 text-xs font-bold">READY</div>
+              </div>
             </div>
           </div>
         </div>
