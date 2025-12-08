@@ -303,22 +303,28 @@ export class PlayerFSM extends FSM {
     const crouchPressed = cursors.down.isDown || (wasd.sKey && wasd.sKey.isDown);
     
     if (!crouchPressed && !(mobile && mobile.crouchPressed)) {
-      // Restore original hitbox
+      // Restore original hitbox and sprite position
       const originalHeight = (this.player as any).originalBodyHeight;
       const originalOffsetY = (this.player as any).originalBodyOffsetY;
+      const originalSpriteY = (this.player as any).originalSpriteY;
+      
       this.player.body.setSize(this.player.body.width, originalHeight);
       this.player.body.setOffset(this.player.body.offset.x, originalOffsetY);
+      this.player.y = originalSpriteY;
       
       this.goto("idle");
     }
 
     // Can still shoot while crouching
     if ((this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) || (mobile && mobile.shootPressed)) {
-      // Restore hitbox before shooting
+      // Restore hitbox and sprite position before shooting
       const originalHeight = (this.player as any).originalBodyHeight;
       const originalOffsetY = (this.player as any).originalBodyOffsetY;
+      const originalSpriteY = (this.player as any).originalSpriteY;
+      
       this.player.body.setSize(this.player.body.width, originalHeight);
       this.player.body.setOffset(this.player.body.offset.x, originalOffsetY);
+      this.player.y = originalSpriteY;
       
       this.goto("shooting");
     }
