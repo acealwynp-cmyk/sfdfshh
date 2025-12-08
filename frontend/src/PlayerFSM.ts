@@ -265,6 +265,51 @@ export class PlayerFSM extends FSM {
     this.player.setFlipX(this.player.facingDirection === "left");
   }
 
+  // Crouching state
+  enter_crouching() {
+    this.player.setVelocityX(0);
+    // Use jump down animation for crouching
+    this.player.playAnimation("brave_commando_jump_down_anim");
+    
+    // Reduce hitbox height by 50% to make player smaller (duck under bullets)
+    const originalHeight = this.player.body.height;
+    this.player.body.setSize(this.player.body.width, originalHeight * 0.5);
+    this.player.body.setOffset(this.player.body.offset.x, originalHeight * 0.5);
+  }
+
+  update_crouching(time: number, delta: number) {
+    if (this.checkDeath()) return;
+
+    const cursors = this.player.cursors;
+    const mobile = (this.scene as any).mobileControls;
+    const wasd = this.player;
+
+    // Check if crouch button is released
+    const crouchPressed = cursors.down.isDown || (wasd.sKey && wasd.sKey.isDown);
+    
+    if (!crouchPressed && !(mobile && mobile.crouchPressed)) {
+      // Restore original hitbox
+      const originalHeight = this.player.body.height * 2;  // Since we reduced by 50%
+      this.player.body.setSize(this.player.body.width, originalHeight);
+      this.player.body.setOffset(this.player.body.offset.x, 0);
+      
+      this.goto("idle");
+    }
+
+    // Can still shoot while crouching
+    if ((this.player.spaceKey && Phaser.Input.Keyboard.JustDown(this.player.spaceKey)) || (mobile && mobile.shootPressed)) {
+      // Restore hitbox before shooting
+      const originalHeight = this.player.body.height * 2;
+      this.player.body.setSize(this.player.body.width, originalHeight);
+      this.player.body.setOffset(this.player.body.offset.x, 0);
+      
+      this.goto("shooting");
+    }
+
+    // Update facing direction
+    this.player.setFlipX(this.player.facingDirection === "left");
+  }
+
   // Hurt state
   enter_hurting() {
     this.player.setVelocityX(0);
