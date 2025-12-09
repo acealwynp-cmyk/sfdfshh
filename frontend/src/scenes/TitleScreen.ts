@@ -85,18 +85,30 @@ export class TitleScreen extends Phaser.Scene {
                  style="filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.8));" />
           </div>
 
-          <!-- Play Mode Selection -->
-          <div class="flex flex-col space-y-4 items-center">
-            <button id="guest-play-btn" class="game-pixel-container-clickable-green-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
-              🎮 PLAY
+          <!-- Play Mode Selection - Redesigned -->
+          <div class="flex flex-col space-y-5 items-center">
+            <!-- Main PLAY Button -->
+            <button id="guest-play-btn" class="game-pixel-container-clickable-green-600 px-16 py-5 text-white font-bold text-2xl min-w-[400px] hover:scale-105 transition-transform">
+              <div class="flex items-center justify-center gap-3">
+                <span class="text-3xl">🎮</span>
+                <span>PLAY</span>
+              </div>
             </button>
             
-            <button id="wallet-play-btn" class="game-pixel-container-clickable-purple-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
-              💎 PLAY WITH WALLET
+            <!-- Connect Wallet Button -->
+            <button id="wallet-play-btn" class="game-pixel-container-clickable-purple-600 px-14 py-4 text-white font-bold text-xl min-w-[400px] hover:scale-105 transition-transform">
+              <div class="flex items-center justify-center gap-3">
+                <span class="text-2xl">💎</span>
+                <span>CONNECT WALLET</span>
+              </div>
             </button>
             
-            <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-12 py-4 text-white font-bold text-lg min-w-[320px]">
-              🏆 LEADERBOARD
+            <!-- Leaderboard Button -->
+            <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-14 py-4 text-white font-bold text-xl min-w-[400px] hover:scale-105 transition-transform">
+              <div class="flex items-center justify-center gap-3">
+                <span class="text-2xl">🏆</span>
+                <span>LEADERBOARD</span>
+              </div>
             </button>
           </div>
 
