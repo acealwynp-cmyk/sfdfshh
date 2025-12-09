@@ -97,12 +97,9 @@ export class Preloader extends Phaser.Scene {
         }
 
         create(): void {
-                // Start title screen immediately with minimal assets
+                // Start title screen after loading completes (with retro feel!)
                 this.scene.start("TitleScreen");
-                console.log('⚡ Title screen loaded instantly!');
-                
-                // Load remaining game assets in background (non-blocking)
-                this.scene.launch("BackgroundLoader");
+                console.log('✅ All assets loaded - game ready!');
         }
 
         private setupLoadingProgressUI(scene: Phaser.Scene): void {
