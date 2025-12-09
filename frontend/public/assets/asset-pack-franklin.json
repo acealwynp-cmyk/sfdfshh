@@ -1,5 +1,5 @@
 {
-  "section1": {
+  "biome_backgrounds": {
     "files": [
       {
         "type": "image",
@@ -10,6 +10,46 @@
         "type": "image",
         "key": "jungle_ground_tileset",
         "url": "assets/images/jungle_ground_tileset.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_background",
+        "url": "assets/images/desert_background.png"
+      },
+      {
+        "type": "image",
+        "key": "desert_ground_tileset",
+        "url": "assets/images/desert_ground_tileset.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_ruins_background",
+        "url": "assets/images/urban_ruins_background.png"
+      },
+      {
+        "type": "image",
+        "key": "urban_ruins_tileset",
+        "url": "assets/images/urban_ruins_tileset.png"
+      },
+      {
+        "type": "image",
+        "key": "arctic_background",
+        "url": "assets/images/arctic_background.png"
+      },
+      {
+        "type": "image",
+        "key": "arctic_ground_tileset",
+        "url": "assets/images/arctic_ground_tileset.png"
+      },
+      {
+        "type": "image",
+        "key": "deep_space_background",
+        "url": "assets/images/deep_space_background.png"
+      },
+      {
+        "type": "image",
+        "key": "space_tileset",
+        "url": "assets/images/space_tileset.png"
       }
     ]
   },
