@@ -134,9 +134,49 @@ export class Preloader extends Phaser.Scene {
         }
 
         create(): void {
-                // Start title screen after loading completes (with retro feel!)
+                // Start title screen immediately - FAST!
                 this.scene.start("TitleScreen");
-                console.log('✅ All assets loaded - game ready!');
+                console.log('✅ Essential assets loaded - menu ready!');
+                console.log('🔄 Remaining assets will load in background...');
+                
+                // Load remaining assets in background while user browses menu
+                this.time.delayedCall(100, () => {
+                        this.loadRemainingAssets();
+                });
+        }
+        
+        private loadRemainingAssets(): void {
+                // Load everything else in background
+                console.log('📦 Loading remaining assets in background...');
+                
+                const loader = this.load;
+                loader.maxParallelDownloads = 30;
+                
+                // Load full asset pack (all other biomes, enemies, etc)
+                loader.pack('assetPack', 'assets/asset-pack.json');
+                
+                // Load remaining Franklin sprites
+                loader.image('franklin_jump_1', '/assets/franklin/franklin_sprites/franklin_jump_1.png');
+                loader.image('franklin_jump_2', '/assets/franklin/franklin_sprites/franklin_jump_2.png');
+                loader.image('franklin_slingshot_1', '/assets/franklin/franklin_sprites/franklin_slingshot_1.png');
+                loader.image('franklin_slingshot_2', '/assets/franklin/franklin_sprites/franklin_slingshot_2.png');
+                loader.image('franklin_flamethrower_1', '/assets/franklin/franklin_sprites/franklin_flamethrower_1.png');
+                loader.image('franklin_flamethrower_2', '/assets/franklin/franklin_sprites/franklin_flamethrower_2.png');
+                loader.image('franklin_die_1', '/assets/franklin/franklin_sprites/franklin_die_1.png');
+                loader.image('franklin_die_2', '/assets/franklin/franklin_sprites/franklin_die_2.png');
+                
+                // Remaining Narcos sprites
+                loader.image('narco_walk_2', '/assets/franklin/narco_sprites/narco_walk_2.png');
+                loader.image('narco_attack_2', '/assets/franklin/narco_sprites/narco_attack_2.png');
+                loader.image('narco_die_1', '/assets/franklin/narco_sprites/narco_die_1.png');
+                loader.image('narco_die_2', '/assets/franklin/narco_sprites/narco_die_2.png');
+                
+                loader.once('complete', () => {
+                        console.log('✅ All remaining assets loaded in background!');
+                        this.registry.set('allAssetsLoaded', true);
+                });
+                
+                loader.start();
         }
 
         private setupLoadingProgressUI(scene: Phaser.Scene): void {
