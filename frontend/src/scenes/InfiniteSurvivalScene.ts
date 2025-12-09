@@ -118,13 +118,9 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
     // Initialize biome manager
     this.biomeManager = new BiomeManager(this);
     
-    // If Franklin mode, lock to beach biome (force jungle config but use beach assets)
+    // If Franklin mode, enable all biomes (Franklin is now the main game!)
     if (franklinMode) {
       this.currentBiomeConfig = this.biomeManager.getCurrentBiome();
-      // Override with beach visuals
-      this.currentBiomeConfig.displayName = "Beach";
-      this.currentBiomeConfig.backgroundKey = "beach_background";
-      this.currentBiomeConfig.tilesetKey = "beach_tileset";
       
       // Create Franklin animations
       this.createFranklinAnimations();
