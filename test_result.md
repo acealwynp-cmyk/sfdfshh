@@ -178,7 +178,8 @@ metadata:
   test_sequence: 4
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Final Review Issues - Leaderboard Reset & Keyboard Controls"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
