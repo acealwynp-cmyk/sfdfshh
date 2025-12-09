@@ -88,8 +88,15 @@ export class Preloader extends Phaser.Scene {
           
                 const onProgress = (value: number): void => {
                   progressBar.clear();
-                  progressBar.fillStyle(0xffffff, 1);
+                  progressBar.fillStyle(0x00FFFF, 1); // Cyan color for beach theme
                   progressBar.fillRect(x, y, barWidth * value, barHeight);
+                  
+                  // Move turtle along the loading bar
+                  turtle.x = x + (barWidth * value);
+                  
+                  // Animate turtle (wobble effect)
+                  const wobble = Math.sin(Date.now() / 100) * 3;
+                  turtle.y = y + barHeight / 2 + wobble;
                 };
                 
                 const onComplete = (): void => {
