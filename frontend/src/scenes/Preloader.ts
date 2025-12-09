@@ -20,6 +20,9 @@ export class Preloader extends Phaser.Scene {
                 this.load.image('beach_background', '/assets/franklin/beach_background.png');
                 this.load.image('franklin_title', '/assets/franklin/franklin_title.png');
                 
+                // Load essential audio (non-blocking if missing)
+                this.load.audio('jungle_battle_theme', '/assets/music/jungle_battle_theme.mp3', { maxRetries: 0 });
+                
                 console.log('⚡ Loading title screen only - INSTANT MENU!');
         }
         
