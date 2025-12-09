@@ -137,7 +137,10 @@ export class TitleScreen extends Phaser.Scene {
 
           <!-- Difficulty Selection -->
           <div class="flex flex-col space-y-4 items-center">
-            <div class="text-yellow-400 font-bold text-2xl" style="text-shadow: 3px 3px 0px #000000;">SELECT DIFFICULTY</div>
+            <div class="text-cyan-400 font-bold text-2xl mb-2" style="text-shadow: 3px 3px 0px #000000;">🐢 SELECT DIFFICULTY 🐢</div>
+            <div class="text-yellow-400 text-sm mb-4" style="text-shadow: 1px 1px 0px #000000;">
+              Survive across 5 beach biomes • Kill Narcos • Use Power-Ups!
+            </div>
             <div class="flex space-x-4">
               <button id="easy-btn" class="game-pixel-container-clickable-green-500 px-8 py-4 text-white font-bold text-xl">
                 EASY
@@ -148,23 +151,6 @@ export class TitleScreen extends Phaser.Scene {
               <button id="cursed-btn" class="game-pixel-container-clickable-red-600 px-8 py-4 text-white font-bold text-xl">
                 CURSED
               </button>
-            </div>
-            
-            <!-- Divider -->
-            <div class="my-4 w-full flex items-center">
-              <div class="flex-grow border-t-2 border-yellow-400" style="border-style: solid;"></div>
-              <span class="px-4 text-yellow-400 font-bold text-sm" style="text-shadow: 2px 2px 0px #000000;">OR</span>
-              <div class="flex-grow border-t-2 border-yellow-400" style="border-style: solid;"></div>
-            </div>
-            
-            <!-- Franklin Mode Button (Always Easy Difficulty) -->
-            <div class="flex flex-col items-center space-y-2">
-              <button id="franklin-mode-btn" class="game-pixel-container-clickable-orange-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
-                🏖️ FRANKLIN MODE
-              </button>
-              <div class="text-cyan-400 text-sm font-bold" style="text-shadow: 1px 1px 0px #000000;">
-                ⚡ LIMITED TIME EVENT - EASY MODE ONLY
-              </div>
             </div>
           </div>
 
