@@ -4,6 +4,7 @@
  */
 
 export enum BiomeType {
+  BEACH = "beach",
   JUNGLE = "jungle",
   DESERT = "desert", 
   URBAN_RUINS = "urban_ruins",
