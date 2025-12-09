@@ -40,11 +40,8 @@ const config: Phaser.Types.Core.GameConfig = {
 const game = new Phaser.Game(config);
 // Strictly add scenes in the following order: Preloader, TitleScreen, level scenes, UI-related scenes
 
-// Preloader: Load minimal title screen assets only (FAST!)
+// Preloader: Load all assets with retro turtle animation (OPTIMIZED!)
 game.scene.add("Preloader", Preloader, true);
-
-// BackgroundLoader: Loads game assets silently in background
-game.scene.add("BackgroundLoader", BackgroundLoader);
 
 // TitleScreen
 game.scene.add("TitleScreen", TitleScreen);
