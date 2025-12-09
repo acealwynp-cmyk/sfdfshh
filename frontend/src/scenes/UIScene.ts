@@ -369,25 +369,47 @@ export class UIScene extends Phaser.Scene {
     if (healthStatus) {
       if (!powerUpSystem.healthPotionAvailable) {
         healthStatus.textContent = "USED";
-        healthStatus.className = "text-gray-500 text-xs font-bold";
+        healthStatus.className = "text-gray-500 text-xs font-bold mt-1 drop-shadow-lg";
+        healthStatus.style.textShadow = "2px 2px 0px #000000";
       } else {
         healthStatus.textContent = "READY";
-        healthStatus.className = "text-green-400 text-xs font-bold";
+        healthStatus.className = "text-red-500 text-xs font-bold mt-1 drop-shadow-lg";
+        healthStatus.style.textShadow = "2px 2px 0px #000000";
       }
     }
     
-    // Update Shield Potion status
+    // Update Shield Potion status and shield bar
     const shieldStatus = document.getElementById("shield-potion-status");
+    const shieldBarContainer = document.getElementById("shield-bar-container");
+    
     if (shieldStatus) {
       if (powerUpSystem.shieldActive) {
         shieldStatus.textContent = "ACTIVE";
-        shieldStatus.className = "text-cyan-400 text-xs font-bold animate-pulse";
+        shieldStatus.className = "text-cyan-300 text-xs font-bold mt-1 drop-shadow-lg animate-pulse";
+        shieldStatus.style.textShadow = "2px 2px 0px #000000";
+        
+        // Show shield bar
+        if (shieldBarContainer) {
+          shieldBarContainer.classList.remove("hidden");
+        }
       } else if (!powerUpSystem.shieldPotionAvailable) {
         shieldStatus.textContent = "USED";
-        shieldStatus.className = "text-gray-500 text-xs font-bold";
+        shieldStatus.className = "text-gray-500 text-xs font-bold mt-1 drop-shadow-lg";
+        shieldStatus.style.textShadow = "2px 2px 0px #000000";
+        
+        // Hide shield bar
+        if (shieldBarContainer) {
+          shieldBarContainer.classList.add("hidden");
+        }
       } else {
         shieldStatus.textContent = "READY";
-        shieldStatus.className = "text-green-400 text-xs font-bold";
+        shieldStatus.className = "text-blue-400 text-xs font-bold mt-1 drop-shadow-lg";
+        shieldStatus.style.textShadow = "2px 2px 0px #000000";
+        
+        // Hide shield bar
+        if (shieldBarContainer) {
+          shieldBarContainer.classList.add("hidden");
+        }
       }
     }
     
@@ -396,13 +418,16 @@ export class UIScene extends Phaser.Scene {
     if (invincibilityStatus) {
       if (powerUpSystem.invincibilityActive) {
         invincibilityStatus.textContent = "ACTIVE";
-        invincibilityStatus.className = "text-yellow-400 text-xs font-bold animate-pulse";
+        invincibilityStatus.className = "text-yellow-300 text-xs font-bold mt-1 drop-shadow-lg animate-pulse";
+        invincibilityStatus.style.textShadow = "2px 2px 0px #000000";
       } else if (!powerUpSystem.invincibilityPotionAvailable) {
         invincibilityStatus.textContent = "USED";
-        invincibilityStatus.className = "text-gray-500 text-xs font-bold";
+        invincibilityStatus.className = "text-gray-500 text-xs font-bold mt-1 drop-shadow-lg";
+        invincibilityStatus.style.textShadow = "2px 2px 0px #000000";
       } else {
         invincibilityStatus.textContent = "READY";
-        invincibilityStatus.className = "text-green-400 text-xs font-bold";
+        invincibilityStatus.className = "text-yellow-400 text-xs font-bold mt-1 drop-shadow-lg";
+        invincibilityStatus.style.textShadow = "2px 2px 0px #000000";
       }
     }
   }
