@@ -336,17 +336,27 @@ export class TitleScreen extends Phaser.Scene {
   }
 
   initializeSounds(): void {
-    // Initialize background music
-    this.backgroundMusic = this.sound.add("jungle_battle_theme", {
-      volume: 0.4,
-      loop: true
-    });
+    // Initialize background music (optional - don't block if missing)
+    try {
+      if (this.cache.audio.exists("jungle_battle_theme")) {
+        this.backgroundMusic = this.sound.add("jungle_battle_theme", {
+          volume: 0.4,
+          loop: true
+        });
+      }
+    } catch (e) {
+      console.log('Audio not loaded yet, continuing without music');
+    }
   }
 
   playBackgroundMusic(): void {
-    // Play the initialized background music
-    if (this.backgroundMusic) {
-      this.backgroundMusic.play();
+    // Play the initialized background music (optional)
+    try {
+      if (this.backgroundMusic) {
+        this.backgroundMusic.play();
+      }
+    } catch (e) {
+      console.log('Could not play music, continuing silently');
     }
   }
 
