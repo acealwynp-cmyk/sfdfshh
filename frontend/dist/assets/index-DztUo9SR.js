@@ -6384,31 +6384,41 @@ return new `+this.key+`();
                  style="filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.8));" />
           </div>
 
-          <!-- Play Mode Selection - Redesigned with Franklin Turtle -->
-          <div class="flex items-center justify-center gap-12 w-full">
-            <!-- Buttons Container (Left/Center) -->
+          <!-- Play Mode Selection - Centered with Franklin Turtle -->
+          <div class="flex flex-col items-center justify-center space-y-6 w-full">
+            <!-- Buttons Container (Centered) -->
             <div class="flex flex-col space-y-4 items-center">
-              <!-- Guest and Connect Wallet in Same Row -->
+              <!-- Guest and Phantom Wallet in Same Row -->
               <div class="flex gap-4">
                 <!-- Guest Button -->
-                <button id="guest-play-btn" class="game-pixel-container-clickable-green-600 px-12 py-4 text-white font-bold text-xl min-w-[240px] hover:scale-105 transition-transform">
+                <button id="guest-play-btn" class="game-pixel-container-clickable-green-600 px-14 py-5 text-white font-bold text-xl min-w-[260px] hover:scale-105 transition-transform">
                   <div class="flex items-center justify-center gap-2">
                     <span class="text-2xl">🎮</span>
                     <span>GUEST</span>
                   </div>
                 </button>
                 
-                <!-- Connect Wallet Button -->
-                <button id="wallet-play-btn" class="game-pixel-container-clickable-purple-600 px-12 py-4 text-white font-bold text-xl min-w-[240px] hover:scale-105 transition-transform">
+                <!-- Phantom Wallet Button -->
+                <button id="wallet-play-btn" class="game-pixel-container-clickable-purple-600 px-14 py-5 text-white font-bold text-xl min-w-[260px] hover:scale-105 transition-transform">
                   <div class="flex items-center justify-center gap-2">
-                    <span class="text-2xl">💎</span>
-                    <span>CONNECT WALLET</span>
+                    <svg class="w-6 h-6" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M106.2 27.1C94.8 11.3 76.4 0 55.5 0 24.9 0 0 24.9 0 55.5c0 6.2 1 12.1 2.9 17.7l34.9-34.9c11.9-11.9 31.2-11.9 43.1 0l25.3 25.3c11.9 11.9 11.9 31.2 0 43.1l-34.9 34.9c5.6 1.9 11.5 2.9 17.7 2.9 30.6 0 55.5-24.9 55.5-55.5 0-20.9-11.6-39-28.3-48.9z" fill="url(#phantom-gradient)"/>
+                      <circle cx="89" cy="45" r="7" fill="white"/>
+                      <circle cx="111" cy="45" r="7" fill="white"/>
+                      <defs>
+                        <linearGradient id="phantom-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" style="stop-color:#AB9FF2"/>
+                          <stop offset="100%" style="stop-color:#4E44CE"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    <span>PHANTOM</span>
                   </div>
                 </button>
               </div>
               
               <!-- Leaderboard Button (Full Width Below) -->
-              <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-12 py-4 text-white font-bold text-xl w-full hover:scale-105 transition-transform">
+              <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-14 py-5 text-white font-bold text-xl w-full hover:scale-105 transition-transform">
                 <div class="flex items-center justify-center gap-3">
                   <span class="text-2xl">🏆</span>
                   <span>LEADERBOARD</span>
@@ -6416,9 +6426,9 @@ return new `+this.key+`();
               </button>
             </div>
             
-            <!-- Franklin Turtle Image (Right Side) -->
-            <div class="flex-shrink-0">
-              <img src="/franklin-turtle.jpeg" alt="Franklin the Turtle" class="w-64 h-auto" style="image-rendering: pixelated; filter: drop-shadow(0 10px 25px rgba(0,0,0,0.5));" />
+            <!-- Franklin Turtle Image (Below Buttons) -->
+            <div class="flex justify-center mt-8">
+              <img src="/franklin-turtle.png" alt="Franklin the Turtle" class="w-48 h-auto" style="image-rendering: pixelated; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));" />
             </div>
           </div>
 
