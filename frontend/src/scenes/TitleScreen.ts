@@ -187,6 +187,8 @@ export class TitleScreen extends Phaser.Scene {
       guestPlayBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         this.playMode = 'guest';
+        // Franklin is now the main game - always enable it!
+        this.registry.set('franklinMode', true);
         this.showDifficultySelectionScreen();
       });
     }
@@ -209,21 +211,11 @@ export class TitleScreen extends Phaser.Scene {
           this.updateWalletDisplay();
         }
         
+        // Franklin is now the main game - always enable it!
+        this.registry.set('franklinMode', true);
+        
         // Show difficulty selection
         this.showDifficultySelectionScreen();
-      });
-    }
-
-    // Franklin Mode button
-    const franklinModeBtn = document.getElementById('franklin-mode-btn');
-    if (franklinModeBtn) {
-      franklinModeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.playMode = 'guest';
-        this.selectedDifficulty = 'easy'; // Franklin Mode uses easy difficulty
-        // Store franklin mode flag in registry for game scene to read
-        this.registry.set('franklinMode', true);
-        this.startGame(); // Start the game directly instead of showing difficulty screen
       });
     }
 
