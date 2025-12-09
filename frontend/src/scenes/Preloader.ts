@@ -5,17 +5,22 @@ export class Preloader extends Phaser.Scene {
         }
 
         preload(): void {
-                // Load progress bar
-                this.setupLoadingProgressUI(this);
+                // FAST LOADING STRATEGY: Load only title screen essentials first!
+                // Game assets will load in background after title screen appears
                 
                 // Set max parallel downloads for faster loading
-                this.load.maxParallelDownloads = 10;
+                this.load.maxParallelDownloads = 15;
                 
-                // Load asset pack by type
-                this.load.pack('assetPack', 'assets/asset-pack.json');
+                // ONLY load title screen assets for instant menu display
+                this.loadTitleScreenAssets();
+        }
+        
+        private loadTitleScreenAssets(): void {
+                // Minimal assets needed for title screen to appear instantly
+                this.load.image('beach_background', '/assets/franklin/beach_background.png');
+                this.load.image('franklin_title', '/assets/franklin/franklin_title.png');
                 
-                // Load Franklin mode assets
-                this.loadFranklinAssets();
+                console.log('⚡ Loading title screen only - FAST MODE!');
         }
         
         private loadFranklinAssets(): void {
