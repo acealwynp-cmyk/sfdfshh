@@ -57,7 +57,9 @@ export class Preloader extends Phaser.Scene {
         }
 
         create(): void {
+                // Start title screen immediately after loading completes
                 this.scene.start("TitleScreen");
+                console.log('✅ All assets loaded - starting game!');
         }
 
         private setupLoadingProgressUI(scene: Phaser.Scene): void {
