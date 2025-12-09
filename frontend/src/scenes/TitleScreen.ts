@@ -58,9 +58,9 @@ export class TitleScreen extends Phaser.Scene {
 
   createDOMUI(): void {
     
-    // Use asset paths directly (images are in public/assets/images/)
-    const jungleBackgroundURL = '/assets/images/jungle_background.png';
-    const titleImageURL = '/assets/images/degen_force_title.png';
+    // Use Franklin assets (Franklin is now the main game!)
+    const jungleBackgroundURL = '/assets/franklin/beach_background.png';
+    const titleImageURL = '/assets/franklin/franklin_title.png';
     
     // Generate SVG Data URL for clickable container
     let uiHTML = `
