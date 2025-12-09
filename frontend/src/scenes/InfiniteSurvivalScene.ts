@@ -1087,32 +1087,10 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
   
   handlePowerUpControls(): void {
-    // Power-up controls only available in Franklin mode
-    if (!this.powerUpSystem || !this.player || !this.player.active) {
-      return;
-    }
-    
-    // Key 1: Use Health Potion
-    if (this.key1 && Phaser.Input.Keyboard.JustDown(this.key1)) {
-      if (this.powerUpSystem.useHealthPotion()) {
-        console.log('[Franklin] Used Health Potion!');
-        // Show visual feedback (could add text notification here)
-      }
-    }
-    
-    // Key 2: Use Shield Potion
-    if (this.key2 && Phaser.Input.Keyboard.JustDown(this.key2)) {
-      if (this.powerUpSystem.useShieldPotion()) {
-        console.log('[Franklin] Used Shield Potion!');
-      }
-    }
-    
-    // Key 3: Use Invincibility Potion
-    if (this.key3 && Phaser.Input.Keyboard.JustDown(this.key3)) {
-      if (this.powerUpSystem.useInvincibilityPotion()) {
-        console.log('[Franklin] Used Invincibility Potion!');
-      }
-    }
+    // Keyboard controls for power-ups are DISABLED
+    // Power-ups can ONLY be activated by clicking the rectangular buttons in the UI
+    // This ensures better mobile compatibility and clearer user interaction
+    return;
   }
 
   // Force biome change (for testing or manual trigger)
