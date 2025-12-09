@@ -96,7 +96,10 @@ export class UIScene extends Phaser.Scene {
               <div id="shield-bar-container" class="hidden mt-1">
                 <div class="text-cyan-400 font-bold text-xs text-center mb-1" style="text-shadow: 1px 1px 0px #000000;">🛡️ SHIELD</div>
                 <div class="game-pixel-container-slot-blue-900 p-1 relative">
-                  <div class="game-pixel-container-progress-fill-cyan-500 h-4 w-full">
+                  <div id="shield-fill" class="game-pixel-container-progress-fill-cyan-500 h-4 transition-all duration-300" style="width: 100%;">
+                  </div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <span id="shield-text" class="text-white font-bold text-xs" style="text-shadow: 1px 1px 0px #000000;">100/100</span>
                   </div>
                 </div>
               </div>
