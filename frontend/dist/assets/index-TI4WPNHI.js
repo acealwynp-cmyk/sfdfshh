@@ -6401,8 +6401,6 @@ return new `+this.key+`();
 
           <!-- Play Mode Selection -->
           <div class="flex flex-col space-y-4 items-center">
-            <div class="text-cyan-400 font-bold text-3xl mb-4" style="text-shadow: 3px 3px 0px #000000;">🏖️ FRANKLIN KILL THE NARCOS 🏖️</div>
-            
             <button id="guest-play-btn" class="game-pixel-container-clickable-green-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
               🎮 PLAY
             </button>
@@ -6436,10 +6434,6 @@ return new `+this.key+`();
 
           <!-- Difficulty Selection -->
           <div class="flex flex-col space-y-4 items-center">
-            <div class="text-cyan-400 font-bold text-2xl mb-2" style="text-shadow: 3px 3px 0px #000000;">🐢 SELECT DIFFICULTY 🐢</div>
-            <div class="text-yellow-400 text-sm mb-4" style="text-shadow: 1px 1px 0px #000000;">
-              Survive across 5 beach biomes • Kill Narcos • Use Power-Ups!
-            </div>
             <div class="flex space-x-4">
               <button id="easy-btn" class="game-pixel-container-clickable-green-500 px-8 py-4 text-white font-bold text-xl">
                 EASY
