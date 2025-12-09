@@ -122,9 +122,9 @@ export class UIScene extends Phaser.Scene {
               <div>Q: Switch Weapon</div>
               <div id="powerup-controls" class="mt-2 hidden">
                 <div class="text-cyan-300">--- POWER-UPS ---</div>
-                <div>1: Health Potion 💊</div>
-                <div>2: Shield Potion 🛡️</div>
-                <div>3: Invincibility ⭐</div>
+                <div>💊 Click RED button for Health</div>
+                <div>🛡️ Click BLUE button for Shield</div>
+                <div>⭐ Click YELLOW for Invincibility</div>
                 <div class="mt-1 text-yellow-300">B: Change Biome</div>
               </div>
             </div>
