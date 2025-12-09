@@ -179,13 +179,14 @@ export class PowerUpSystem {
   
   private deactivateShield(): void {
     this.shieldActive = false;
+    this.shieldHealth = 0;
     
     // Remove tint
     if (this.player.clearTint) {
       this.player.clearTint();
     }
     
-    console.log('[PowerUp] Shield expired');
+    console.log('[PowerUp] Shield deactivated');
   }
   
   private deactivateInvincibility(): void {
