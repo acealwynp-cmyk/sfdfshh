@@ -151,21 +151,30 @@ export class PowerUpSystem {
   
   /**
    * Check if player should take damage (considering shield/invincibility)
+   * Returns the damage amount that should be applied to player
    */
-  shouldTakeDamage(): boolean {
+  shouldTakeDamage(damageAmount: number = 25): boolean {
     if (this.invincibilityActive) {
       console.log('[PowerUp] Damage blocked by invincibility');
       return false;
     }
     
     if (this.shieldActive) {
-      console.log('[PowerUp] Damage blocked by shield');
-      // Shield absorbs one hit then breaks
-      this.deactivateShield();
-      return false;
+      // Shield absorbs damage
+      this.shieldHealth -= damageAmount;
+      console.log(`[PowerUp] Shield absorbed ${damageAmount} damage! Shield HP: ${this.shieldHealth}/${this.maxShieldHealth}`);
+      
+      // If shield depleted, deactivate it
+      if (this.shieldHealth <= 0) {
+        this.shieldHealth = 0;
+        console.log('[PowerUp] Shield broke!');
+        this.deactivateShield();
+      }
+      
+      return false; // Player takes no damage
     }
     
-    return true;
+    return true; // Player takes full damage
   }
   
   private deactivateShield(): void {
