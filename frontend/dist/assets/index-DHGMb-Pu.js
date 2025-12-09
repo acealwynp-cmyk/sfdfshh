@@ -6384,31 +6384,42 @@ return new `+this.key+`();
                  style="filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.8));" />
           </div>
 
-          <!-- Play Mode Selection - Redesigned -->
-          <div class="flex flex-col space-y-5 items-center">
-            <!-- Main PLAY Button -->
-            <button id="guest-play-btn" class="game-pixel-container-clickable-green-600 px-16 py-5 text-white font-bold text-2xl min-w-[400px] hover:scale-105 transition-transform">
-              <div class="flex items-center justify-center gap-3">
-                <span class="text-3xl">🎮</span>
-                <span>PLAY</span>
+          <!-- Play Mode Selection - Redesigned with Franklin Turtle -->
+          <div class="flex items-center justify-center gap-12 w-full">
+            <!-- Buttons Container (Left/Center) -->
+            <div class="flex flex-col space-y-4 items-center">
+              <!-- Guest and Connect Wallet in Same Row -->
+              <div class="flex gap-4">
+                <!-- Guest Button -->
+                <button id="guest-play-btn" class="game-pixel-container-clickable-green-600 px-12 py-4 text-white font-bold text-xl min-w-[240px] hover:scale-105 transition-transform">
+                  <div class="flex items-center justify-center gap-2">
+                    <span class="text-2xl">🎮</span>
+                    <span>GUEST</span>
+                  </div>
+                </button>
+                
+                <!-- Connect Wallet Button -->
+                <button id="wallet-play-btn" class="game-pixel-container-clickable-purple-600 px-12 py-4 text-white font-bold text-xl min-w-[240px] hover:scale-105 transition-transform">
+                  <div class="flex items-center justify-center gap-2">
+                    <span class="text-2xl">💎</span>
+                    <span>CONNECT WALLET</span>
+                  </div>
+                </button>
               </div>
-            </button>
+              
+              <!-- Leaderboard Button (Full Width Below) -->
+              <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-12 py-4 text-white font-bold text-xl w-full hover:scale-105 transition-transform">
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-2xl">🏆</span>
+                  <span>LEADERBOARD</span>
+                </div>
+              </button>
+            </div>
             
-            <!-- Connect Wallet Button -->
-            <button id="wallet-play-btn" class="game-pixel-container-clickable-purple-600 px-14 py-4 text-white font-bold text-xl min-w-[400px] hover:scale-105 transition-transform">
-              <div class="flex items-center justify-center gap-3">
-                <span class="text-2xl">💎</span>
-                <span>CONNECT WALLET</span>
-              </div>
-            </button>
-            
-            <!-- Leaderboard Button -->
-            <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-14 py-4 text-white font-bold text-xl min-w-[400px] hover:scale-105 transition-transform">
-              <div class="flex items-center justify-center gap-3">
-                <span class="text-2xl">🏆</span>
-                <span>LEADERBOARD</span>
-              </div>
-            </button>
+            <!-- Franklin Turtle Image (Right Side) -->
+            <div class="flex-shrink-0">
+              <img src="/franklin-turtle.jpeg" alt="Franklin the Turtle" class="w-64 h-auto" style="image-rendering: pixelated; filter: drop-shadow(0 10px 25px rgba(0,0,0,0.5));" />
+            </div>
           </div>
 
           <!-- Wallet Status -->
