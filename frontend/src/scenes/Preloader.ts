@@ -11,8 +11,8 @@ export class Preloader extends Phaser.Scene {
                 // Set max parallel downloads for faster loading
                 this.load.maxParallelDownloads = 20;
                 
-                // Load asset pack by type (ALL ASSETS UPFRONT)
-                this.load.pack('assetPack', 'assets/asset-pack.json');
+                // Load minimal Franklin asset pack (OPTIMIZED!)
+                this.load.pack('assetPack', 'assets/asset-pack-franklin.json');
                 
                 // Load Franklin mode assets
                 this.loadFranklinAssets();
