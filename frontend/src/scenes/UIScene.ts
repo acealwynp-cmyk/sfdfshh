@@ -122,34 +122,26 @@ export class UIScene extends Phaser.Scene {
           </div>
         </div>
         
-        <!-- Power-Ups Display (Bottom Center) - Franklin Mode Only -->
+        <!-- Power-Ups Display (Bottom Center) - Clean Design -->
         <div id="powerups-display" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 pointer-events-auto hidden">
-          <div class="game-pixel-container-[#F39C12] p-4 min-w-[450px]">
-            <div class="text-white font-bold text-base text-center mb-3" style="text-shadow: 2px 2px 0px #000000;">
-              🏖️ FRANKLIN'S POWER-UPS
-            </div>
-            <div class="flex justify-around gap-6">
-              <!-- Health Potion Button -->
-              <button id="health-potion-btn" class="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity game-pixel-container-clickable-green-600 p-2 min-w-[100px]">
-                <canvas id="health-potion-canvas" width="64" height="64" class="mb-2" style="image-rendering: pixelated;"></canvas>
-                <div class="text-white text-xs font-bold">1: HEALTH</div>
-                <div id="health-potion-status" class="text-green-400 text-xs font-bold mt-1">READY</div>
-              </button>
-              
-              <!-- Shield Potion Button -->
-              <button id="shield-potion-btn" class="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity game-pixel-container-clickable-blue-600 p-2 min-w-[100px]">
-                <canvas id="shield-potion-canvas" width="64" height="64" class="mb-2" style="image-rendering: pixelated;"></canvas>
-                <div class="text-white text-xs font-bold">2: SHIELD</div>
-                <div id="shield-potion-status" class="text-green-400 text-xs font-bold mt-1">READY</div>
-              </button>
-              
-              <!-- Invincibility Potion Button -->
-              <button id="invincibility-potion-btn" class="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity game-pixel-container-clickable-yellow-500 p-2 min-w-[100px]">
-                <canvas id="invincibility-potion-canvas" width="64" height="64" class="mb-2" style="image-rendering: pixelated;"></canvas>
-                <div class="text-white text-xs font-bold">3: INVINCIBLE</div>
-                <div id="invincibility-potion-status" class="text-green-400 text-xs font-bold mt-1">READY</div>
-              </button>
-            </div>
+          <div class="flex justify-center gap-4">
+            <!-- Health Potion Button (Red) -->
+            <button id="health-potion-btn" class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
+              <canvas id="health-potion-canvas" width="64" height="64" style="image-rendering: pixelated;"></canvas>
+              <div id="health-potion-status" class="text-red-500 text-xs font-bold mt-1 drop-shadow-lg" style="text-shadow: 2px 2px 0px #000000;">READY</div>
+            </button>
+            
+            <!-- Shield Potion Button (Blue) -->
+            <button id="shield-potion-btn" class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
+              <canvas id="shield-potion-canvas" width="64" height="64" style="image-rendering: pixelated;"></canvas>
+              <div id="shield-potion-status" class="text-blue-400 text-xs font-bold mt-1 drop-shadow-lg" style="text-shadow: 2px 2px 0px #000000;">READY</div>
+            </button>
+            
+            <!-- Invincibility Potion Button (Yellow) -->
+            <button id="invincibility-potion-btn" class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
+              <canvas id="invincibility-potion-canvas" width="64" height="64" style="image-rendering: pixelated;"></canvas>
+              <div id="invincibility-potion-status" class="text-yellow-400 text-xs font-bold mt-1 drop-shadow-lg" style="text-shadow: 2px 2px 0px #000000;">READY</div>
+            </button>
           </div>
         </div>
 
