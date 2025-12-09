@@ -1,0 +1,99 @@
+{
+  "section1": {
+    "files": [
+      {
+        "type": "image",
+        "key": "jungle_background",
+        "url": "assets/images/jungle_background.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_ground_tileset",
+        "url": "assets/images/jungle_ground_tileset.png"
+      }
+    ]
+  },
+  "jungle_enemies": {
+    "files": [
+      {
+        "type": "image",
+        "key": "jungle_soldier_idle_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/1c5caa0a-3a81-4f68-9efd-e9e66e4f34e4/animations/jungle_soldier_idle_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_soldier_idle_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/e99d45e2-4bcd-4a12-aa6e-f63a25bcce67/animations/jungle_soldier_idle_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_soldier_walk_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/80f6b45b-47b0-48be-a82e-8e488d2eba97/animations/jungle_soldier_walk_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_soldier_walk_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/bd2c6ed8-f37f-4f84-ae34-cc4c00e44e5b/animations/jungle_soldier_walk_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_soldier_shoot_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/d23a6a35-8afd-4990-a6f3-85ad9a34f388/animations/jungle_soldier_shoot_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_soldier_shoot_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/bca3d6d8-cd4e-4a4d-bf70-aa9bd6fa1d0a/animations/jungle_soldier_shoot_R/frame_2.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_soldier_die_frame1",
+        "url": "https://cdn-game-mcp.gambo.ai/1e931b9c-ed8f-47d4-8e55-e1eb72b96a54/animations/jungle_soldier_die_R/frame_1.png"
+      },
+      {
+        "type": "image",
+        "key": "jungle_soldier_die_frame2",
+        "url": "https://cdn-game-mcp.gambo.ai/3f58d82d-e7e0-4cb0-9e51-da9e2a05e2d3/animations/jungle_soldier_die_R/frame_2.png"
+      }
+    ]
+  },
+  "essential_assets": {
+    "files": [
+      {
+        "type": "image",
+        "key": "bullet_projectile",
+        "url": "https://cdn-game-mcp.gambo.ai/28a10d70-5cc7-40e1-b4cb-da0d70f3e64d/projectile_bullet.png"
+      },
+      {
+        "type": "audio",
+        "key": "rifle_fire",
+        "url": "assets/audio/rifle_fire.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "player_jump",
+        "url": "assets/audio/player_jump.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "player_hurt",
+        "url": "assets/audio/player_hurt.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "enemy_death",
+        "url": "assets/audio/enemy_death.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "weapon_pickup",
+        "url": "assets/audio/weapon_pickup.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "powerup_activate",
+        "url": "assets/audio/powerup_activate.mp3"
+      }
+    ]
+  }
+}
