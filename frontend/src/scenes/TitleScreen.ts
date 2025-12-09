@@ -102,14 +102,14 @@ export class TitleScreen extends Phaser.Scene {
 
           <!-- Play Mode Selection -->
           <div class="flex flex-col space-y-4 items-center">
-            <div class="text-yellow-400 font-bold text-2xl mb-2" style="text-shadow: 3px 3px 0px #000000;">CHOOSE YOUR MODE</div>
+            <div class="text-cyan-400 font-bold text-3xl mb-4" style="text-shadow: 3px 3px 0px #000000;">🏖️ FRANKLIN KILL THE NARCOS 🏖️</div>
             
             <button id="guest-play-btn" class="game-pixel-container-clickable-green-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
-              🎮 GUEST PLAY
+              🎮 PLAY
             </button>
             
             <button id="wallet-play-btn" class="game-pixel-container-clickable-purple-600 px-12 py-4 text-white font-bold text-xl min-w-[320px]">
-              💎 WALLET CONNECT PLAY
+              💎 PLAY WITH WALLET
             </button>
             
             <button id="leaderboard-btn" class="game-pixel-container-clickable-blue-600 px-12 py-4 text-white font-bold text-lg min-w-[320px]">
