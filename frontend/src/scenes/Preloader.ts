@@ -7,6 +7,10 @@ export class Preloader extends Phaser.Scene {
         preload(): void {
                 // Load progress bar
                 this.setupLoadingProgressUI(this);
+                
+                // Set max parallel downloads for faster loading
+                this.load.maxParallelDownloads = 10;
+                
                 // Load asset pack by type
                 this.load.pack('assetPack', 'assets/asset-pack.json');
                 
