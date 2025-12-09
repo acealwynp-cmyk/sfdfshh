@@ -334,6 +334,18 @@ export class UIScene extends Phaser.Scene {
         "game-pixel-container-progress-fill-red-500"
       );
     }
+    
+    // Update shield bar (if PowerUpSystem exists)
+    if (gameScene.powerUpSystem) {
+      const shieldFill = document.getElementById("shield-fill");
+      const shieldText = document.getElementById("shield-text");
+      
+      if (shieldFill && shieldText) {
+        const shieldPercent = (gameScene.powerUpSystem.shieldHealth / gameScene.powerUpSystem.maxShieldHealth) * 100;
+        shieldFill.style.width = `${shieldPercent}%`;
+        shieldText.textContent = `${gameScene.powerUpSystem.shieldHealth}/${gameScene.powerUpSystem.maxShieldHealth}`;
+      }
+    }
 
     // Update enemy count
     const enemyCountElement = document.getElementById("enemy-count");
