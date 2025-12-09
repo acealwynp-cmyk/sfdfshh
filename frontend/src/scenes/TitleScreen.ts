@@ -365,43 +365,6 @@ export class TitleScreen extends Phaser.Scene {
     if (this.isStarting) return;
     this.isStarting = true;
 
-    // Check if game assets are loaded (from BackgroundLoader)
-    const assetsLoaded = this.registry.get('assetsLoaded');
-    
-    if (!assetsLoaded) {
-      // Assets still loading - show quick loading message
-      console.log('⏳ Assets still loading, please wait...');
-      const loadingText = this.add.text(
-        this.cameras.main.width / 2,
-        this.cameras.main.height / 2,
-        '🐢 PREPARING GAME...',
-        {
-          fontSize: '32px',
-          color: '#00FFFF',
-          stroke: '#000000',
-          strokeThickness: 4,
-          fontStyle: 'bold'
-        }
-      ).setOrigin(0.5);
-      
-      // Wait for assets to load
-      const checkAssets = () => {
-        if (this.registry.get('assetsLoaded')) {
-          loadingText.destroy();
-          this.actuallyStartGame();
-        } else {
-          this.time.delayedCall(100, checkAssets);
-        }
-      };
-      checkAssets();
-      return;
-    }
-    
-    // Assets ready, start immediately
-    this.actuallyStartGame();
-  }
-  
-  private actuallyStartGame(): void {
     // Clean up event listeners
     this.cleanupEventListeners();
 
