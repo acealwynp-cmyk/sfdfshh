@@ -98,8 +98,9 @@ export class BiomeManager {
     }
   };
 
-  // Biome cycle order
+  // Biome cycle order (Beach first for Franklin!)
   public static readonly BIOME_ORDER: BiomeType[] = [
+    BiomeType.BEACH,
     BiomeType.JUNGLE,
     BiomeType.DESERT,
     BiomeType.URBAN_RUINS,
