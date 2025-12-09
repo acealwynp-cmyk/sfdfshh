@@ -160,6 +160,17 @@ frontend:
       - working: true
         agent: "testing"
         comment: "🎯 FRANKLIN AS MAIN GAME WITH BIOME CHANGES TESTING COMPLETE (Dec 9, 2025): ✅ ALL CRITICAL REQUIREMENTS EXCEEDED! Executed comprehensive test of Franklin as the main game with biome cycling enabled. Key findings: ✅ TITLE SCREEN: Perfect Franklin title image ('FRANKLIN: KILL THE NARCOS') with beach background and palm trees displayed correctly ✅ MENU BUTTONS: All three buttons working perfectly: 'PLAY', 'PLAY WITH WALLET', 'LEADERBOARD' ✅ DIFFICULTY SELECTION: Correct screen with '🐢 SELECT DIFFICULTY 🐢' title and subtitle 'Survive across 5 beach biomes • Kill Narcos • Use Power-Ups!' ✅ GAME START: Easy difficulty loads successfully in 8 seconds, starting in Jungle biome (Tropical Jungle) ✅ BIOME CHANGES ENABLED: B key successfully cycles through biomes - tested Jungle → Urban (Ruined City) → Desert (Desert Wasteland) with distinct visual changes ✅ BIOME TRANSITIONS: Console logs confirm proper biome transitions with 'Force biome change' and 'BIOME TRANSITION COMPLETE' messages ✅ POWER-UP SYSTEM: All 3 potions (Health, Shield, Invincibility) working perfectly with keyboard controls (1,2,3) - console logs confirm usage ✅ UI CONTROLS: 'B: Change Biome' shown in controls, all power-up buttons visible at bottom center ✅ FRANKLIN CHARACTER: Works across all biomes with Narcos enemies spawning correctly ✅ GAME STABILITY: 20+ seconds of gameplay with movement, shooting, jumping all functional ⚠️ Minor: Franklin animation config warnings in console but gameplay unaffected. FRANKLIN IS NOW THE MAIN GAME WITH FULL BIOME CYCLING - ALL REQUIREMENTS MET!"
+  - task: "Final Review Issues - Leaderboard Reset & Keyboard Controls"
+    implemented: false
+    working: false
+    file: "backend/server.py, src/scenes/InfiniteSurvivalScene.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "🎯 FINAL COMPREHENSIVE TESTING ISSUES IDENTIFIED (Dec 9, 2025): ❌ CRITICAL ISSUES FOUND during final review testing: 1. LEADERBOARD NOT RESET: Shows existing scores (98,400, 43,300, 3,000, 2,400) instead of being empty as required in review 2. KEYBOARD CONTROLS PARTIALLY WORKING: Keys 2 and 3 still activate Shield and Invincibility potions (should be disabled per review requirements - only button clicks should work). Key 1 is properly disabled. ✅ WORKING CORRECTLY: Browser tab title 'Franklin: Kill the Narcos', Franklin favicon, rectangular power-up buttons (Red/Blue/Yellow), button clicks work perfectly, shield bar appears, game loads in 8 seconds, beach biome, Franklin character visible, all core gameplay functional. FIXES NEEDED: Reset leaderboard to empty state, disable keyboard keys 2&3 for power-ups."
 
 metadata:
   created_by: "testing_agent"
