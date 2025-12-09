@@ -30,6 +30,17 @@ export class BiomeManager {
   
   // All available biomes in order
   public static readonly BIOME_CONFIGS: { [key in BiomeType]: BiomeConfig } = {
+    [BiomeType.BEACH]: {
+      name: BiomeType.BEACH,
+      displayName: "Beach Paradise",
+      backgroundKey: "beach_background",
+      musicKey: "jungle_battle_theme", // Reuse jungle music for now
+      tilemapKey: "jungle_level_1", // Reuse jungle tilemap
+      tilesetKey: "beach_tileset",
+      enemyTypes: ["jungle_soldier"], // Will spawn Narcos in Franklin mode
+      spawnMultiplier: 1.0,
+      description: "Sunny beach paradise with palm trees and ocean waves"
+    },
     [BiomeType.JUNGLE]: {
       name: BiomeType.JUNGLE,
       displayName: "Tropical Jungle",
