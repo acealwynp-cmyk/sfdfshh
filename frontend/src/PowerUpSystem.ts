@@ -29,7 +29,7 @@ export class PowerUpSystem {
   
   // Effect durations (in milliseconds)
   private readonly SHIELD_DURATION = 10000; // 10 seconds
-  private readonly INVINCIBILITY_DURATION = 5000; // 5 seconds
+  private readonly INVINCIBILITY_DURATION = 10000; // 10 seconds
   
   constructor(scene: Phaser.Scene, player: any) {
     this.scene = scene;
