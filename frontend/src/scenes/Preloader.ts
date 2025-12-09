@@ -5,25 +5,57 @@ export class Preloader extends Phaser.Scene {
         }
 
         preload(): void {
-                // FAST LOADING STRATEGY: Load only title screen essentials first!
-                // Game assets will load in background after title screen appears
+                // Load progress bar with turtle animation (retro feel!)
+                this.setupLoadingProgressUI(this);
                 
-                // Set max parallel downloads for faster loading
-                this.load.maxParallelDownloads = 15;
+                // Set max parallel downloads for FASTER loading
+                this.load.maxParallelDownloads = 20; // Increased for speed!
                 
-                // ONLY load title screen assets for instant menu display
-                this.loadTitleScreenAssets();
+                // Load asset pack by type
+                this.load.pack('assetPack', 'assets/asset-pack.json');
+                
+                // Load Franklin mode assets
+                this.loadFranklinAssets();
+                
+                console.log('🐢 Loading with retro turtle animation - OPTIMIZED!');
         }
         
-        private loadTitleScreenAssets(): void {
-                // Minimal assets needed for title screen to appear instantly
+        private loadFranklinAssets(): void {
+                // Background and tiles
                 this.load.image('beach_background', '/assets/franklin/beach_background.png');
-                this.load.image('franklin_title', '/assets/franklin/franklin_title.png');
+                this.load.image('beach_tileset', '/assets/franklin/beach_tileset.png');
+                this.load.image('turtle_shell', '/assets/franklin/turtle_shell.png');
                 
-                // Load essential audio (non-blocking if missing)
-                this.load.audio('jungle_battle_theme', '/assets/music/jungle_battle_theme.mp3', { maxRetries: 0 });
+                // Power-up potions
+                this.load.image('health_potion', '/assets/franklin/health_potion.png');
+                this.load.image('shield_potion', '/assets/franklin/shield_potion.png');
+                this.load.image('invincibility_potion', '/assets/franklin/invincibility_potion.png');
                 
-                console.log('⚡ Loading title screen only - INSTANT MENU!');
+                // Franklin character sprites
+                this.load.image('franklin_idle_1', '/assets/franklin/franklin_sprites/franklin_idle_1.png');
+                this.load.image('franklin_idle_2', '/assets/franklin/franklin_sprites/franklin_idle_2.png');
+                this.load.image('franklin_walk_1', '/assets/franklin/franklin_sprites/franklin_walk_1.png');
+                this.load.image('franklin_walk_2', '/assets/franklin/franklin_sprites/franklin_walk_2.png');
+                this.load.image('franklin_jump_1', '/assets/franklin/franklin_sprites/franklin_jump_1.png');
+                this.load.image('franklin_jump_2', '/assets/franklin/franklin_sprites/franklin_jump_2.png');
+                this.load.image('franklin_slingshot_1', '/assets/franklin/franklin_sprites/franklin_slingshot_1.png');
+                this.load.image('franklin_slingshot_2', '/assets/franklin/franklin_sprites/franklin_slingshot_2.png');
+                this.load.image('franklin_rifle_1', '/assets/franklin/franklin_sprites/franklin_rifle_1.png');
+                this.load.image('franklin_rifle_2', '/assets/franklin/franklin_sprites/franklin_rifle_2.png');
+                this.load.image('franklin_flamethrower_1', '/assets/franklin/franklin_sprites/franklin_flamethrower_1.png');
+                this.load.image('franklin_flamethrower_2', '/assets/franklin/franklin_sprites/franklin_flamethrower_2.png');
+                this.load.image('franklin_die_1', '/assets/franklin/franklin_sprites/franklin_die_1.png');
+                this.load.image('franklin_die_2', '/assets/franklin/franklin_sprites/franklin_die_2.png');
+                
+                // Narcos enemy sprites
+                this.load.image('narco_idle_1', '/assets/franklin/narco_sprites/narco_idle_1.png');
+                this.load.image('narco_idle_2', '/assets/franklin/narco_sprites/narco_idle_2.png');
+                this.load.image('narco_walk_1', '/assets/franklin/narco_sprites/narco_walk_1.png');
+                this.load.image('narco_walk_2', '/assets/franklin/narco_sprites/narco_walk_2.png');
+                this.load.image('narco_attack_1', '/assets/franklin/narco_sprites/narco_attack_1.png');
+                this.load.image('narco_attack_2', '/assets/franklin/narco_sprites/narco_attack_2.png');
+                this.load.image('narco_die_1', '/assets/franklin/narco_sprites/narco_die_1.png');
+                this.load.image('narco_die_2', '/assets/franklin/narco_sprites/narco_die_2.png');
         }
         
         private loadFranklinAssets(): void {
