@@ -20,7 +20,7 @@ export class Preloader extends Phaser.Scene {
                 this.load.image('beach_background', '/assets/franklin/beach_background.png');
                 this.load.image('franklin_title', '/assets/franklin/franklin_title.png');
                 
-                console.log('⚡ Loading title screen only - FAST MODE!');
+                console.log('⚡ Loading title screen only - INSTANT MENU!');
         }
         
         private loadFranklinAssets(): void {
