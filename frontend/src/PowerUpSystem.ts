@@ -24,6 +24,10 @@ export class PowerUpSystem {
   public shieldActive: boolean = false;
   public invincibilityActive: boolean = false;
   
+  // Shield health tracking
+  public shieldHealth: number = 100;
+  public maxShieldHealth: number = 100;
+  
   private shieldTimer?: Phaser.Time.TimerEvent;
   private invincibilityTimer?: Phaser.Time.TimerEvent;
   
