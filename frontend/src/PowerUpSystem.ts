@@ -166,9 +166,12 @@ export class PowerUpSystem {
   private deactivateInvincibility(): void {
     this.invincibilityActive = false;
     
-    // Remove tint
+    // Remove tint and stop blinking
     if (this.player.clearTint) {
       this.player.clearTint();
+    }
+    if (this.player.setAlpha) {
+      this.player.setAlpha(1); // Make sure player is fully visible
     }
     
     console.log('[PowerUp] Invincibility expired');
