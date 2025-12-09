@@ -149,8 +149,23 @@ export class PlayerFSM extends FSM {
       this.player.playAnimation(this.player.getAnimationKey("brave_commando_jump_down_anim"));
     }
 
-    // Landing detection
+    // Check if landed back on ground
     if (this.player.body.onFloor()) {
+      // Check if jump button is still held for continuous jumping
+      const jumpHeld = cursors.up.isDown || (wasd.wKey && wasd.wKey.isDown) || (mobile && mobile.jumpPressed);
+      
+      if (jumpHeld) {
+        // Jump again immediately (continuous jumping!)
+        this.player.body.setVelocityY(-this.player.jumpPower);
+        this.player.jumpSound?.play();
+        // Stay in jumping state
+        return;
+      }
+      
+      // Jump button released - check for movement
+      const leftPressed = cursors.left.isDown || (wasd.aKey && wasd.aKey.isDown);
+      const rightPressed = cursors.right.isDown || (wasd.dKey && wasd.dKey.isDown);
+      
       if (leftPressed || rightPressed || (mobile && (mobile.leftPressed || mobile.rightPressed))) {
         this.goto("moving");
       } else {
