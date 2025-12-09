@@ -1080,9 +1080,8 @@ export class InfiniteSurvivalScene extends Phaser.Scene {
   }
 
   handleTestControls(): void {
-    // Manual biome change with B key (disabled in Franklin mode)
-    const franklinMode = (this as any).franklinMode || false;
-    if (!franklinMode && this.bKey && Phaser.Input.Keyboard.JustDown(this.bKey)) {
+    // Manual biome change with B key (now enabled for Franklin mode!)
+    if (this.bKey && Phaser.Input.Keyboard.JustDown(this.bKey)) {
       this.forceBiomeChange();
     }
   }
