@@ -50,47 +50,10 @@ export class TitleScreen extends Phaser.Scene {
     // Play background music
     this.playBackgroundMusic();
     
-    // Start loading game assets in background while user is on menu!
-    // This makes game start feel INSTANT when they click play
-    console.log('🔄 Preloading game assets in background...');
-    this.startBackgroundAssetLoading();
-    
     // Listen for scene shutdown to cleanup event listeners
     this.events.once('shutdown', () => {
       this.cleanupEventListeners();
     });
-  }
-  
-  startBackgroundAssetLoading(): void {
-    // Load any remaining assets that weren't in the initial preload
-    // This runs silently while user browses menu
-    const loader = new Phaser.Loader.LoaderPlugin(this);
-    loader.maxParallelDownloads = 20;
-    
-    // Check if assets are already loaded
-    const checkAsset = (key: string) => {
-      return this.textures.exists(key) || this.cache.audio.exists(key);
-    };
-    
-    // Load any missing heavy assets in background
-    // Most should already be loaded, this is just a safety net
-    const assetsToCheck = [
-      'jungle_ground_tileset', 
-      'desert_ground_tileset',
-      'urban_ruins_tileset'
-    ];
-    
-    let needsLoading = false;
-    assetsToCheck.forEach(asset => {
-      if (!checkAsset(asset)) {
-        needsLoading = true;
-      }
-    });
-    
-    if (!needsLoading) {
-      console.log('✅ All assets already loaded - game ready to start instantly!');
-      this.registry.set('assetsPreloaded', true);
-    }
   }
 
   createDOMUI(): void {
