@@ -91,6 +91,15 @@ export class UIScene extends Phaser.Scene {
                   <span id="health-text" class="text-white font-bold text-xs" style="text-shadow: 1px 1px 0px #000000;">100/100</span>
                 </div>
               </div>
+              
+              <!-- Shield Bar (shown only when shield is active) -->
+              <div id="shield-bar-container" class="hidden mt-1">
+                <div class="text-cyan-400 font-bold text-xs text-center mb-1" style="text-shadow: 1px 1px 0px #000000;">🛡️ SHIELD</div>
+                <div class="game-pixel-container-slot-blue-900 p-1 relative">
+                  <div class="game-pixel-container-progress-fill-cyan-500 h-4 w-full">
+                  </div>
+                </div>
+              </div>
             </div>
             
             <!-- Enemy Count -->
