@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { screenSize, debugConfig, renderConfig } from "./gameConfig.json";
 import "./styles/tailwind.css";
 import { Preloader } from "./scenes/Preloader";
+import { BackgroundLoader } from "./scenes/BackgroundLoader";
 import { TitleScreen } from "./scenes/TitleScreen";
 import { JungleScene } from "./scenes/JungleScene";
 import { InfiniteSurvivalScene } from "./scenes/InfiniteSurvivalScene";
