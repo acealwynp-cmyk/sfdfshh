@@ -88,13 +88,14 @@ export class PowerUpSystem {
     // Activate shield
     this.shieldActive = true;
     this.shieldPotionAvailable = false;
+    this.shieldHealth = this.maxShieldHealth; // Reset to 100
     
     // Visual effect - tint player blue
     if (this.player.setTint) {
       this.player.setTint(0x00ffff);
     }
     
-    console.log('[PowerUp] Shield activated for 10 seconds!');
+    console.log('[PowerUp] Shield activated for 10 seconds with 100 HP!');
     
     // Set timer to deactivate
     this.shieldTimer = this.scene.time.delayedCall(this.SHIELD_DURATION, () => {
