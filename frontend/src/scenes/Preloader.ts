@@ -72,11 +72,12 @@ export class Preloader extends Phaser.Scene {
 	  
 		const progressBar = scene.add.graphics();
 	  
-		const loadingText = scene.add.text(width / 2, y - 20, 'Loading...', {
-		  fontSize: '20px',
-		  color: '#ffffff',
+		const loadingText = scene.add.text(width / 2, y - 50, '🐢 FRANKLIN IS LOADING...', {
+		  fontSize: '24px',
+		  color: '#00FFFF',
 		  stroke: '#000000',
-		  strokeThickness: 3,
+		  strokeThickness: 4,
+		  fontStyle: 'bold'
 		}).setOrigin(0.5, 0.5);
 	  
 		const onProgress = (value: number): void => {
