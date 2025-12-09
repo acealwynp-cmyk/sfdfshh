@@ -109,28 +109,39 @@ export class PowerUpSystem {
       return false;
     }
     
-    if (this.invincibilityActive) {
-      console.log('[PowerUp] Already invincible');
-      return false;
-    }
-    
     // Activate invincibility
     this.invincibilityActive = true;
     this.invincibilityPotionAvailable = false;
     
-    // Visual effect - tint player yellow/gold
-    if (this.player.setTint) {
-      this.player.setTint(0xffff00);
-    }
+    // Visual effect - blinking (alternating alpha)
+    this.createBlinkEffect();
     
-    console.log('[PowerUp] Invincibility activated for 5 seconds!');
+    console.log('[PowerUp] Invincibility activated for 10 seconds with blinking effect');
     
-    // Set timer to deactivate
+    // Deactivate after duration
     this.invincibilityTimer = this.scene.time.delayedCall(this.INVINCIBILITY_DURATION, () => {
       this.deactivateInvincibility();
     });
     
     return true;
+  }
+  
+  private createBlinkEffect(): void {
+    // Create a repeating blink effect using tweens
+    if (this.player && this.scene) {
+      this.scene.tweens.add({
+        targets: this.player,
+        alpha: 0.3,
+        duration: 150,
+        yoyo: true,
+        repeat: Math.floor(this.INVINCIBILITY_DURATION / 300), // Blink for entire duration
+        onComplete: () => {
+          if (this.player.setAlpha) {
+            this.player.setAlpha(1); // Ensure fully visible when done
+          }
+        }
+      });
+    }
   }
   
   /**
