@@ -111,6 +111,7 @@ export class Preloader extends Phaser.Scene {
                   progressBar.destroy();
                   progressBox.destroy();
                   loadingText.destroy();
+                  turtle.destroy();
                 };
         }
 }
