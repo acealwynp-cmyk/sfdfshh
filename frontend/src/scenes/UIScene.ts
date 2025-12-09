@@ -224,9 +224,9 @@ export class UIScene extends Phaser.Scene {
     // Get the image source
     const frame = texture.getSourceImage();
     
-    // Draw image scaled to fit canvas
+    // Draw image scaled to fit canvas (48x48)
     ctx.imageSmoothingEnabled = false; // Keep pixel art crisp
-    ctx.drawImage(frame as any, 0, 0, 64, 64);
+    ctx.drawImage(frame as any, 0, 0, 48, 48);
   }
   
   usePowerUp(potionNumber: 1 | 2 | 3): void {
